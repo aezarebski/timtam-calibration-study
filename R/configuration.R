@@ -1,5 +1,9 @@
 config_a <- list(
-  description = "Constant rates.",
+  description = c(
+    "Constant rates.",
+    "R-naught parameterisation",
+    "Assumes unscheduled sequence data and scheduled unsequenced data."
+  ),
   cri_coverage = 0.89,
   num_sims = 60,
   param = list(
@@ -12,6 +16,7 @@ config_a <- list(
   ),
   files = list(
     simulation = list(
+      remaster_xml = "beast/remaster-a.xml",
       logfile = \(n) sprintf("out/configuration-a/simulation-%d.log", n),
       treefile = \(n) sprintf("out/configuration-a/simulation-%d.tree", n),
       fastafile = \(n) sprintf("out/configuration-a/simulation-%d.fasta", n)
@@ -19,7 +24,7 @@ config_a <- list(
     mcmc = list(
       template = "beast/timtam-a-template.xml",
       mcmc_xml = \(n) sprintf("out/configuration-a/mcmc-%d.xml", n),
-      summary_csv = "out/mcmc-summary.csv"
+      summary_csv = "out/configuration-a/mcmc-summary.csv"
     ),
     plot = list(
       prevalence_calibration = "out/configuration-a/prevalence-estimates.png",
@@ -34,6 +39,36 @@ config_a <- list(
   sim_timeout_seconds = 60 * 2,
   mcmc_timeout_seconds = 60 * 60 * 3
 )
+
+
+config_b <- config_a
+config_b$description <- c("Smaller version of configuration a for testing.")
+config_b$num_sims <- 6
+config_b$param$duration <- \() 50
+config_b$files <- list(
+  simulation = list(
+    remaster_xml = "beast/remaster-a.xml",
+    logfile = \(n) sprintf("out/configuration-b/simulation-%d.log", n),
+    treefile = \(n) sprintf("out/configuration-b/simulation-%d.tree", n),
+    fastafile = \(n) sprintf("out/configuration-b/simulation-%d.fasta", n)
+  ),
+  mcmc = list(
+    template = "beast/timtam-a-template.xml",
+    mcmc_xml = \(n) sprintf("out/configuration-b/mcmc-%d.xml", n),
+    summary_csv = "out/configuration-b/mcmc-summary.csv"
+  ),
+  plot = list(
+    prevalence_calibration = "out/configuration-b/prevalence-estimates.png",
+    r0_calibration = "out/configuration-b/r0-estimates.png"
+  )
+)
+config_b$mcmc <- list(
+  length = 200000,
+  num_burn = 10,
+  min_ess = 2
+)
+config_b$sim_timeout_seconds = 10
+config_b$mcmc_timeout_seconds = 60
 
 
 #' Sample from Dirichlet distribution.
