@@ -1,0 +1,2 @@
+- [X] Get =renv= set up so we have package versions pinned.
+- [ ] Get =targets= set up so we have.
