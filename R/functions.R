@@ -4,6 +4,9 @@ run_beast <- function(beast_xml, timeout, ...) {
   if (!file.exists(exe)) {
     stop(sprintf("Could not find executable: %s", exe))
   }
+  if (!file.exists(beast_xml)) {
+    stop(sprintf("Could not find BEAST XML: %s", beast_xml))
+  }
   args <- c(..., beast_xml)
   processx::run(
     command = exe, args = args,
@@ -68,15 +71,20 @@ simulate_parameters <- function(uid, config) {
 simulate_epidemic <- function(uid, params, config) {
   data_string <-
     stringr::str_interp(
-               "simId=$[d]{uid},duration=$[f]{duration},lambda=$[.5f]{lambda},mu=$[.5f]{mu},psi=$[.5f]{psi},omega=$[.5f]{omega}", # nolint
-               as.environment(c(params, list(uid = uid)))
+               "simId=$[d]{uid},duration=$[f]{duration},lambda=$[.5f]{lambda},mu=$[.5f]{mu},psi=$[.5f]{psi},omega=$[.5f]{omega},loggerTreeFile=${treefile},loggerLogFile=${logfile}", # nolint
+               as.environment(
+                 c(params,
+                   list(uid = uid,
+                        treefile = config$files$simulation$treefile(uid),
+                        logfile = config$files$simulation$logfile(uid)))
+               )
              )
   ps_return_val <- run_beast( # nolint
     config$files$simulation$remaster_xml,
     config$sim_timeout_seconds,
     c("-D", data_string)
   )
-  if (ps_return_val$status == 1 & !ps_return_val$timeout) {
+  if (ps_return_val$status == 1 && !ps_return_val$timeout) {
     stop(ps_return_val$stderr)
   }
   if (!ps_return_val$timeout) {
