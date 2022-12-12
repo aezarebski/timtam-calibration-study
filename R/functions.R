@@ -99,3 +99,55 @@ simulate_epidemic <- function(uid, params, config) {
   }
   return(result)
 }
+
+#' Create a simple summary of the epidemic.
+summarise_epidemic <- function(uid, epi) {
+  if (is.null(epi)) {
+    return(epi)
+  } else {
+    sim_df <- epi$simulation
+    list(
+      final_prevalence = tail(sim_df$x, 1),
+      total_sequences = tail(sim_df$psi, 1),
+      total_occurrences = tail(sim_df$omega, 1)
+    )
+  }
+}
+
+#' The multiple sequence alignment on the reconstructed tree.
+simulate_genomes <- function(uid, sim, params) {
+  stop("The simulate genomes function needs review...")
+  output_fasta <- config_fasta(uid)
+  if (is.null(sim$right)) {
+    print("left on simulate_genomes")
+    print(output_fasta)
+    processx::run(command = "touch", args = output_fasta)
+    return(sim)
+  } else {
+    sim_data <- sim$right$simulation
+    recon_tree <- sim$right$recon_tree
+  }
+
+  tmp_tip_labs <- recon_tree$tip.label
+  fwd_times_rel <- recon_tree |>
+    node.depth.edgelength() |>
+    head(length(tmp_tip_labs))
+
+  ix <- nrow(sim_data)
+  while (ix > 1) {
+    if (sim_data[ix, "psi"] > sim_data[ix - 1, "psi"]) {
+      last_seq_time <- sim_data[ix, "t"]
+      break
+    }
+    ix <- ix - 1
+  }
+  rm(ix)
+
+  fwd_times <- last_seq_time + fwd_times_rel - max(fwd_times_rel)
+  recon_tree$tip.label <- sprintf("%s_%f", tmp_tip_labs, fwd_times)
+
+  seqs <-
+    phangorn::simSeq(recon_tree, l = params$seq_length, rate = params$seq_rate)
+  phangorn::write.phyDat(seqs, output_fasta, format = "fasta")
+  list(left = NULL, right = output_fasta)
+}

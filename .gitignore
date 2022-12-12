@@ -1,0 +1,5 @@
+.Rhistory
+_targets/
+lib/
+out/
+renv/
