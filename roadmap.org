@@ -1,2 +1,3 @@
 - [X] Get =renv= set up so we have package versions pinned.
-- [ ] Get =targets= set up so we have.
+- [ ] Get a demonstration of the workflow working for a single replicate.
+- [ ] Get =targets= set up so we have a managable workflow.
