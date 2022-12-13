@@ -17,22 +17,52 @@ tar_option_set(
 # tar_make_clustermq() configuration (okay to leave alone):
 options(clustermq.scheduler = "multicore")
 
-# tar_make_future() configuration (okay to leave alone):
-# Install packages {{future}}, {{future.callr}}, and {{future.batchtools}} to allow use_targets() to configure tar_make_future() options.
-
 # Run the R scripts in the R/ folder with your custom functions:
 tar_source()
 # source("other_functions.R") # Source other scripts as needed. # nolint
 
-# Replace the target list below with your own:
 list(
+  tar_target(uid_b, seq.int(config_b$num_sims)),
   tar_target(
-    name = data,
-    command = tibble(x = rnorm(100), y = rnorm(100))
-#   format = "feather" # efficient storage of large data frames # nolint
+    params_b,
+    simulate_parameters(uid_b, config_b),
+    pattern = map(uid_b)
   ),
   tar_target(
-    name = model,
-    command = coefficients(lm(y ~ x, data = data))
+    epi_b,
+    simulate_epidemic(uid_b, params_b, config_b),
+    pattern = map(uid_b, params_b)
+  ),
+  tar_target(
+    epi_summary_b,
+    summarise_epidemic(uid_b, epi_b),
+    pattern = map(uid_b, epi_b)
+  ),
+  tar_target(
+    epi_msa_b,
+    simulate_genomes(epi_b, params_b),
+    pattern = map(epi_b, params_b)
+  ),
+  tar_target(
+    epi_ts_data_b,
+    extract_time_series(epi_b, epi_msa_b),
+    pattern = map(epi_b, epi_msa_b)
+  ),
+  tar_target(
+    mcmc_xml_b,
+    get_beast_mcmc_xml(uid_b, epi_msa_b, epi_ts_data_b, params_b, config_b),
+    pattern = map(uid_b, epi_msa_b, epi_ts_data_b, params_b)
+  ),
+  tar_target(
+    mcmc_samples_b,
+    run_beast_mcmc(mcmc_xml_b, config_b),
+    pattern = map(mcmc_xml_b)
+  ),
+  tar_target(
+    mcmc_summary_b,
+    summarise_post_samples(
+      uid_b, mcmc_samples_b, epi_summary_b, params_b, config_b
+    ),
+    pattern = map(uid_b, mcmc_samples_b, epi_summary_b, params_b)
   )
 )

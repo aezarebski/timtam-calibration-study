@@ -1,3 +1,6 @@
 - [X] Get =renv= set up so we have package versions pinned.
-- [ ] Get a demonstration of the workflow working for a single replicate.
-- [ ] Get =targets= set up so we have a managable workflow.
+- [X] Get a demonstration of the workflow working for a single replicate.
+- [X] Get =targets= set up so we have a managable workflow.
+- [ ] Create figures and table summarising the results.
+- [ ] Scale this up to generate examples with ESS>=200.
+- [ ] Make an example with only unscheduled data.
