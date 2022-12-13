@@ -5,4 +5,5 @@ config <- config_b
 params <- simulate_parameters(uid, config)
 epi <- simulate_epidemic(uid, params, config)
 summary <- summarise_epidemic(uid, epi)
-msa <- simulate_genomes(uid, epi, params)
+msa <- simulate_genomes(epi, params)
+ts_data <- extract_time_series(epi, msa)

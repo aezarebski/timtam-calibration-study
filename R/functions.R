@@ -115,22 +115,16 @@ summarise_epidemic <- function(uid, epi) {
 }
 
 #' The multiple sequence alignment on the reconstructed tree.
-simulate_genomes <- function(uid, sim, params) {
-  stop("The simulate genomes function needs review...")
-  output_fasta <- config_fasta(uid)
-  if (is.null(sim$right)) {
-    print("left on simulate_genomes")
-    print(output_fasta)
-    processx::run(command = "touch", args = output_fasta)
-    return(sim)
-  } else {
-    sim_data <- sim$right$simulation
-    recon_tree <- sim$right$recon_tree
+simulate_genomes <- function(epi, params) {
+  if (is.null(epi)) {
+    return(epi)
   }
 
+  sim_data <- epi$simulation
+  recon_tree <- epi$recon_tree
   tmp_tip_labs <- recon_tree$tip.label
   fwd_times_rel <- recon_tree |>
-    node.depth.edgelength() |>
+    ape::node.depth.edgelength() |>
     head(length(tmp_tip_labs))
 
   ix <- nrow(sim_data)
@@ -145,9 +139,46 @@ simulate_genomes <- function(uid, sim, params) {
 
   fwd_times <- last_seq_time + fwd_times_rel - max(fwd_times_rel)
   recon_tree$tip.label <- sprintf("%s_%f", tmp_tip_labs, fwd_times)
+  phangorn::simSeq(recon_tree, l = params$seq_length, rate = params$seq_rate)
+}
 
-  seqs <-
-    phangorn::simSeq(recon_tree, l = params$seq_length, rate = params$seq_rate)
-  phangorn::write.phyDat(seqs, output_fasta, format = "fasta")
-  list(left = NULL, right = output_fasta)
+#' Compute a daily time series of confirmed cases.
+#'
+#' Aggregate the point process of unsequenced unscheduled observations into a
+#' time series which we can model as scheduled unsequenced observations. Note
+#' that the times in the result are backwards and relative to the timing of the
+#' final sequenced sample.
+extract_time_series <- function(epi, msa) {
+  if (is.null(epi)) {
+    return(epi)
+  }
+  if (tail(epi$simulation$omega, 1) < 1) {
+    stop("Invalid simulation data! Check the number of omega events")
+  }
+
+  occ_df <- data.frame(t = epi$simulation$t, cum_occ = epi$simulation$omega)
+  occ_df$inst_occ <- c(0, diff(occ_df$cum_occ))
+  ## The following line computes the daily number of cases, this relies on a
+  ## resolution of one unit of time!
+  agg_occs <- table(ceiling(occ_df[occ_df$inst_occ == 1, ]$t))
+  agg_df <- data.frame(
+    time = as.integer(names(agg_occs)),
+    num_occ = as.integer(agg_occs)
+  )
+
+  padding_df <- data.frame(time = seq.int(max(agg_df$time)), empty_obs = 0)
+  agg_occ_df <- dplyr::full_join(x = padding_df, y = agg_df, by = "time") |>
+    dplyr::mutate(size = ifelse(is.na(num_occ), empty_obs, num_occ)) |> # nolint
+    dplyr::select(time, size) # nolint
+
+  last_sample_time <- msa |>
+    labels() |>
+    stringr::str_match(pattern = "[0-9.]+$") |>
+    as.numeric() |>
+    max()
+
+  data.frame(
+    times = last_sample_time - agg_occ_df$time,
+    sizes = agg_occ_df$size
+  )
 }
