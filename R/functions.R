@@ -277,3 +277,35 @@ run_beast_mcmc <- function(beast_xml, config) {
     dplyr::mutate(log_file = log_file) |>
     dplyr::select(-Sample) # nolint
 }
+
+est_and_cri <- function(x, p) {
+  tail_weight <- 0.5 * (1 - p)
+  quantile(x, probs = c(tail_weight, 0.5, 1 - tail_weight))
+}
+
+summarise_post_samples <- function(uid, mcmc_samples, epi_summary, params,
+                                   config) {
+  coda_mcmc <-
+    coda::as.mcmc(dplyr::select(mcmc_samples, -log_file)) # nolint
+  r0_ci <- est_and_cri(mcmc_samples$TTR0, config$cri_coverage)
+  final_prev <- epi_summary$final_prevalence
+  prev_ci <- est_and_cri(mcmc_samples$TTHistorySizes, config$cri_coverage)
+
+  data.frame(
+    uid = uid,
+    min_ess = min(coda::effectiveSize(coda_mcmc)),
+    num_samples = nrow(mcmc_samples),
+    ci_prob = config$cri_coverage,
+    r0_true = params$r0,
+    r0_lower = r0_ci[1],
+    r0_point = r0_ci[2],
+    r0_upper = r0_ci[3],
+    contains_r0 = r0_ci[1] < params$r0 & params$r0 < r0_ci[3],
+    prevalence_true = final_prev,
+    prevalence_lower = prev_ci[1],
+    prevalence_point = prev_ci[2],
+    prevalence_upper = prev_ci[3],
+    contains_prevalence = (prev_ci[1] < final_prev & final_prev < prev_ci[3])
+  ) |>
+    dplyr::bind_cols(as.data.frame(epi_summary))
+}
