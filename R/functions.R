@@ -182,3 +182,57 @@ extract_time_series <- function(epi, msa) {
     sizes = agg_occ_df$size
   )
 }
+
+#' Turn a numeric vector into a space separated string of values.
+numeric_as_ssv <- function(xs) {
+  if (is.numeric(xs)) {
+    stringr::str_flatten(string = as.character(xs), collapse = " ")
+  } else {
+    stop("non-numeric value given to numeric_as_ssv.")
+  }
+}
+
+get_beast_mcmc_xml <- function(msa, ts_df, params, config) {
+  beast_root <- xml2::read_xml(config$files$mcmc$template)
+  data_node <- xml2::xml_find_first(beast_root, "//data")
+
+  for (ix in seq.int(msa)) {
+    leaf_name <- names(msa[ix])
+    leaf_seq <- stringr::str_flatten(as.character(msa[ix]))
+    seq_node <- xml2::read_xml("<sequence spec='beast.base.evolution.alignment.Sequence' totalcount='4'></sequence>") # nolint
+    xml2::xml_set_attr(
+      seq_node, attr = "id", value = stringr::str_flatten(c("seq_", leaf_name))
+    )
+    xml2::xml_set_attr(seq_node, attr = "taxon", value = leaf_name)
+    xml2::xml_set_attr(seq_node, attr = "value", value = leaf_seq)
+    xml2::xml_add_child(data_node, seq_node)
+  }
+
+  d_time_node <- xml2::xml_find_first(beast_root, "//disasterTimes")
+  xml2::xml_set_text(x = d_time_node, value = numeric_as_ssv(ts_df$times))
+  d_size_node <- xml2::xml_find_first(beast_root, "//disasterSizes")
+  xml2::xml_set_text(x = d_size_node, value = numeric_as_ssv(ts_df$sizes))
+
+  trait_node <- xml2::xml_find_first(beast_root, "//state/tree/trait")
+  trait_fn <-
+    \(name) sprintf("%s=%s", name, stringr::str_extract(name, "[.0-9]+$"))
+  trait_val <-
+    stringr::str_flatten(purrr::map_chr(names(msa), trait_fn), collapse = ",")
+  xml2::xml_set_attr(trait_node, attr = "value", value = trait_val)
+
+  sigma_node <- xml2::xml_find_first(beast_root, "//distribution/sigma")
+  xml2::xml_set_text(sigma_node, value = as.character(params$sigma))
+
+  origin_time_node <-
+    xml2::xml_find_first(beast_root, "//distribution/originTime")
+  sim_duration <- params$duration
+  xml2::xml_set_text(origin_time_node, value = as.character(sim_duration))
+  init_tree_node <-
+    xml2::xml_find_first(beast_root, "//init[@spec='RandomTree']")
+  xml2::xml_set_attr(
+    init_tree_node,
+    attr = "rootHeight",
+    value = as.character(sim_duration - 0.1)
+  )
+  return(beast_root)
+}
