@@ -5,11 +5,12 @@ config <- config_b
 params <- simulate_parameters(uid, config)
 epi <- simulate_epidemic(uid, params, config)
 epi_summary <- summarise_epidemic(uid, epi)
-msa <- simulate_genomes(epi, params)
-ts_data <- extract_time_series(epi, msa)
-mcmc_xml <- get_beast_mcmc_xml(uid, msa, ts_data, params, config)
+epi_msa <- simulate_genomes(epi, params)
+epi_ts_data <- extract_time_series(epi, epi_msa)
+mcmc_xml <- get_beast_mcmc_xml(uid, epi_msa, epi_ts_data, params, config)
 mcmc_samples <- run_beast_mcmc(mcmc_xml, config)
-mcmc_summary <- summarise_post_samples(uid, mcmc_samples, epi_summary, params, config)
+mcmc_summary <-
+  summarise_post_samples(uid, mcmc_samples, epi_summary, params, config)
 
 png(file.path(dirname(config$files$plot[[1]]), "demo-trace-plot.png"))
 mcmc_samples |>
