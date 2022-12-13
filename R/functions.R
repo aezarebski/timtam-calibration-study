@@ -192,7 +192,9 @@ numeric_as_ssv <- function(xs) {
   }
 }
 
-get_beast_mcmc_xml <- function(msa, ts_df, params, config) {
+#' Construct an XML object which could be used by BEAST2 to run an MCMC analysis
+#' with timtam.
+get_beast_mcmc_xml <- function(uid, msa, ts_df, params, config) {
   beast_root <- xml2::read_xml(config$files$mcmc$template)
   data_node <- xml2::xml_find_first(beast_root, "//data")
 
@@ -233,6 +235,45 @@ get_beast_mcmc_xml <- function(msa, ts_df, params, config) {
     init_tree_node,
     attr = "rootHeight",
     value = as.character(sim_duration - 0.1)
-  )
+    )
+  xml2::xml_find_first(beast_root, "//logger") |>
+    xml2::xml_set_attr(attr = "fileName",
+                       value = config$files$mcmc$log_file(uid))
+  xml2::xml_find_first(beast_root, "//run") |>
+    xml2::xml_set_attr(
+      attr = "chainLength",
+      value = config$mcmc$length
+    )
   return(beast_root)
+}
+
+#' Read a BEAST2 log file into a data frame.
+#'
+#' @param filename is the path to the log file.
+#' @param burn is the number to remove from the start.
+#' @param take_last is the number to take from the end.
+#'
+#' @return data frame containing the samples.
+#'
+read_beast2_log <- function(filename, burn = 0, take_last = NA) {
+  y <- read.csv(filename, sep = "\t", comment.char = "#")
+  if (is.na(take_last) && burn >= 0) {
+    return(tail(y, nrow(y) - burn))
+  } else if (!is.na(take_last) && burn == 0) {
+    return(tail(y, take_last))
+  } else {
+    stop("Unsupported arguments given to read_beast2_log.")
+  }
+}
+
+run_beast_mcmc <- function(beast_xml, config) {
+  tmp_file <- tempfile(pattern = "beast-mcmc-", fileext = ".xml")
+  xml2::write_xml(x = beast_xml, file = tmp_file)
+  run_beast(tmp_file, config$mcmc_timeout_seconds)
+
+  log_file <-
+    xml2::xml_attr(xml2::xml_find_first(beast_xml, "//logger"), "fileName")
+  read_beast2_log(log_file, burn = config$mcmc$num_burn) |>
+    dplyr::mutate(log_file = log_file) |>
+    dplyr::select(-Sample) # nolint
 }

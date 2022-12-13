@@ -24,6 +24,8 @@ config_a <- list(
     mcmc = list(
       template = "beast/timtam-a-template.xml",
       mcmc_xml = \(n) sprintf("out/configuration-a/mcmc-%d.xml", n),
+      log_file =
+        \(n) sprintf("out/configuration-a/posterior-samples-%d.log", n),
       summary_csv = "out/configuration-a/mcmc-summary.csv"
     ),
     plot = list(
@@ -55,6 +57,8 @@ config_b$files <- list(
   mcmc = list(
     template = "beast/timtam-a-template.xml",
     mcmc_xml = \(n) sprintf("out/configuration-b/mcmc-%d.xml", n),
+    log_file =
+      \(n) sprintf("out/configuration-b/posterior-samples-%d.log", n),
     summary_csv = "out/configuration-b/mcmc-summary.csv"
   ),
   plot = list(
@@ -67,8 +71,8 @@ config_b$mcmc <- list(
   num_burn = 10,
   min_ess = 2
 )
-config_b$sim_timeout_seconds = 10
-config_b$mcmc_timeout_seconds = 60
+config_b$sim_timeout_seconds <- 10
+config_b$mcmc_timeout_seconds <- 60
 
 
 #' Sample from Dirichlet distribution.

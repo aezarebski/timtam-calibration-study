@@ -111,7 +111,7 @@ name="alignment">
             <log idref="prior"/>
             <log idref="treeLikelihood.sample-sequences"/>
             <log id="TreeHeight.t:sample-sequences" spec="beast.base.evolution.tree.TreeStatLogger" tree="@Tree.t:sample-sequences"/>
-            <log idref="clockRate.c:sample-sequences"/>
+            <!-- <log idref="clockRate.c:sample-sequences"/> -->
             <log idref="TTHistorySizes.t:sample-sequences"/>
             <log idref="TTR0.t:sample-sequences"/>
             <log idref="TTPropPsi.t:sample-sequences"/>
