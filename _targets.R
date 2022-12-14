@@ -64,5 +64,16 @@ list(
       uid_b, mcmc_samples_b, epi_summary_b, params_b, config_b
     ),
     pattern = map(uid_b, mcmc_samples_b, epi_summary_b, params_b)
-  )
+  ),
+  tar_target(
+    prev_ests_gg_b,
+    plot_prevalence_estimates(mcmc_summary_b)
+  ),
+  tar_target(
+    r0_ests_gg_b,
+    plot_r0_estimates(mcmc_summary_b)
+  ),
+  tar_target(
+    comb_gg_b,
+    combined_figure(prev_ests_gg_b, r0_ests_gg_b))
 )

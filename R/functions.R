@@ -1,3 +1,6 @@
+library(ggplot2)
+library(cowplot)
+
 #' Run BEAST2.7.x XML.
 run_beast <- function(beast_xml, timeout, ...) {
   exe <- "./lib/beast/bin/beast"
@@ -308,4 +311,89 @@ summarise_post_samples <- function(uid, mcmc_samples, epi_summary, params,
     contains_prevalence = (prev_ci[1] < final_prev & final_prev < prev_ci[3])
   ) |>
     dplyr::bind_cols(as.data.frame(epi_summary))
+}
+
+#' Plot the prevalence estimates against their true values.
+plot_prevalence_estimates <- function(mcmc_summary) {
+  ggplot() +
+    geom_abline(intercept = 0, slope = 1) +
+    geom_linerange(
+      data = mcmc_summary,
+      mapping = aes(
+        x = prevalence_true, # nolint
+        ymin = prevalence_lower, # nolint
+        ymax = prevalence_upper # nolint
+      ),
+      linewidth = 2,
+      alpha = 0.3
+    ) +
+    geom_point(
+      data = mcmc_summary,
+      mapping = aes(
+        x = prevalence_true,
+        y = prevalence_point, # nolint
+        shape = contains_prevalence # nolint
+      )
+    ) +
+    scale_y_log10() +
+    scale_x_log10() +
+    scale_shape_manual(values = c(4, 16), breaks = c(FALSE, TRUE)) +
+    labs(x = "Prevalence", y = "Estimated prevalence") +
+    theme_bw()
+}
+
+#' Plot the R-naught estimates against their true values.
+plot_r0_estimates <- function(mcmc_summary) {
+  ggplot() +
+    geom_abline(intercept = 0, slope = 1) +
+    geom_linerange(
+      data = mcmc_summary,
+      mapping = aes(
+        x = r0_true, # nolint
+        ymin = r0_lower, # nolint
+        ymax = r0_upper  # nolint
+      ),
+      linewidth = 2,
+      alpha = 0.3
+    ) +
+    geom_point(
+      data = mcmc_summary,
+      mapping = aes(
+        x = r0_true,
+        y = r0_point, # nolint
+        shape = contains_r0 # nolint
+      ),
+      size = 2
+    ) +
+    scale_shape_manual(values = c(4, 16), breaks = c(FALSE, TRUE)) +
+    labs(x = "R-naught", y = "Estimated R-naught") +
+    theme_bw()
+}
+
+#' Write a ggplot to a file in an A6 size.
+save_plot_a6 <- function(gg, fn) {
+ ggsave(filename = fn,
+        plot = gg,
+        height = 10.5, width = 14.8,
+        units = "cm")
+ return(fn)
+}
+
+combined_figure <- function(prev_gg, r0_gg) {
+  legend <-
+    get_legend(
+               r0_gg +
+               labs(shape = "CrI contains true value") +
+               theme(legend.position = "top",
+                     legend.box.margin = margin(0, 0, 0, 12))
+             )
+
+  plot_grid(
+    legend,
+    prev_gg + theme(legend.position = "none"),
+    r0_gg + theme(legend.position = "none"),
+    ncol = 1,
+    rel_heights = c(0.25, 1, 1),
+    labels = c("", "A", "B")
+  )
 }
