@@ -108,7 +108,7 @@ config_c <- list(
   ),
   files = list(
     simulation = list(
-      remaster_xml = "beast/remaster-c.xml",
+      remaster_xml = "beast/remaster-a.xml",
       logfile = \(n) sprintf("out/configuration-c/simulation-%d.log", n),
       treefile = \(n) sprintf("out/configuration-c/simulation-%d.tree", n),
       fastafile = \(n) sprintf("out/configuration-c/simulation-%d.fasta", n)

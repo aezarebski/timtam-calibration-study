@@ -58,11 +58,23 @@ make_uids <- function(num_sims) {
   seq.int(from = 1, to = num_sims)
 }
 
+#' A random set of parameters as specified by the configuration provided. Since
+#' we are setting the seed within this function it should be deterministic.
 simulate_parameters <- function(uid, config) {
   set.seed(uid)
   r0 <- config$param$r0()
   sigma <- config$param$sigma()
-  props <- rdirichlet(config$params$removal_weights) # nolint
+  if (!any(is.na(config$param$removal_weights))) {
+    props <- rdirichlet(config$param$removal_weights)
+  } else {
+    ## TODO Clean up this brittle code to work with any of the entries being NA.
+    tmp_ws <- config$param$removal_weights
+    if (all(is.na(tmp_ws) == c(FALSE, FALSE, TRUE))) {
+      props <- c(rdirichlet(tmp_ws[c(1, 2)]), 0)
+    } else {
+      stop(sprintf("Failed to simulate parameters for UID: %d", uid))
+    }
+  }
   lambda <- r0 * sigma
   mu <- sigma * props[1]
   psi <- sigma * props[2]
@@ -222,10 +234,12 @@ get_beast_mcmc_xml <- function(uid, msa, ts_df, params, config) {
     xml2::xml_add_child(data_node, seq_node)
   }
 
-  d_time_node <- xml2::xml_find_first(beast_root, "//disasterTimes")
-  xml2::xml_set_text(x = d_time_node, value = numeric_as_ssv(ts_df$times))
-  d_size_node <- xml2::xml_find_first(beast_root, "//disasterSizes")
-  xml2::xml_set_text(x = d_size_node, value = numeric_as_ssv(ts_df$sizes))
+  if (!is.null(ts_df)) {
+    d_time_node <- xml2::xml_find_first(beast_root, "//disasterTimes")
+    xml2::xml_set_text(x = d_time_node, value = numeric_as_ssv(ts_df$times))
+    d_size_node <- xml2::xml_find_first(beast_root, "//disasterSizes")
+    xml2::xml_set_text(x = d_size_node, value = numeric_as_ssv(ts_df$sizes))
+  }
 
   trait_node <- xml2::xml_find_first(beast_root, "//state/tree/trait")
   trait_fn <-
@@ -279,9 +293,15 @@ read_beast2_log <- function(filename, burn = 0, take_last = NA) {
 }
 
 run_beast_mcmc <- function(beast_xml, config) {
-  tmp_file <- tempfile(pattern = "beast-mcmc-", fileext = ".xml")
-  xml2::write_xml(x = beast_xml, file = tmp_file)
-  run_beast(tmp_file, config$mcmc_timeout_seconds)
+  if (is.element(el = "xml_document", class(beast_xml))) {
+    filepath_beast_xml <- tempfile(pattern = "beast-mcmc-", fileext = ".xml")
+    xml2::write_xml(x = beast_xml, file = filepath_beast_xml)
+  } else if (file.exists(beast_xml)) {
+    filepath_beast_xml <- beast_xml
+  } else {
+    stop("run_beast_mcmc could not work out how to handle beast_xml argument.")
+  }
+  run_beast(filepath_beast_xml, config$mcmc_timeout_seconds)
 
   log_file <-
     xml2::xml_attr(xml2::xml_find_first(beast_xml, "//logger"), "fileName")

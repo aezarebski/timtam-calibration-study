@@ -1,14 +1,17 @@
 targets::tar_source()
 
-uid <- 1
-config <- config_b
+uid <- 2
+config <- config_c
 params <- simulate_parameters(uid, config)
 epi <- simulate_epidemic(uid, params, config)
 epi_summary <- summarise_epidemic(uid, epi)
 epi_msa <- simulate_genomes(epi, params)
-epi_ts_data <- extract_time_series(epi, epi_msa)
-mcmc_xml <- get_beast_mcmc_xml(uid, epi_msa, epi_ts_data, params, config)
+mcmc_xml <- get_beast_mcmc_xml(uid, epi_msa, NULL, params, config)
 mcmc_samples <- run_beast_mcmc(mcmc_xml, config)
+mcmc_samples <- sprintf("out/configuration-c/posterior-samples-%d.log", uid) |>
+  read_beast2_log(burn = config$mcmc$num_burn) |>
+  dplyr::mutate(log_file = "out/configuration-c/mcmc.xml") |>
+  dplyr::select(-Sample) # nolint
 mcmc_summary <-
   summarise_post_samples(uid, mcmc_samples, epi_summary, params, config)
 
