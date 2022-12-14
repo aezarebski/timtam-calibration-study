@@ -1,6 +1,15 @@
 library(ggplot2)
 library(cowplot)
 
+#' Sample from Dirichlet distribution.
+#'
+#' https://en.wikipedia.org/wiki/Dirichlet_distribution#From_gamma_distribution
+#'
+rdirichlet <- function(shape) {
+  tmp <- rgamma(n = length(shape), shape = shape, rate = 1)
+  tmp / sum(tmp)
+}
+
 #' Run BEAST2.7.x XML.
 run_beast <- function(beast_xml, timeout, ...) {
   exe <- "./lib/beast/bin/beast"
