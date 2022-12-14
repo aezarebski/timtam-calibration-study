@@ -38,9 +38,9 @@ name="alignment">
             </tree>
             <parameter id="clockRate.c:sample-sequences" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.001</parameter>
             <stateNode id="TTHistorySizes.t:sample-sequences" spec="parameter.IntegerParameter">2000</stateNode>
-            <parameter id="TTR0.t:sample-sequences" spec="parameter.RealParameter" lower="0.0" upper="6.0" name="stateNode">1.85</parameter>
+            <parameter id="TTR0.t:sample-sequences" spec="parameter.RealParameter" lower="0.0" upper="2.0" name="stateNode">1.15</parameter>
             <parameter id="TTPropPsi.t:sample-sequences" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.1</parameter>
-            <parameter id="TTPropTS.t:sample-sequences" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.4</parameter>
+            <parameter id="TTPropTS.t:sample-sequences" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.0</parameter>
         </state>
         <!-- The Random initial tree seems to work better than the UPGMA tree that is used in this comment. -->
         <!-- <init id='RandomTree.t:sample-sequences' spec='beast.base.evolution.tree.ClusterTree' initial="@Tree.t:sample-sequences" clusterType='upgma' taxa='@sample-sequences' /> -->
@@ -51,23 +51,15 @@ name="alignment">
         </init>
         <distribution id="posterior" spec="CompoundDistribution">
             <distribution id="prior" spec="CompoundDistribution">
-                <distribution id="TimTamTimeSeries.t:sample-sequences" spec="timtam.TimTam" historySizes="@TTHistorySizes.t:sample-sequences" parameterisation="timeSeriesR0" propPsi="@TTPropPsi.t:sample-sequences" propTimeSeries="@TTPropTS.t:sample-sequences" r0="@TTR0.t:sample-sequences" tree="@Tree.t:sample-sequences">
+                <distribution id="TimTamR0.t:sample-sequences" spec="timtam.TimTam" historySizes="@TTHistorySizes.t:sample-sequences" parameterisation="r0" propPsi="@TTPropPsi.t:sample-sequences" propTimeSeries="@TTPropTS.t:sample-sequences" r0="@TTR0.t:sample-sequences" tree="@Tree.t:sample-sequences">
                     <sigma id="TTNetRemovalRate.t:sample-sequences" spec="parameter.RealParameter" estimate="false" lower="0.0"></sigma>
                     <originTime id="TTOriginTime.t:sample-sequences" spec="parameter.RealParameter" estimate="false" ></originTime>
-                    <disasterTimes id="TTDisasterTimes.t:sample-sequences" spec="parameter.RealParameter" estimate="false"></disasterTimes>
-                    <disasterSizes id="TTDisasterSizes.t:sample-sequences" spec="parameter.IntegerParameter" estimate="false"></disasterSizes>
                     <parameter id="TTHistoryTimes.t:sample-sequences" spec="parameter.RealParameter" estimate="false" name="historyTimes">0.0</parameter>
                 </distribution>
                 <prior id="TTPropPsiPrior.t:sample-sequences" name="distribution" x="@TTPropPsi.t:sample-sequences">
                     <Beta id="Beta.0" name="distr">
                         <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="alpha">2.0</parameter>
                         <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="beta">2.0</parameter>
-                    </Beta>
-                </prior>
-                <prior id="TTPropTimeSeriesPrior.t:sample-sequences" name="distribution" x="@TTPropTS.t:sample-sequences">
-                    <Beta id="Beta.1" name="distr">
-                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="alpha">2.0</parameter>
-                        <parameter id="RealParameter.8" spec="parameter.RealParameter" estimate="false" name="beta">2.0</parameter>
                     </Beta>
                 </prior>
                 <prior id="TTR0Prior.t:sample-sequences" name="distribution" x="@TTR0.t:sample-sequences">
@@ -89,12 +81,10 @@ name="alignment">
                 </distribution>
             </distribution>
         </distribution>
-        <operator id="TTR0Scaler.t:sample-sequences" spec="ScaleOperator" parameter="@TTR0.t:sample-sequences" scaleFactor="0.9" weight="1.0"/>
-        <operator id="TTR0Walk.t:sample-sequences" spec="operator.RealRandomWalkOperator" parameter="@TTR0.t:sample-sequences" weight="1.0" windowSize="0.01"/>
+        <!-- <operator id="TTR0Scaler.t:sample-sequences" spec="ScaleOperator" parameter="@TTR0.t:sample-sequences" scaleFactor="0.9" weight="1.0"/> -->
+        <operator id="TTR0Walk.t:sample-sequences" spec="operator.RealRandomWalkOperator" parameter="@TTR0.t:sample-sequences" weight="1.0" windowSize="0.001"/>
         <operator id="TTPropPsiScaler.t:sample-sequences" spec="ScaleOperator" parameter="@TTPropPsi.t:sample-sequences" scaleFactor="0.9" weight="1.0"/>
         <operator id="TTPropPsiWalk.t:sample-sequences" spec="operator.RealRandomWalkOperator" parameter="@TTPropPsi.t:sample-sequences" weight="1.0" windowSize="0.01"/>
-        <operator id="TTPropTimeSeriesScaler.t:sample-sequences" spec="ScaleOperator" parameter="@TTPropTS.t:sample-sequences" scaleFactor="0.9" weight="1.0"/>
-        <operator id="TTPropTimeSeriesWalk.t:sample-sequences" spec="operator.RealRandomWalkOperator" parameter="@TTPropTS.t:sample-sequences" weight="1.0" windowSize="0.01"/>
         <operator id="TTHistorySizesWalk.t:sample-sequences" spec="operator.IntRandomWalkOperator" parameter="@TTHistorySizes.t:sample-sequences" weight="3.0" windowSize="20"/>
         <operator id="TimTamTimeSeriesBICEPSEpochTop.t:sample-sequences" spec="EpochFlexOperator" scaleFactor="0.1" tree="@Tree.t:sample-sequences" weight="2.0"/>
         <operator id="TimTamTimeSeriesBICEPSEpochAll.t:sample-sequences" spec="EpochFlexOperator" fromOldestTipOnly="false" scaleFactor="0.1" tree="@Tree.t:sample-sequences" weight="2.0"/>
@@ -111,7 +101,6 @@ name="alignment">
             <log idref="prior"/>
             <log idref="treeLikelihood.sample-sequences"/>
             <log id="TreeHeight.t:sample-sequences" spec="beast.base.evolution.tree.TreeStatLogger" tree="@Tree.t:sample-sequences"/>
-            <!-- <log idref="clockRate.c:sample-sequences"/> -->
             <log idref="TTHistorySizes.t:sample-sequences"/>
             <log idref="TTR0.t:sample-sequences"/>
             <log idref="TTPropPsi.t:sample-sequences"/>

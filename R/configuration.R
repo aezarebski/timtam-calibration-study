@@ -101,10 +101,10 @@ config_c <- list(
   param = list(
     r0 = \() runif(n = 1, min = 1.1, max = 1.5),
     sigma = \() 0.2,
-    duration = \() 50.0,
+    duration = \() 80.0,
     seq_len = \() 1e3,
     seq_rate = \() 1e-3,
-    removal_weights = c(4, 1, NA) # for use as an argument to rdirichlet
+    removal_weights = c(4, 4, NA) # for use as an argument to rdirichlet
   ),
   files = list(
     simulation = list(
@@ -126,10 +126,10 @@ config_c <- list(
     )
   ),
   mcmc = list(
-    length = 200000,
+    length = 2000000,
     num_burn = 10,
     min_ess = 2
   ),
   sim_timeout_seconds = 10,
-  mcmc_timeout_seconds = 60
+  mcmc_timeout_seconds = 5 * 60
 )

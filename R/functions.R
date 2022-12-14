@@ -20,12 +20,14 @@ run_beast <- function(beast_xml, timeout, ...) {
     stop(sprintf("Could not find BEAST XML: %s", beast_xml))
   }
   args <- c(..., beast_xml)
-  processx::run(
-    command = exe, args = args,
-    timeout = timeout,
-    error_on_status = FALSE,
-    cleanup_tree = TRUE
-  )
+  process_val <-
+    processx::run(
+                command = exe, args = args,
+                timeout = timeout,
+                error_on_status = FALSE,
+                cleanup_tree = TRUE
+              )
+  return(process_val)
 }
 
 #' Read a remaster simulation log file into a sensible data frame.
@@ -106,7 +108,7 @@ simulate_epidemic <- function(uid, params, config) {
   ps_return_val <- run_beast( # nolint
     config$files$simulation$remaster_xml,
     config$sim_timeout_seconds,
-    c("-D", data_string)
+    c("-overwrite", "-D", data_string)
   )
   if (ps_return_val$status == 1 && !ps_return_val$timeout) {
     stop(ps_return_val$stderr)
@@ -301,7 +303,7 @@ run_beast_mcmc <- function(beast_xml, config) {
   } else {
     stop("run_beast_mcmc could not work out how to handle beast_xml argument.")
   }
-  run_beast(filepath_beast_xml, config$mcmc_timeout_seconds)
+  run_beast(filepath_beast_xml, config$mcmc_timeout_seconds, c("-overwrite"))
 
   log_file <-
     xml2::xml_attr(xml2::xml_find_first(beast_xml, "//logger"), "fileName")
