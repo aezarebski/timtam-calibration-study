@@ -60,10 +60,7 @@ make_uids <- function(num_sims) {
   seq.int(from = 1, to = num_sims)
 }
 
-#' A random set of parameters as specified by the configuration provided. Since
-#' we are setting the seed within this function it should be deterministic.
-simulate_parameters <- function(uid, config) {
-  set.seed(uid)
+simulate_parameters_a <- function(uid, config) {
   r0 <- config$param$r0()
   sigma <- config$param$sigma()
   if (!any(is.na(config$param$removal_weights))) {
@@ -94,17 +91,89 @@ simulate_parameters <- function(uid, config) {
   )
 }
 
-simulate_epidemic <- function(uid, params, config) {
-  data_string <-
-    stringr::str_interp(
-               "simId=$[d]{uid},duration=$[f]{duration},lambda=$[.5f]{lambda},mu=$[.5f]{mu},psi=$[.5f]{psi},omega=$[.5f]{omega},loggerTreeFile=${treefile},loggerLogFile=${logfile}", # nolint
-               as.environment(
-                 c(params,
-                   list(uid = uid,
-                        treefile = config$files$simulation$treefile(uid),
-                        logfile = config$files$simulation$logfile(uid)))
-               )
+simulate_parameters_c <- function(uid, config) {
+  r01 <- config$param$r01()
+  r02 <- config$param$r02()
+  sigma <- config$param$sigma()
+  if (!any(is.na(config$param$removal_weights))) {
+    props <- rdirichlet(config$param$removal_weights)
+  } else {
+    ## TODO Clean up this brittle code to work with any of the entries being NA.
+    tmp_ws <- config$param$removal_weights
+    if (all(is.na(tmp_ws) == c(FALSE, FALSE, TRUE))) {
+      props <- c(rdirichlet(tmp_ws[c(1, 2)]), 0)
+    } else {
+      stop(sprintf("Failed to simulate parameters for UID: %d", uid))
+    }
+  }
+  lambda1 <- r01 * sigma
+  lambda2 <- r02 * sigma
+  mu <- sigma * props[1]
+  psi <- sigma * props[2]
+  omega <- sigma * props[3]
+  list(
+    sigma = sigma,
+    r01 = r01,
+    r02 = r02,
+    lambda1 = lambda1,
+    lambda2 = lambda2,
+    lambdaChangeTime = config$param$changeTime(),
+    mu = mu,
+    psi = psi,
+    omega = omega,
+    seq_length = config$param$seq_len(),
+    seq_rate = config$param$seq_rate(),
+    duration = config$param$duration()
+  )
+}
+
+#' A random set of parameters as specified by the configuration provided. Since
+#' we are setting the seed within this function it should be deterministic.
+simulate_parameters <- function(uid, config) {
+  set.seed(uid)
+  remaster_xml <- basename(config$files$simulation$remaster_xml)
+  if (remaster_xml == "remaster-a.xml") {
+    simulate_parameters_a(uid, config)
+  } else if (remaster_xml == "remaster-c.xml") {
+    simulate_parameters_c(uid, config)
+  }
+}
+
+remaster_data_string_a <- function(uid, params, config) {
+  stringr::str_interp(
+             "simId=$[d]{uid},duration=$[f]{duration},lambda=$[.5f]{lambda},mu=$[.5f]{mu},psi=$[.5f]{psi},omega=$[.5f]{omega},loggerTreeFile=${treefile},loggerLogFile=${logfile}", # nolint
+             as.environment(
+               c(params,
+                 list(uid = uid,
+                      treefile = config$files$simulation$treefile(uid),
+                      logfile = config$files$simulation$logfile(uid)))
              )
+           )
+}
+
+remaster_data_string_c <- function(uid, params, config) {
+  stringr::str_interp(
+             "simId=$[d]{uid},duration=$[f]{duration},lambdaChangeTime=$[f]{lambdaChangeTime},lambda2=$[.5f]{lambda2},lambda1=$[.5f]{lambda1},mu=$[.5f]{mu},psi=$[.5f]{psi},omega=$[.5f]{omega},loggerTreeFile=${treefile},loggerLogFile=${logfile}", # nolint
+             as.environment(
+               c(params,
+                 list(uid = uid,
+                      treefile = config$files$simulation$treefile(uid),
+                      logfile = config$files$simulation$logfile(uid)))
+             )
+           )
+}
+
+remaster_data_string <- function(uid, params, config) {
+  remaster_xml <- basename(config$files$simulation$remaster_xml)
+  if (remaster_xml == "remaster-a.xml") {
+    remaster_data_string_a(uid, params, config)
+  } else if (remaster_xml == "remaster-c.xml") {
+    remaster_data_string_c(uid, params, config)
+  }
+}
+
+simulate_epidemic <- function(uid, params, config) {
+  data_string <- remaster_data_string(uid, params, config)
   ps_return_val <- run_beast( # nolint
     config$files$simulation$remaster_xml,
     config$sim_timeout_seconds,

@@ -1,0 +1,47 @@
+<beast version='2.0' namespace='beast.base.inference.parameter:beast.base.inference:remaster'>
+
+  <param id="maxTime" spec="RealParameter" value="$(duration)"/>
+  <param id="lambdaChangeTime" spec="RealParameter" value="$(lambdaChangeTime)"/>
+  <param id="lambda1" spec="RealParameter" value="$(lambda1)"/>
+  <param id="lambda2" spec="RealParameter" value="$(lambda2)"/>
+  <param id="mu" spec="RealParameter" value="$(mu)"/>
+  <param id="psi" spec="RealParameter" value="$(psi)"/>
+  <param id="omega" spec="RealParameter" value="$(omega)"/>
+
+  <run spec="Simulator" nSims="1" >
+
+    <simulate id="tree" spec="SimulatedTree" >
+      <!-- Include constraints via endsWhen to terminate simulations that explode. -->
+      <trajectory id="trajectory"
+                  spec="StochasticTrajectory"
+                  maxTime="@maxTime"
+                  mustHave="Psi&gt;10 &amp;&amp; Psi&lt;1000 &amp;&amp; X&lt;100000 &amp;&amp; X&gt;50"
+                  endsWhen="X&gt;100000" >
+
+        <population id="X" spec="RealParameter" value="1" />
+        <samplePopulation id="Psi" spec="RealParameter" value="0" />
+        <population id="Omega" spec="RealParameter" value="0" />
+        <population id="Mu" spec="RealParameter" value="0" />
+
+        <reaction spec="Reaction" rate="$(lambda1) $(lambda2)" changeTimes="@lambdaChangeTime">X -> 2X</reaction>
+        <reaction spec="Reaction" rate="@mu" >X -> Mu</reaction>
+        <reaction spec="Reaction" rate="@psi" >X -> Psi</reaction>
+        <reaction spec="Reaction" rate="@omega" >X -> Omega</reaction>
+
+      </trajectory>
+    </simulate>
+
+    <logger fileName="$(loggerTreeFile)" mode="tree">
+      <log spec="TypedTreeLogger" tree="@tree" />
+    </logger>
+
+    <logger fileName="$(loggerLogFile)" >
+      <log idref="lambda1" />
+      <log idref="lambda2" />
+      <log idref="mu" />
+      <log idref="psi" />
+      <log idref="omega" />
+      <log idref="trajectory" />
+    </logger>
+  </run>
+</beast>

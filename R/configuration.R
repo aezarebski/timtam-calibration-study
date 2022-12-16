@@ -92,23 +92,25 @@ config_b$mcmc_timeout_seconds <- 60
 config_c <- list(
   description = c(
     "Configuration C",
-    "Constant rates.",
+    "Boom-bust style R0.",
     "R-naught parameterisation",
     "Assumes only unscheduled sequence data"
   ),
   cri_coverage = 0.89,
   num_sims = 6,
   param = list(
-    r0 = \() runif(n = 1, min = 1.1, max = 1.5),
+    r01 = \() runif(n = 1, min = 1.1, max = 1.5),
+    r02 = \() runif(n = 1, min = 0.5, max = 1.0),
     sigma = \() 0.2,
-    duration = \() 80.0,
-    seq_len = \() 1e3,
-    seq_rate = \() 1e-3,
-    removal_weights = c(4, 4, NA) # for use as an argument to rdirichlet
+    duration = \() 100.0,
+    changeTime = \() 50.0,
+    seq_len = \() 1e4,
+    seq_rate = \() 1e-2,
+    removal_weights = c(4, 1, NA) # for use as an argument to rdirichlet
   ),
   files = list(
     simulation = list(
-      remaster_xml = "beast/remaster-a.xml",
+      remaster_xml = "beast/remaster-c.xml",
       logfile = \(n) sprintf("out/configuration-c/simulation-%d.log", n),
       treefile = \(n) sprintf("out/configuration-c/simulation-%d.tree", n),
       fastafile = \(n) sprintf("out/configuration-c/simulation-%d.fasta", n)
