@@ -104,8 +104,8 @@ config_c <- list(
     sigma = \() 0.2,
     duration = \() 100.0,
     changeTime = \() 50.0,
-    seq_len = \() 1e4,
-    seq_rate = \() 1e-2,
+    seq_len = \() 1e3,
+    seq_rate = \() 1e-3,
     removal_weights = c(4, 1, NA) # for use as an argument to rdirichlet
   ),
   files = list(
