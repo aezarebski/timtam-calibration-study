@@ -4,3 +4,5 @@
 - [ ] Create figures and table summarising the results.
 - [ ] Scale this up to generate examples with ESS>=200.
 - [ ] Make an example with only unscheduled data.
+  - [ ] Make a version which analyses it with BDSKY
+  - [ ] Work out a way to set a suitable starting tree which sometimes fixes the exploding R0 problem
