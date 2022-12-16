@@ -3,3 +3,10 @@
 This project carries out a calibration study on the =timtam= package for BEAST2.
 Look at the code in =demo-b.R= for an example of how to use the code in this
 project.
+
+- Configuration A :: An example with constant rates making use of unscheduled
+  sequence data and a time series of unsequenced data.
+- Configuration B :: Is a smaller example based on *Configuration A* designed
+  for testing purposes of the pipeline.
+- Configuration C :: An example only using sequenced data for comparison with
+  BDSKY.
