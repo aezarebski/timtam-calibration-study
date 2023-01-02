@@ -4,7 +4,7 @@
   <!-- <param id="omega" spec="RealParameter" value="$(omega)"/> -->
   <param id="maxTime" spec="RealParameter" value="10"/>
 
-  <run spec="Simulator" nSims="1" >
+  <run spec="Simulator" nSims="100" >
 
     <simulate id="tree" spec="SimulatedTree" >
       <trajectory id="trajectory"
@@ -15,13 +15,11 @@
 
         <population id="X" spec="RealParameter" value="1" />
         <samplePopulation id="Psi" spec="RealParameter" value="0" />
-        <!-- <population id="Omega" spec="RealParameter" value="0" /> -->
         <population id="Mu" spec="RealParameter" value="0" />
 
         <reaction spec="Reaction" rate="8 3" changeTimes="1">X -> 2X</reaction>
         <reaction spec="Reaction" rate="3" >X -> Mu</reaction>
         <reaction spec="Reaction" rate="1" >X -> Psi</reaction>
-        <!-- <reaction spec="Reaction" rate="@omega" >X -> Omega</reaction> -->
 
       </trajectory>
     </simulate>
