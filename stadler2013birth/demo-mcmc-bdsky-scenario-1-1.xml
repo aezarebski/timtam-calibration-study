@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.base.evolution.alignment:beast.pkgmgmt:beast.base.core:beast.base.inference:beast.base.evolution.tree.coalescent:beast.pkgmgmt:beast.base.core:beast.base.inference.util:beast.evolution.nuc:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood" required="BEAST.base v2.7.3:BDSKY v1.5.0" version="2.7">
+
+    <data
+id="demo-sequences-scenario-1-sample-1"
+spec="Alignment"
+name="alignment">
+        <sequence id="seq_leaf_0_4.510079" spec="Sequence" taxon="leaf_0_4.510079" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_10_3.391325" spec="Sequence" taxon="leaf_10_3.391325" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_11_3.354945" spec="Sequence" taxon="leaf_11_3.354945" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_12_3.213453" spec="Sequence" taxon="leaf_12_3.213453" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_13_3.048228" spec="Sequence" taxon="leaf_13_3.048228" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_14_2.857569" spec="Sequence" taxon="leaf_14_2.857569" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_15_2.802858" spec="Sequence" taxon="leaf_15_2.802858" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_16_2.732614" spec="Sequence" taxon="leaf_16_2.732614" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_17_2.712602" spec="Sequence" taxon="leaf_17_2.712602" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_18_2.689840" spec="Sequence" taxon="leaf_18_2.689840" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_19_2.686516" spec="Sequence" taxon="leaf_19_2.686516" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_1_4.478391" spec="Sequence" taxon="leaf_1_4.478391" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_20_2.647906" spec="Sequence" taxon="leaf_20_2.647906" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_21_2.622374" spec="Sequence" taxon="leaf_21_2.622374" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_22_2.618262" spec="Sequence" taxon="leaf_22_2.618262" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_23_2.580031" spec="Sequence" taxon="leaf_23_2.580031" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_24_2.508482" spec="Sequence" taxon="leaf_24_2.508482" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_25_2.482106" spec="Sequence" taxon="leaf_25_2.482106" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_26_2.471960" spec="Sequence" taxon="leaf_26_2.471960" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_27_2.458238" spec="Sequence" taxon="leaf_27_2.458238" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_28_2.363455" spec="Sequence" taxon="leaf_28_2.363455" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_29_2.329115" spec="Sequence" taxon="leaf_29_2.329115" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_2_4.361903" spec="Sequence" taxon="leaf_2_4.361903" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_30_2.300180" spec="Sequence" taxon="leaf_30_2.300180" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_31_2.270904" spec="Sequence" taxon="leaf_31_2.270904" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_32_2.142419" spec="Sequence" taxon="leaf_32_2.142419" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_33_2.132834" spec="Sequence" taxon="leaf_33_2.132834" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_34_2.128239" spec="Sequence" taxon="leaf_34_2.128239" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_35_2.122072" spec="Sequence" taxon="leaf_35_2.122072" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_36_2.065327" spec="Sequence" taxon="leaf_36_2.065327" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_37_2.042239" spec="Sequence" taxon="leaf_37_2.042239" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_38_2.007254" spec="Sequence" taxon="leaf_38_2.007254" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_39_1.992954" spec="Sequence" taxon="leaf_39_1.992954" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_3_4.064862" spec="Sequence" taxon="leaf_3_4.064862" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_40_1.849773" spec="Sequence" taxon="leaf_40_1.849773" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_41_1.788735" spec="Sequence" taxon="leaf_41_1.788735" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_42_1.708649" spec="Sequence" taxon="leaf_42_1.708649" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_43_1.637651" spec="Sequence" taxon="leaf_43_1.637651" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_44_1.629116" spec="Sequence" taxon="leaf_44_1.629116" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_45_1.599812" spec="Sequence" taxon="leaf_45_1.599812" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_46_1.598881" spec="Sequence" taxon="leaf_46_1.598881" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_47_1.563412" spec="Sequence" taxon="leaf_47_1.563412" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_48_1.459193" spec="Sequence" taxon="leaf_48_1.459193" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_49_1.429769" spec="Sequence" taxon="leaf_49_1.429769" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_4_4.047230" spec="Sequence" taxon="leaf_4_4.047230" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_50_1.428171" spec="Sequence" taxon="leaf_50_1.428171" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_51_1.419403" spec="Sequence" taxon="leaf_51_1.419403" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_52_1.403104" spec="Sequence" taxon="leaf_52_1.403104" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_53_1.331166" spec="Sequence" taxon="leaf_53_1.331166" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_54_1.305379" spec="Sequence" taxon="leaf_54_1.305379" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_55_1.294719" spec="Sequence" taxon="leaf_55_1.294719" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_56_1.251927" spec="Sequence" taxon="leaf_56_1.251927" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_57_1.240202" spec="Sequence" taxon="leaf_57_1.240202" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_58_1.231152" spec="Sequence" taxon="leaf_58_1.231152" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_59_1.222369" spec="Sequence" taxon="leaf_59_1.222369" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_5_3.873657" spec="Sequence" taxon="leaf_5_3.873657" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_60_1.221660" spec="Sequence" taxon="leaf_60_1.221660" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_61_1.204985" spec="Sequence" taxon="leaf_61_1.204985" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_62_1.184643" spec="Sequence" taxon="leaf_62_1.184643" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_63_1.180760" spec="Sequence" taxon="leaf_63_1.180760" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_64_1.161692" spec="Sequence" taxon="leaf_64_1.161692" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_65_1.130861" spec="Sequence" taxon="leaf_65_1.130861" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_66_1.112051" spec="Sequence" taxon="leaf_66_1.112051" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_67_1.111871" spec="Sequence" taxon="leaf_67_1.111871" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_68_1.084091" spec="Sequence" taxon="leaf_68_1.084091" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_69_1.059477" spec="Sequence" taxon="leaf_69_1.059477" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_6_3.823495" spec="Sequence" taxon="leaf_6_3.823495" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_70_1.041064" spec="Sequence" taxon="leaf_70_1.041064" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_71_1.031135" spec="Sequence" taxon="leaf_71_1.031135" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_72_1.023407" spec="Sequence" taxon="leaf_72_1.023407" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_73_1.018165" spec="Sequence" taxon="leaf_73_1.018165" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_74_1.017992" spec="Sequence" taxon="leaf_74_1.017992" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_75_0.997194" spec="Sequence" taxon="leaf_75_0.997194" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_76_0.986056" spec="Sequence" taxon="leaf_76_0.986056" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_77_0.973582" spec="Sequence" taxon="leaf_77_0.973582" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_78_0.973071" spec="Sequence" taxon="leaf_78_0.973071" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_79_0.961520" spec="Sequence" taxon="leaf_79_0.961520" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_7_3.501999" spec="Sequence" taxon="leaf_7_3.501999" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_80_0.945564" spec="Sequence" taxon="leaf_80_0.945564" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_81_0.902924" spec="Sequence" taxon="leaf_81_0.902924" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_82_0.891196" spec="Sequence" taxon="leaf_82_0.891196" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_83_0.884121" spec="Sequence" taxon="leaf_83_0.884121" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_84_0.836571" spec="Sequence" taxon="leaf_84_0.836571" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_85_0.810750" spec="Sequence" taxon="leaf_85_0.810750" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_86_0.746275" spec="Sequence" taxon="leaf_86_0.746275" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_87_0.734585" spec="Sequence" taxon="leaf_87_0.734585" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_88_0.734584" spec="Sequence" taxon="leaf_88_0.734584" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_89_0.682358" spec="Sequence" taxon="leaf_89_0.682358" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_8_3.478476" spec="Sequence" taxon="leaf_8_3.478476" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_90_0.654262" spec="Sequence" taxon="leaf_90_0.654262" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_91_0.617912" spec="Sequence" taxon="leaf_91_0.617912" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_92_0.615655" spec="Sequence" taxon="leaf_92_0.615655" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_93_0.599903" spec="Sequence" taxon="leaf_93_0.599903" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_94_0.596799" spec="Sequence" taxon="leaf_94_0.596799" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_95_0.488963" spec="Sequence" taxon="leaf_95_0.488963" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_96_0.462008" spec="Sequence" taxon="leaf_96_0.462008" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_97_0.406903" spec="Sequence" taxon="leaf_97_0.406903" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_98_0.232756" spec="Sequence" taxon="leaf_98_0.232756" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_99_0.051886" spec="Sequence" taxon="leaf_99_0.051886" totalcount="4" value="g"/>
+        <sequence id="seq_leaf_9_3.453911" spec="Sequence" taxon="leaf_9_3.453911" totalcount="4" value="g"/>
+    </data>
+
+    <map name="Uniform" >beast.base.inference.distribution.Uniform</map>
+
+    <map name="Exponential" >beast.base.inference.distribution.Exponential</map>
+
+    <map name="LogNormal" >beast.base.inference.distribution.LogNormalDistributionModel</map>
+
+    <map name="Normal" >beast.base.inference.distribution.Normal</map>
+
+    <map name="Beta" >beast.base.inference.distribution.Beta</map>
+
+    <map name="Gamma" >beast.base.inference.distribution.Gamma</map>
+
+    <map name="LaplaceDistribution" >beast.base.inference.distribution.LaplaceDistribution</map>
+
+    <map name="prior" >beast.base.inference.distribution.Prior</map>
+
+    <map name="InverseGamma" >beast.base.inference.distribution.InverseGamma</map>
+
+    <map name="OneOnX" >beast.base.inference.distribution.OneOnX</map>
+
+    <run id="mcmc" spec="MCMC" chainLength="10000000">
+        <state id="state" spec="State" storeEvery="5000">
+            <tree id="Tree.t:demo-sequences-scenario-1-sample-1" spec="beast.base.evolution.tree.Tree" name="stateNode">
+                <trait id="dateTrait.t:demo-sequences-scenario-1-sample-1" spec="beast.base.evolution.tree.TraitSet" traitname="date" value="leaf_0_4.510079=4.510079,leaf_1_4.478391=4.478391,leaf_2_4.361903=4.361903,leaf_3_4.064862=4.064862,leaf_4_4.047230=4.047230,leaf_5_3.873657=3.873657,leaf_6_3.823495=3.823495,leaf_7_3.501999=3.501999,leaf_8_3.478476=3.478476,leaf_9_3.453911=3.453911,leaf_10_3.391325=3.391325,leaf_11_3.354945=3.354945,leaf_12_3.213453=3.213453,leaf_13_3.048228=3.048228,leaf_14_2.857569=2.857569,leaf_15_2.802858=2.802858,leaf_16_2.732614=2.732614,leaf_17_2.712602=2.712602,leaf_18_2.689840=2.689840,leaf_19_2.686516=2.686516,leaf_20_2.647906=2.647906,leaf_21_2.622374=2.622374,leaf_22_2.618262=2.618262,leaf_23_2.580031=2.580031,leaf_24_2.508482=2.508482,leaf_25_2.482106=2.482106,leaf_26_2.471960=2.471960,leaf_27_2.458238=2.458238,leaf_28_2.363455=2.363455,leaf_29_2.329115=2.329115,leaf_30_2.300180=2.300180,leaf_31_2.270904=2.270904,leaf_32_2.142419=2.142419,leaf_33_2.132834=2.132834,leaf_34_2.128239=2.128239,leaf_35_2.122072=2.122072,leaf_36_2.065327=2.065327,leaf_37_2.042239=2.042239,leaf_38_2.007254=2.007254,leaf_39_1.992954=1.992954,leaf_40_1.849773=1.849773,leaf_41_1.788735=1.788735,leaf_42_1.708649=1.708649,leaf_43_1.637651=1.637651,leaf_44_1.629116=1.629116,leaf_45_1.599812=1.599812,leaf_46_1.598881=1.598881,leaf_47_1.563412=1.563412,leaf_48_1.459193=1.459193,leaf_49_1.429769=1.429769,leaf_50_1.428171=1.428171,leaf_51_1.419403=1.419403,leaf_52_1.403104=1.403104,leaf_53_1.331166=1.331166,leaf_54_1.305379=1.305379,leaf_55_1.294719=1.294719,leaf_56_1.251927=1.251927,leaf_57_1.240202=1.240202,leaf_58_1.231152=1.231152,leaf_59_1.222369=1.222369,leaf_60_1.221660=1.221660,leaf_61_1.204985=1.204985,leaf_62_1.184643=1.184643,leaf_63_1.180760=1.180760,leaf_64_1.161692=1.161692,leaf_65_1.130861=1.130861,leaf_66_1.112051=1.112051,leaf_67_1.111871=1.111871,leaf_68_1.084091=1.084091,leaf_69_1.059477=1.059477,leaf_70_1.041064=1.041064,leaf_71_1.031135=1.031135,leaf_72_1.023407=1.023407,leaf_73_1.018165=1.018165,leaf_74_1.017992=1.017992,leaf_75_0.997194=0.997194,leaf_76_0.986056=0.986056,leaf_77_0.973582=0.973582,leaf_78_0.973071=0.973071,leaf_79_0.961520=0.961520,leaf_80_0.945564=0.945564,leaf_81_0.902924=0.902924,leaf_82_0.891196=0.891196,leaf_83_0.884121=0.884121,leaf_84_0.836571=0.836571,leaf_85_0.810750=0.810750,leaf_86_0.746275=0.746275,leaf_87_0.734585=0.734585,leaf_88_0.734584=0.734584,leaf_89_0.682358=0.682358,leaf_90_0.654262=0.654262,leaf_91_0.617912=0.617912,leaf_92_0.615655=0.615655,leaf_93_0.599903=0.599903,leaf_94_0.596799=0.596799,leaf_95_0.488963=0.488963,leaf_96_0.462008=0.462008,leaf_97_0.406903=0.406903,leaf_98_0.232756=0.232756,leaf_99_0.051886=0.051886">
+                    <taxa id="TaxonSet.demo-sequences-scenario-1-sample-1" spec="TaxonSet">
+                        <alignment idref="demo-sequences-scenario-1-sample-1"/>
+                    </taxa>
+                </trait>
+                <taxonset idref="TaxonSet.demo-sequences-scenario-1-sample-1"/>
+            </tree>
+            <parameter id="clockRate.c:demo-sequences-scenario-1-sample-1" spec="parameter.RealParameter" lower="0.0" name="stateNode">1.0</parameter>
+            <parameter id="becomeUninfectiousRate_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="Infinity">1.0</parameter>
+            <parameter id="reproductiveNumber_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" spec="parameter.RealParameter" dimension="10" lower="0.0" name="stateNode" upper="Infinity">2.0</parameter>
+            <parameter id="samplingProportion_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="1.0">0.01</parameter>
+        </state>
+        <init id="RandomTree.t:demo-sequences-scenario-1-sample-1" spec="RandomTree" estimate="false" initial="@Tree.t:demo-sequences-scenario-1-sample-1" taxa="@demo-sequences-scenario-1-sample-1">
+            <populationModel id="ConstantPopulation0.t:demo-sequences-scenario-1-sample-1" spec="ConstantPopulation">
+                <parameter id="randomPopSize.t:demo-sequences-scenario-1-sample-1" spec="parameter.RealParameter" name="popSize">1.0</parameter>
+            </populationModel>
+        </init>
+        <distribution id="posterior" spec="CompoundDistribution">
+            <distribution id="prior" spec="CompoundDistribution">
+                <distribution id="BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" spec="bdsky.evolution.speciation.BirthDeathSkylineModel" becomeUninfectiousRate="@becomeUninfectiousRate_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" reproductiveNumber="@reproductiveNumber_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" samplingProportion="@samplingProportion_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" tree="@Tree.t:demo-sequences-scenario-1-sample-1">
+                    <parameter id="origin_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" spec="parameter.RealParameter" estimate="false" lower="0.0" name="origin" upper="Infinity">4.51</parameter>
+                </distribution>
+                <prior id="becomeUninfectiousRatePrior_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" name="distribution" x="@becomeUninfectiousRate_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1">
+                    <Gamma id="Gamma.0" name="distr">
+                        <parameter id="RealParameter.9" spec="parameter.RealParameter" estimate="false" name="alpha">4.0</parameter>
+                        <parameter id="RealParameter.10" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
+                    </Gamma>
+                </prior>
+                <prior id="ClockPrior.c:demo-sequences-scenario-1-sample-1" name="distribution" x="@clockRate.c:demo-sequences-scenario-1-sample-1">
+                    <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
+                </prior>
+                <prior id="reproductiveNumberPrior_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" name="distribution" x="@reproductiveNumber_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1">
+                    <Gamma id="Gamma.1" name="distr">
+                        <parameter id="RealParameter.11" spec="parameter.RealParameter" estimate="false" name="alpha">1.5</parameter>
+                        <parameter id="RealParameter.12" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
+                    </Gamma>
+                </prior>
+                <prior id="samplingProportionPrior_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" name="distribution" x="@samplingProportion_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1">
+                    <Beta id="Beta.1" name="distr">
+                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="alpha">2.0</parameter>
+                        <parameter id="RealParameter.8" spec="parameter.RealParameter" estimate="false" name="beta">6.0</parameter>
+                    </Beta>
+                </prior>
+            </distribution>
+            <distribution id="likelihood" spec="CompoundDistribution" useThreads="true">
+                <distribution id="treeLikelihood.demo-sequences-scenario-1-sample-1" spec="ThreadedTreeLikelihood" data="@demo-sequences-scenario-1-sample-1" tree="@Tree.t:demo-sequences-scenario-1-sample-1">
+                    <siteModel id="SiteModel.s:demo-sequences-scenario-1-sample-1" spec="SiteModel">
+                        <parameter id="mutationRate.s:demo-sequences-scenario-1-sample-1" spec="parameter.RealParameter" estimate="false" lower="0.0" name="mutationRate">1.0</parameter>
+                        <parameter id="gammaShape.s:demo-sequences-scenario-1-sample-1" spec="parameter.RealParameter" estimate="false" lower="0.1" name="shape">1.0</parameter>
+                        <parameter id="proportionInvariant.s:demo-sequences-scenario-1-sample-1" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                        <substModel id="JC69.s:demo-sequences-scenario-1-sample-1" spec="JukesCantor"/>
+                    </siteModel>
+                    <branchRateModel id="StrictClock.c:demo-sequences-scenario-1-sample-1" spec="beast.base.evolution.branchratemodel.StrictClockModel" clock.rate="@clockRate.c:demo-sequences-scenario-1-sample-1"/>
+                </distribution>
+            </distribution>
+        </distribution>
+        <operator id="StrictClockRateScaler.c:demo-sequences-scenario-1-sample-1" spec="AdaptableOperatorSampler" weight="1.5">
+            <parameter idref="clockRate.c:demo-sequences-scenario-1-sample-1"/>
+            <operator id="AVMNOperator.demo-sequences-scenario-1-sample-1" spec="kernel.AdaptableVarianceMultivariateNormalOperator" allowNonsense="true" beta="0.05" burnin="400" initial="800" weight="0.1">
+                <transformations id="AVMNSumTransform.demo-sequences-scenario-1-sample-1" spec="operator.kernel.Transform$LogConstrainedSumTransform"/>
+                <transformations id="AVMNLogTransform.demo-sequences-scenario-1-sample-1" spec="operator.kernel.Transform$LogTransform">
+                    <f idref="clockRate.c:demo-sequences-scenario-1-sample-1"/>
+                </transformations>
+                <transformations id="AVMNNoTransform.demo-sequences-scenario-1-sample-1" spec="operator.kernel.Transform$NoTransform">
+                    <f idref="Tree.t:demo-sequences-scenario-1-sample-1"/>
+                </transformations>
+            </operator>
+            <operator id="StrictClockRateScalerX.c:demo-sequences-scenario-1-sample-1" spec="kernel.BactrianScaleOperator" parameter="@clockRate.c:demo-sequences-scenario-1-sample-1" upper="10.0" weight="3.0"/>
+        </operator>
+        <operator id="strictClockUpDownOperator.c:demo-sequences-scenario-1-sample-1" spec="AdaptableOperatorSampler" weight="1.5">
+            <parameter idref="clockRate.c:demo-sequences-scenario-1-sample-1"/>
+            <tree idref="Tree.t:demo-sequences-scenario-1-sample-1"/>
+            <operator idref="AVMNOperator.demo-sequences-scenario-1-sample-1"/>
+            <operator id="strictClockUpDownOperatorX.c:demo-sequences-scenario-1-sample-1" spec="operator.kernel.BactrianUpDownOperator" scaleFactor="0.75" weight="3.0">
+                <up idref="clockRate.c:demo-sequences-scenario-1-sample-1"/>
+                <down idref="Tree.t:demo-sequences-scenario-1-sample-1"/>
+            </operator>
+        </operator>
+        <operator id="BDSKY_SerialBICEPSEpochTop.t:demo-sequences-scenario-1-sample-1" spec="EpochFlexOperator" scaleFactor="0.1" tree="@Tree.t:demo-sequences-scenario-1-sample-1" weight="2.0"/>
+        <operator id="BDSKY_SerialBICEPSEpochAll.t:demo-sequences-scenario-1-sample-1" spec="EpochFlexOperator" fromOldestTipOnly="false" scaleFactor="0.1" tree="@Tree.t:demo-sequences-scenario-1-sample-1" weight="2.0"/>
+        <operator id="BDSKY_SerialBICEPSTreeFlex.t:demo-sequences-scenario-1-sample-1" spec="TreeStretchOperator" scaleFactor="0.01" tree="@Tree.t:demo-sequences-scenario-1-sample-1" weight="2.0"/>
+        <operator id="BDSKY_SerialTreeRootScaler.t:demo-sequences-scenario-1-sample-1" spec="kernel.BactrianScaleOperator" rootOnly="true" scaleFactor="0.1" tree="@Tree.t:demo-sequences-scenario-1-sample-1" upper="10.0" weight="3.0"/>
+        <operator id="BDSKY_SerialUniformOperator.t:demo-sequences-scenario-1-sample-1" spec="kernel.BactrianNodeOperator" tree="@Tree.t:demo-sequences-scenario-1-sample-1" weight="30.0"/>
+        <operator id="BDSKY_SerialSubtreeSlide.t:demo-sequences-scenario-1-sample-1" spec="kernel.BactrianSubtreeSlide" tree="@Tree.t:demo-sequences-scenario-1-sample-1" weight="15.0"/>
+        <operator id="BDSKY_SerialNarrow.t:demo-sequences-scenario-1-sample-1" spec="Exchange" tree="@Tree.t:demo-sequences-scenario-1-sample-1" weight="15.0"/>
+        <operator id="BDSKY_SerialWide.t:demo-sequences-scenario-1-sample-1" spec="Exchange" isNarrow="false" tree="@Tree.t:demo-sequences-scenario-1-sample-1" weight="3.0"/>
+        <operator id="BDSKY_SerialWilsonBalding.t:demo-sequences-scenario-1-sample-1" spec="WilsonBalding" tree="@Tree.t:demo-sequences-scenario-1-sample-1" weight="3.0"/>
+        <operator id="becomeUninfectiousRateScaler_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" spec="ScaleOperator" parameter="@becomeUninfectiousRate_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" weight="2.0"/>
+        <operator id="reproductiveNumberScaler_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" spec="ScaleOperator" parameter="@reproductiveNumber_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" weight="10.0"/>
+        <operator id="samplingProportionScaler_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" spec="ScaleOperator" parameter="@samplingProportion_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" weight="10.0"/>
+        <operator id="updownBD_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1" spec="operator.UpDownOperator" scaleFactor="0.75" weight="2.0">
+            <up idref="reproductiveNumber_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1"/>
+            <down idref="becomeUninfectiousRate_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1"/>
+        </operator>
+        <logger id="tracelog" spec="Logger" fileName="$(filebase).log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
+            <log idref="posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+            <log idref="treeLikelihood.demo-sequences-scenario-1-sample-1"/>
+            <log id="TreeHeight.t:demo-sequences-scenario-1-sample-1" spec="beast.base.evolution.tree.TreeStatLogger" tree="@Tree.t:demo-sequences-scenario-1-sample-1"/>
+            <log idref="clockRate.c:demo-sequences-scenario-1-sample-1"/>
+            <log idref="BDSKY_Serial.t:demo-sequences-scenario-1-sample-1"/>
+            <log idref="becomeUninfectiousRate_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1"/>
+            <log idref="reproductiveNumber_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1"/>
+            <log idref="samplingProportion_BDSKY_Serial.t:demo-sequences-scenario-1-sample-1"/>
+        </logger>
+        <logger id="screenlog" spec="Logger" logEvery="1000">
+            <log idref="posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+        </logger>
+        <logger id="treelog.t:demo-sequences-scenario-1-sample-1" spec="Logger" fileName="$(filebase)-$(tree).trees" logEvery="1000" mode="tree">
+            <log id="TreeWithMetaDataLogger.t:demo-sequences-scenario-1-sample-1" spec="beast.base.evolution.TreeWithMetaDataLogger" tree="@Tree.t:demo-sequences-scenario-1-sample-1"/>
+        </logger>
+        <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
+    </run>
+
+</beast>
