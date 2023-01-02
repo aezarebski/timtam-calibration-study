@@ -1,0 +1,28 @@
+
+#+begin_src bibtex
+@article{stadler2013birth,
+  author =       {Stadler, Tanja and K{\"u}hnert, Denise and Bonhoeffer,
+                  Sebastian and Drummond, Alexei J.},
+  title =        {{B}irth-death skyline plot reveals temporal changes of
+                  epidemic spread in {HIV} and hepatitis {C} virus ({HCV})},
+  volume =       110,
+  number =       1,
+  pages =        {228--233},
+  year =         2013,
+  doi =          {10.1073/pnas.1207965110},
+  publisher =    {National Academy of Sciences},
+  journal =      {Proceedings of the National Academy of Sciences}
+}
+#+end_src
+
+* Simulation study
+
+** Scenario 1
+
+- Change point at time \(t_1=1\)
+- \(\lambda_1 = 8\)
+- \(\lambda_2 = 3\)
+- \(\mu = 3\)
+- \(\psi = 1\)
+- \(T\) is the tree
+- \(x_1\) is the origin time
