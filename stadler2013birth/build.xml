@@ -2,6 +2,9 @@
 <project name="stadler2013birth" basedir=".">
 
     <description>
+
+      0. setuplib
+      1. scenario-1
     </description>
 
     <path id="classpath">

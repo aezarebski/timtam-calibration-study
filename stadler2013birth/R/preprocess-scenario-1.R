@@ -17,21 +17,32 @@ make_record <- function(x) {
     as.data.frame()
 }
 
-## TODO Fix this so that it can generate the simulation data for each sample
-## properly.
+process_log_line <- function(l) {
+  vs <- l |>
+    str_split("\t") |>
+    unlist()
 
-sim_data <- "remaster-scenario-1.log" |>
-  readLines() |>
-  pluck(2) |>
-  str_split("\t") |>
-  unlist() |>
-  pluck(2) |>
-  str_split(";") |>
-  unlist() |>
-  str_replace_all("(t|Psi|X|Mu)=", "") |>
-  str_split(":") |>
-  map(make_record) |>
-  bind_rows()
+  result <- vs[2] |>
+    str_split(";") |>
+    unlist() |>
+    str_replace_all("(t|Psi|X|Mu)=", "") |>
+    str_split(":") |>
+    map(make_record) |>
+    bind_rows() |>
+    mutate(sample = vs[1])
+
+  return(result)
+}
+
+sim_log_lines <- tail(readLines("remaster-scenario-1.log"), -1)
+sim_dfs <- sim_log_lines |> map(process_log_line) |> bind_rows()
+
+write.table(x = sim_dfs,
+            file = "trajectories-scenario-1.csv",
+            sep = ",",
+            row.names = FALSE)
+
+stop()
 
 ## TODO Fix this so it will extract the trees and write the results to a
 ## sensible output file.
