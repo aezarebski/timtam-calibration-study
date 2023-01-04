@@ -33,7 +33,7 @@
 
     <target name="scenario-1"
             description="Run the Scenario 1 simulation."
-            depends="scenario-1-remaster,scenario-1-preprocess" />
+            depends="scenario-1-remaster,scenario-1-preprocess,scenario-1-mcmc,scenario-1-postprocess" />
 
     <target name="scenario-1-remaster">
         <exec executable="sh">
@@ -50,6 +50,18 @@
         </exec>
         <exec executable="Rscript">
             <arg path="R/preprocess-scenario-1-part-b.R" />
+        </exec>
+    </target>
+
+    <target name="scenario-1-mcmc">
+        <exec executable="bash" >
+            <arg path="run-mcmc.sh"/>
+        </exec>
+    </target>
+
+    <target name="scenario-1-postprocess">
+        <exec executable="Rscript">
+            <arg path="R/postprocess-scenario-1.R" />
         </exec>
     </target>
 

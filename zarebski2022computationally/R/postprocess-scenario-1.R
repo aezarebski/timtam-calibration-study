@@ -13,7 +13,7 @@ set.seed(1)
 ix <- 1
 
 read_mcmc <- function(ix) {
-  str_interp("timtam-scenario-1-sample-$[03d]{ix}.log") |>
+  str_interp("out/s1/timtam-scenario-1-sample-$[03d]{ix}.log") |>
     read.table(comment.char = "#", header = T) |>
     select(-Sample) |>
     as.mcmc()
@@ -64,7 +64,7 @@ summary_gg <- function(plot_df, true_value, name) {
 
 ## =============================================================================
 
-summary_list <- map(seq.int(10), \(x) make_summary(read_mcmc(x), x))
+summary_list <- map(seq.int(15), \(x) make_summary(read_mcmc(x), x))
 
 comb_est_df <- summary_list |>
   map(\(x) x$summary) |>

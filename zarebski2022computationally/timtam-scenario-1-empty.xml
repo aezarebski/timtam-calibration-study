@@ -74,7 +74,7 @@
                 </prior>
                 <prior id="TTSamplingRatePrior.t" name="distribution" x="@TTSamplingRate.t">
                     <LogNormal id="LogNormalDistributionModel.1" name="distr">
-                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="M">3.0</parameter>
+                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="M">-2.0</parameter>
                         <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="S">1.0</parameter>
                     </LogNormal>
                 </prior>
@@ -100,7 +100,7 @@
         <operator id="TTOmegaRateScaler.t" spec="ScaleOperator" parameter="@TTOmegaRate.t" scaleFactor="0.9" weight="1.0" />
         <operator id="TTOmegaRateWalk.t" spec="operator.RealRandomWalkOperator" parameter="@TTOmegaRate.t" weight="1.0" windowSize="0.01" />
 
-        <logger id="tracelog" spec="Logger" fileName="$(filebase).log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <logger id="tracelog" spec="Logger" fileName="out/s1/$(filebase).log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior" />
             <log idref="TTBirthRate.t" />
             <log idref="TTSamplingRate.t" />
@@ -110,7 +110,7 @@
         <logger id="screenlog" spec="Logger" logEvery="1000">
             <log idref="posterior" />
         </logger>
-        <operatorschedule id="OperatorSchedule" spec="OperatorSchedule" autoOptimize="true" />
+        <operatorschedule id="OperatorSchedule" spec="OperatorSchedule" autoOptimize="false" />
     </run>
 
 </beast>
