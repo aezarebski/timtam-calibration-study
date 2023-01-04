@@ -64,7 +64,13 @@ summary_gg <- function(plot_df, true_value, name) {
 
 ## =============================================================================
 
-summary_list <- map(seq.int(15), \(x) make_summary(read_mcmc(x), x))
+remaster_node <- "remaster-scenario-1.xml" |> read_xml()
+num_replicates <- remaster_node |>
+  xml_find_first("//run") |>
+  xml_attr("nSims") |>
+  as.integer()
+
+summary_list <- map(seq.int(num_replicates), \(x) make_summary(read_mcmc(x), x))
 
 comb_est_df <- summary_list |>
   map(\(x) x$summary) |>

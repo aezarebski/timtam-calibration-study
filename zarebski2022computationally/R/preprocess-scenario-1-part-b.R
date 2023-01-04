@@ -40,7 +40,13 @@ make_timtam <- function(recon_tree_file, occurrence_txt_file, fasta_file, output
   return(timtam)
 }
 
-for (ix in seq.int(15)) {
+remaster_node <- "remaster-scenario-1.xml" |> read_xml()
+num_replicates <- remaster_node |>
+  xml_find_first("//run") |>
+  xml_attr("nSims") |>
+  as.integer()
+
+for (ix in seq.int(num_replicates)) {
   recon_tree_file <- str_interp("out/s1/reconstruction-scenario-1-sample-$[03d]{ix}.tree")
   occurrence_txt_file <- str_interp("out/s1/occurrence-times-scenario-1-sample-$[03d]{ix}.ssv")
   fasta_file <- str_interp("out/s1/sequences-scenario-1-sample-$[03d]{ix}.fasta")

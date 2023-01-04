@@ -90,13 +90,19 @@ recon_trees <- "out/s1/remaster-scenario-1.tree" |>
   str_replace("tree STATE_[0-9]+ = ", "") |>
   read.tree(text = _)
 
+remaster_node <- "remaster-scenario-1.xml" |> read_xml()
+sim_duration <- remaster_node |>
+  xml_find_first("//trajectory") |>
+  xml_attr("maxTime") |>
+  as.numeric()
+
 for (ix in seq.int(num_samples)) {
   sim_data <- filter(sim_dfs, sample == as.character(ix - 1))
   tmp <- annotated_tree_and_seqs(recon_trees[[ix]], sim_data)
 
   omega_mask <- c(0, diff(sim_data$Omega)) == 1
   omega_str <- paste0(
-    as.character(35 - sim_data[omega_mask, ]$t),
+    as.character(sim_duration - sim_data[omega_mask, ]$t),
     collapse = " "
   )
   writeLines(

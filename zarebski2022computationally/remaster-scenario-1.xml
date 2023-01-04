@@ -1,12 +1,12 @@
 <beast version='2.0' namespace='beast.base.inference.parameter:beast.base.inference:remaster'>
 
-    <run spec="Simulator" nSims="15">
+    <run spec="Simulator" nSims="50">
 
         <simulate id="tree" spec="SimulatedTree">
             <trajectory id="trajectory"
                         spec="StochasticTrajectory"
-                        maxTime="35"
-                        mustHave="Psi>2">
+                        maxTime="42"
+                        mustHave="Psi>1">
 
                 <population id="X" spec="RealParameter" value="1" />
                 <samplePopulation id="Psi" spec="RealParameter" value="0" />
@@ -18,7 +18,7 @@
                 <reaction spec="Reaction" rate="0.046">X -> Mu</reaction>
                 <reaction spec="Reaction" rate="0.046">X -> Omega</reaction>
 
-                <reaction spec="PunctualReaction" p="0.5" times="35">X -> Psi</reaction>
+                <reaction spec="PunctualReaction" p="0.5" times="42">X -> Psi</reaction>
 
             </trajectory>
         </simulate>

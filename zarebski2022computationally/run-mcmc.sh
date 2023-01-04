@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-001.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-002.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-003.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-004.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-005.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-006.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-007.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-008.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-009.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-010.xml mcmc
 
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-011.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-012.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-013.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-014.xml mcmc
-ant -DbeastXML=out/s1/timtam-scenario-1-sample-015.xml mcmc
+chunk_size=10                   # the number of processes in each chunk
+limit=51                        # the total number of processes (plus one)
+ix=1                            # the number to start on
+
+outer_limit="$(($limit-$chunk_size))"
+while [ $ix -le $outer_limit ]
+do
+    pids=()
+    chunk_limit="$(($ix+$chunk_size))"
+    while [ $ix -lt $chunk_limit ]
+    do
+	      padded_num=$(printf "%03d" $ix) # because we want zero padded numbers
+        ant -DbeastXML=out/s1/timtam-scenario-1-sample-$padded_num.xml mcmc & pids+=($!)
+	      ((ix++))
+    done
+    wait "${pids[@]}"
+    echo "---"
+done

@@ -56,7 +56,7 @@
             <distribution id="prior" spec="CompoundDistribution">
                 <distribution id="TimTam.t" spec="timtam.TimTam" lambda="@TTBirthRate.t" rho="@TTRhoProb.t" psi="@TTSamplingRate.t" tree="@Tree.t" omega="@TTOmegaRate.t">
                     <parameter id="TTRecoveryRate.t" spec="parameter.RealParameter" estimate="false" name="mu">0.046</parameter>
-                    <parameter id="TTOriginTime.t" spec="parameter.RealParameter" estimate="false" name="originTime">35.0</parameter>
+                    <parameter id="TTOriginTime.t" spec="parameter.RealParameter" estimate="false" name="originTime">42.0</parameter>
                     <parameter id="CatastropheTime" spec="parameter.RealParameter" estimate="false" name="catastropheTimes">0.0</parameter>
                     <parameter id="OccurrenceTimes" spec="parameter.RealParameter" estimate="false" name="occurrenceTimes"></parameter>
                 </distribution>
@@ -74,7 +74,7 @@
                 </prior>
                 <prior id="TTSamplingRatePrior.t" name="distribution" x="@TTSamplingRate.t">
                     <LogNormal id="LogNormalDistributionModel.1" name="distr">
-                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="M">-2.0</parameter>
+                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="M">-3.0</parameter>
                         <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="S">1.0</parameter>
                     </LogNormal>
                 </prior>
