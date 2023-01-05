@@ -31,10 +31,22 @@
 
 ** Scenario 2
 
-| Parameter   | Description             | Value |
-|-------------+-------------------------+-------|
-| \(\lambda\) | Birth rate              | 0.185 |
-| \(\mu\)     | Death rate              | 0.046 |
-| \(\psi\)    | Sampling rate           | 0.008 |
-| \(\omega\)  | Occurrence rate         | 0.046 |
-|             | Duration                |    42 |
+| Parameter   | Description     | Value |
+|-------------+-----------------+-------|
+| \(\lambda\) | Birth rate      | 0.185 |
+| \(\mu\)     | Death rate      | 0.046 |
+| \(\psi\)    | Sampling rate   | 0.008 |
+| \(\omega\)  | Occurrence rate | 0.046 |
+|             | Duration        |    42 |
+
+** Scenario 3
+
+| Parameter     | Description            |  Value |
+|---------------+------------------------+--------|
+|               | Duration               |     56 |
+| \(\lambda_1\) | Birth rate 1           |  0.185 |
+| \(\lambda_2\) | Birth rate 2           | 0.0925 |
+|               | Birth rate change time |     42 |
+| \(\mu\)       | Death rate             |  0.046 |
+| \(\psi\)      | Sampling rate          |  0.008 |
+| \(\omega\)    | Occurrence rate        |  0.046 |

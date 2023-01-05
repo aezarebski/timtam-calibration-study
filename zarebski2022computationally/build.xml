@@ -109,6 +109,23 @@
         </exec>
     </target>
 
+    <target name="scenario-3" description="Run the Scenario 3 simulation." depends="scenario-3-directories,scenario-3-remaster" />
+
+    <target name="scenario-3-directories">
+        <mkdir dir="out" />
+        <mkdir dir="out/s3" />
+        <mkdir dir="out/s3/plots" />
+    </target>
+
+    <target name="scenario-3-remaster">
+        <exec executable="sh">
+            <arg path="lib/beast/bin/beast" />
+            <arg line="-seed 1" />
+            <arg line="-overwrite" />
+            <arg path="remaster-scenario-3.xml" />
+        </exec>
+    </target>
+
     <target name="setuplib" depends="setuplib2.7.3" description="Download required BEAST tools." />
     <target name="setuplib2.7.3" depends="get-beast2.7.3,get-tracer1.7.2" />
     <target name="setuplib2.7.1" depends="get-beast2.7.1,get-tracer1.7.2" />

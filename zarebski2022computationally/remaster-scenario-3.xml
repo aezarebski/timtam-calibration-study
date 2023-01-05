@@ -1,0 +1,35 @@
+<beast version='2.0' namespace='beast.base.inference.parameter:beast.base.inference:remaster'>
+
+    <run spec="Simulator" nSims="20">
+
+        <simulate id="tree" spec="SimulatedTree">
+            <trajectory id="trajectory"
+                        spec="StochasticTrajectory"
+                        maxTime="56"
+                        mustHave="Psi>1">
+
+                <population id="X" spec="RealParameter" value="1" />
+                <samplePopulation id="Psi" spec="RealParameter" value="0" />
+                <population id="Mu" spec="RealParameter" value="0" />
+                <population id="Omega" spec="RealParameter" value="0" />
+
+                <reaction spec="Reaction" rate="0.185 0.0925" changeTimes="42" >X -> 2X</reaction>
+                <reaction spec="Reaction" rate="0.008">X -> Psi</reaction>
+                <reaction spec="Reaction" rate="0.046">X -> Mu</reaction>
+                <reaction spec="Reaction" rate="0.046">X -> Omega</reaction>
+
+                <!-- We can force a single sample at the end of the simulation to simplify the analysis. -->
+                <reaction spec="PunctualReaction" n="1" times="56">X -> Psi</reaction>
+
+            </trajectory>
+        </simulate>
+
+        <logger fileName="out/s3/remaster-scenario-3.tree" mode="tree">
+            <log spec="TypedTreeLogger" tree="@tree" />
+        </logger>
+
+        <logger fileName="out/s3/remaster-scenario-3.log">
+            <log idref="trajectory" />
+        </logger>
+    </run>
+</beast>
