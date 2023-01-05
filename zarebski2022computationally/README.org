@@ -1,0 +1,52 @@
+
+#+begin_src bibtex
+@article{zarebski2022computationally,
+  doi =          {10.1371/journal.pcbi.1009805},
+  author =       {Zarebski, Alexander Eugene AND du Plessis, Louis AND Parag,
+                  Kris Varun AND Pybus, Oliver George},
+  journal =      {PLOS Computational Biology},
+  publisher =    {Public Library of Science},
+  title =        {{A} computationally tractable birth-death model that combines
+                  phylogenetic and epidemiological data},
+  year =         2022,
+  month =        02,
+  volume =       18,
+  pages =        {1--22},
+  number =       2
+}
+#+end_src
+
+* Simulation study
+
+** Scenario 1
+
+| Parameter   | Description             | Value |
+|-------------+-------------------------+-------|
+| \(\lambda\) | Birth rate              | 0.185 |
+| \(\mu\)     | Death rate              | 0.046 |
+| \(\psi\)    | Sampling rate           | 0.008 |
+| \(\omega\)  | Occurrence rate         | 0.046 |
+|             | Duration                |    42 |
+| \(\rho\)    | Catastrophe probability |   0.5 |
+
+** Scenario 2
+
+| Parameter   | Description     | Value |
+|-------------+-----------------+-------|
+| \(\lambda\) | Birth rate      | 0.185 |
+| \(\mu\)     | Death rate      | 0.046 |
+| \(\psi\)    | Sampling rate   | 0.008 |
+| \(\omega\)  | Occurrence rate | 0.046 |
+|             | Duration        |    42 |
+
+** Scenario 3
+
+| Parameter     | Description            |  Value |
+|---------------+------------------------+--------|
+|               | Duration               |     56 |
+| \(\lambda_1\) | Birth rate 1           |  0.185 |
+| \(\lambda_2\) | Birth rate 2           | 0.0925 |
+|               | Birth rate change time |     42 |
+| \(\mu\)       | Death rate             |  0.046 |
+| \(\psi\)      | Sampling rate          |  0.008 |
+| \(\omega\)    | Occurrence rate        |  0.046 |

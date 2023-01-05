@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beast beautitemplate='Standard' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.base.evolution.alignment:beast.pkgmgmt:beast.base.core:beast.base.inference:beast.base.evolution.tree.coalescent:beast.pkgmgmt:beast.base.core:beast.base.inference.util:beast.evolution.nuc:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood" required="BEAST.base v2.7.3:timtam v0.4.0" version="2.7">
+
+    <!--
+         Element ids that need data to be filled in:
+
+         - sequences
+         - dateTrait.t
+         - NewickTree.t
+         - OccurrenceTimes
+
+    -->
+
+    <data id="sequences" spec="Alignment" name="alignment">
+    </data>
+
+    <map name="Uniform">beast.base.inference.distribution.Uniform</map>
+
+    <map name="Exponential">beast.base.inference.distribution.Exponential</map>
+
+    <map name="LogNormal">beast.base.inference.distribution.LogNormalDistributionModel</map>
+
+    <map name="Normal">beast.base.inference.distribution.Normal</map>
+
+    <map name="Beta">beast.base.inference.distribution.Beta</map>
+
+    <map name="Gamma">beast.base.inference.distribution.Gamma</map>
+
+    <map name="LaplaceDistribution">beast.base.inference.distribution.LaplaceDistribution</map>
+
+    <map name="prior">beast.base.inference.distribution.Prior</map>
+
+    <map name="InverseGamma">beast.base.inference.distribution.InverseGamma</map>
+
+    <map name="OneOnX">beast.base.inference.distribution.OneOnX</map>
+
+    <run id="mcmc" spec="MCMC" chainLength="1000000">
+        <state id="state" spec="State" storeEvery="5000">
+            <tree id="Tree.t" spec="beast.base.evolution.tree.Tree" name="stateNode">
+                <trait id="dateTrait.t" spec="beast.base.evolution.tree.TraitSet" traitname="date" value="">
+                    <taxa id="TaxonSet.sequences" spec="TaxonSet">
+                        <alignment idref="sequences" />
+                    </taxa>
+                </trait>
+                <taxonset idref="TaxonSet.sequences" />
+            </tree>
+            <parameter id="TTBirthRate.t" spec="parameter.RealParameter" name="stateNode">0.1 0.09</parameter>
+            <parameter id="TTBirthRateChangeTimes.t" spec="parameter.RealParameter" name="stateNode">14.0</parameter>
+            <parameter id="TTSamplingRate.t" spec="parameter.RealParameter" name="stateNode">0.025</parameter>
+            <parameter id="TTOmegaRate.t" spec="parameter.RealParameter" name="stateNode">0.046</parameter>
+        </state>
+
+        <init id="NewickTree.t" spec="beast.base.evolution.tree.TreeParser" IsLabelledNewick="true" adjustTipHeights="false" adjustTreeNodeHeights="false" estimate="false" initial="@Tree.t" newick="" taxa="@sequences" />
+
+        <distribution id="posterior" spec="CompoundDistribution">
+            <distribution id="prior" spec="CompoundDistribution">
+                <distribution id="TimTam.t"
+                              spec="timtam.TimTam"
+                              lambda="@TTBirthRate.t"
+                              lambdaChangeTimes="@TTBirthRateChangeTimes.t"
+                              conditionOnObservation="false"
+                              psi="@TTSamplingRate.t"
+                              tree="@Tree.t"
+                              omega="@TTOmegaRate.t">
+                    <parameter id="TTRecoveryRate.t" spec="parameter.RealParameter" estimate="false" name="mu">0.046</parameter>
+                    <parameter id="TTOriginTime.t" spec="parameter.RealParameter" estimate="false" name="originTime">56.0</parameter>
+                    <parameter id="OccurrenceTimes" spec="parameter.RealParameter" estimate="false" name="occurrenceTimes"></parameter>
+                </distribution>
+                <prior id="TTBirthRatePrior.t" name="distribution" x="@TTBirthRate.t">
+                    <LogNormal id="LogNormalDistributionModel.0" name="distr">
+                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="M">-2.0</parameter>
+                        <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="S">1.0</parameter>
+                    </LogNormal>
+                </prior>
+                <prior id="TTSamplingRatePrior.t" name="distribution" x="@TTSamplingRate.t">
+                    <LogNormal id="LogNormalDistributionModel.1" name="distr">
+                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="M">-3.0</parameter>
+                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="S">1.0</parameter>
+                    </LogNormal>
+                </prior>
+                <prior id="TTOmegaRatePrior.t" name="distribution" x="@TTOmegaRate.t">
+                    <LogNormal id="LogNormalDistributionModel.2" name="distr">
+                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="M">-2.0</parameter>
+                        <parameter id="RealParameter.8" spec="parameter.RealParameter" estimate="false" name="S">1.0</parameter>
+                    </LogNormal>
+                </prior>
+            </distribution>
+        </distribution>
+
+        <operator id="TTBirthRateScaler.t" spec="ScaleOperator" parameter="@TTBirthRate.t" scaleFactor="0.9" weight="1.0" />
+        <operator id="TTBirthRateWalk.t" spec="operator.RealRandomWalkOperator" parameter="@TTBirthRate.t" weight="1.0" windowSize="0.01" />
+        <operator id="TTSamplingRateScaler.t" spec="ScaleOperator" parameter="@TTSamplingRate.t" scaleFactor="0.9" weight="1.0" />
+        <operator id="TTSamplingRateWalk.t" spec="operator.RealRandomWalkOperator" parameter="@TTSamplingRate.t" weight="1.0" windowSize="0.01" />
+        <operator id="TTUpdownBS.t" spec="operator.UpDownOperator" scaleFactor="0.9" weight="2.0">
+            <up idref="TTBirthRate.t" />
+            <down idref="TTSamplingRate.t" />
+        </operator>
+        <operator id="TTOmegaRateScaler.t" spec="ScaleOperator" parameter="@TTOmegaRate.t" scaleFactor="0.9" weight="1.0" />
+        <operator id="TTOmegaRateWalk.t" spec="operator.RealRandomWalkOperator" parameter="@TTOmegaRate.t" weight="1.0" windowSize="0.01" />
+
+        <logger id="tracelog" spec="Logger" fileName="out/s3/$(filebase).log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
+            <log idref="posterior" />
+            <log idref="TTBirthRate.t" />
+            <log idref="TTSamplingRate.t" />
+            <log idref="TTOmegaRate.t" />
+        </logger>
+        <logger id="screenlog" spec="Logger" logEvery="1000">
+            <log idref="posterior" />
+        </logger>
+        <operatorschedule id="OperatorSchedule" spec="OperatorSchedule" autoOptimize="false" />
+    </run>
+
+</beast>
