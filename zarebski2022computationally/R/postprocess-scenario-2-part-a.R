@@ -54,22 +54,23 @@ summary_gg <- function(plot_df, true_value, name) {
         y = fns_3, # nolint
         ymin = fns_1, # nolint
         ymax = fns_5, # nolint
-        colour = fns_1 < true_value & true_value < fns_5
+        shape = fns_1 < true_value & true_value < fns_5
       )
     ) +
     geom_hline(yintercept = true_value, linetype = "dashed") +
-    labs(x = NULL, y = name, colour = "Contains true value") +
+    labs(x = NULL, y = name, shape = "Contains true value") +
+    scale_shape_manual(breaks = c(FALSE, TRUE), values = c(1, 16)) +
+    scale_linetype_manual(breaks = c(FALSE, TRUE), values = c("dashed", "solid")) +
     theme_bw()
 }
 
 ## =============================================================================
 
 remaster_node <- "remaster-scenario-2.xml" |> read_xml()
-## num_replicates <- remaster_node |>
-##   xml_find_first("//run") |>
-##   xml_attr("nSims") |>
-##   as.integer()
-num_replicates <- 10
+num_replicates <- remaster_node |>
+  xml_find_first("//run") |>
+  xml_attr("nSims") |>
+  as.integer()
 
 summary_list <- map(seq.int(num_replicates), \(x) make_summary(read_mcmc(x), x))
 

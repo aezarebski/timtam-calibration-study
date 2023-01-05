@@ -1,6 +1,6 @@
 <beast version='2.0' namespace='beast.base.inference.parameter:beast.base.inference:remaster'>
 
-    <run spec="Simulator" nSims="50">
+    <run spec="Simulator" nSims="20">
 
         <simulate id="tree" spec="SimulatedTree">
             <trajectory id="trajectory"

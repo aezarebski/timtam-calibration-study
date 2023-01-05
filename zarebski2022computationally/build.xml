@@ -99,7 +99,7 @@
     <target name="scenario-2-mcmc">
         <exec executable="bash">
             <arg path="run-mcmc-scenario-2.sh" />
-            <arg line="10" />
+            <arg line="20" />
         </exec>
     </target>
 
