@@ -65,6 +65,33 @@
         </exec>
     </target>
 
+    <target name="scenario-2"
+            description="Run the Scenario 2 simulation."
+            depends="scenario-2-directories,scenario-2-remaster,scenario-2-preprocess" />
+
+    <target name="scenario-2-directories">
+        <mkdir dir="out" />
+        <mkdir dir="out/s2" />
+    </target>
+
+    <target name="scenario-2-remaster">
+        <exec executable="sh">
+            <arg path="lib/beast/bin/beast" />
+            <arg line="-seed 1" />
+            <arg line="-overwrite" />
+            <arg path="remaster-scenario-2.xml" />
+        </exec>
+    </target>
+
+    <target name="scenario-2-preprocess">
+        <exec executable="Rscript">
+            <arg path="R/preprocess-scenario-2-part-a.R" />
+        </exec>
+        <!-- <exec executable="Rscript">
+             <arg path="R/preprocess-scenario-1-part-b.R" />
+             </exec> -->
+    </target>
+
     <target name="setuplib" depends="setuplib2.7.3" description="Download required BEAST tools." />
     <target name="setuplib2.7.3" depends="get-beast2.7.3,get-tracer1.7.2" />
     <target name="setuplib2.7.1" depends="get-beast2.7.1,get-tracer1.7.2" />
