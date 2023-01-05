@@ -67,7 +67,7 @@
 
     <target name="scenario-2"
             description="Run the Scenario 2 simulation."
-            depends="scenario-2-directories,scenario-2-remaster,scenario-2-preprocess" />
+            depends="scenario-2-directories,scenario-2-remaster,scenario-2-preprocess,scenario-2-mcmc,scenario-2-postprocess" />
 
     <target name="scenario-2-directories">
         <mkdir dir="out" />
@@ -87,9 +87,22 @@
         <exec executable="Rscript">
             <arg path="R/preprocess-scenario-2-part-a.R" />
         </exec>
-        <!-- <exec executable="Rscript">
-             <arg path="R/preprocess-scenario-1-part-b.R" />
-             </exec> -->
+        <exec executable="Rscript">
+            <arg path="R/preprocess-scenario-2-part-b.R" />
+        </exec>
+    </target>
+
+    <target name="scenario-2-mcmc">
+        <exec executable="bash">
+            <arg path="run-mcmc-scenario-2.sh" />
+            <arg line="10" />
+        </exec>
+    </target>
+
+    <target name="scenario-2-postprocess">
+        <exec executable="Rscript">
+            <arg path="R/postprocess-scenario-2-part-a.R" />
+        </exec>
     </target>
 
     <target name="setuplib" depends="setuplib2.7.3" description="Download required BEAST tools." />
