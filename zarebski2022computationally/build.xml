@@ -109,7 +109,7 @@
         </exec>
     </target>
 
-    <target name="scenario-3" description="Run the Scenario 3 simulation." depends="scenario-3-directories,scenario-3-remaster" />
+    <target name="scenario-3" description="Run the Scenario 3 simulation." depends="scenario-3-directories,scenario-3-remaster,scenario-3-preprocess" />
 
     <target name="scenario-3-directories">
         <mkdir dir="out" />
@@ -124,6 +124,18 @@
             <arg line="-overwrite" />
             <arg path="remaster-scenario-3.xml" />
         </exec>
+    </target>
+
+    <target name="scenario-3-preprocess">
+        <exec executable="Rscript">
+            <arg path="R/preprocess-scenario-3-part-a.R" />
+        </exec>
+        <exec executable="Rscript">
+            <arg path="R/preprocess-scenario-2-part-b.R" />
+        </exec>
+        <!-- <exec executable="Rscript">
+             <arg path="R/preprocess-scenario-2-part-c.R" />
+             </exec> -->
     </target>
 
     <target name="setuplib" depends="setuplib2.7.3" description="Download required BEAST tools." />
