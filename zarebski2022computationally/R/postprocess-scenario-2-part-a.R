@@ -61,7 +61,8 @@ summary_gg <- function(plot_df, true_value, name) {
     labs(x = NULL, y = name, shape = "Contains true value") +
     scale_shape_manual(breaks = c(FALSE, TRUE), values = c(1, 16)) +
     scale_linetype_manual(breaks = c(FALSE, TRUE), values = c("dashed", "solid")) +
-    theme_bw()
+    theme_bw() +
+    theme(legend.position = "top")
 }
 
 ## =============================================================================
