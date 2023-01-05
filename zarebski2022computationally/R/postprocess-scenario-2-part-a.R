@@ -93,7 +93,7 @@ ess_gg <- ggplot() +
   labs(x = NULL, y = "Effective sample size") +
   theme_bw()
 
-ggsave(filename = "effective-sample-sizes.png",
+ggsave(filename = "out/s2/plots/effective-sample-sizes.png",
        plot = ess_gg,
        height = 10.5, width = 14.8,
        units = "cm")
@@ -107,7 +107,7 @@ birth_rate_df <- comb_est_df |>
 birth_rate_gg <- summary_gg(birth_rate_df, 0.185, "Birth rate")
 
 ggsave(
-  filename = "birth-rate-estimates.png",
+  filename = "out/s2/plots/birth-rate-estimates.png",
   plot = birth_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"
@@ -122,7 +122,7 @@ sampling_rate_df <- comb_est_df |>
 sampling_rate_gg <- summary_gg(sampling_rate_df, 0.008, "Sampling rate")
 
 ggsave(
-  filename = "sampling-rate-estimates.png",
+  filename = "out/s2/plots/sampling-rate-estimates.png",
   plot = sampling_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"
@@ -137,7 +137,7 @@ omega_rate_df <- comb_est_df |>
 omega_rate_gg <- summary_gg(omega_rate_df, 0.046, "Omega rate")
 
 ggsave(
-  filename = "omega-rate-estimates.png",
+  filename = "out/s2/plots/omega-rate-estimates.png",
   plot = omega_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"

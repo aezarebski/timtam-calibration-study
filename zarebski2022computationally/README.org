@@ -26,5 +26,15 @@
 | \(\mu\)     | Death rate              | 0.046 |
 | \(\psi\)    | Sampling rate           | 0.008 |
 | \(\omega\)  | Occurrence rate         | 0.046 |
-|             | Duration                |    35 |
+|             | Duration                |    42 |
 | \(\rho\)    | Catastrophe probability |   0.5 |
+
+** Scenario 2
+
+| Parameter   | Description             | Value |
+|-------------+-------------------------+-------|
+| \(\lambda\) | Birth rate              | 0.185 |
+| \(\mu\)     | Death rate              | 0.046 |
+| \(\psi\)    | Sampling rate           | 0.008 |
+| \(\omega\)  | Occurrence rate         | 0.046 |
+|             | Duration                |    42 |

@@ -72,6 +72,7 @@
     <target name="scenario-2-directories">
         <mkdir dir="out" />
         <mkdir dir="out/s2" />
+        <mkdir dir="out/s2/plots" />
     </target>
 
     <target name="scenario-2-remaster">
@@ -89,6 +90,9 @@
         </exec>
         <exec executable="Rscript">
             <arg path="R/preprocess-scenario-2-part-b.R" />
+        </exec>
+        <exec executable="Rscript">
+            <arg path="R/preprocess-scenario-2-part-c.R" />
         </exec>
     </target>
 
