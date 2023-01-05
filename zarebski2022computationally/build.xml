@@ -109,7 +109,7 @@
         </exec>
     </target>
 
-    <target name="scenario-3" description="Run the Scenario 3 simulation." depends="scenario-3-directories,scenario-3-remaster,scenario-3-preprocess" />
+    <target name="scenario-3" description="Run the Scenario 3 simulation." depends="scenario-3-directories,scenario-3-remaster,scenario-3-preprocess,scenario-3-mcmc" />
 
     <target name="scenario-3-directories">
         <mkdir dir="out" />
@@ -136,6 +136,13 @@
         <!-- <exec executable="Rscript">
              <arg path="R/preprocess-scenario-2-part-c.R" />
              </exec> -->
+    </target>
+
+    <target name="scenario-3-mcmc">
+        <exec executable="bash">
+            <arg path="run-mcmc-scenario-3.sh" />
+            <arg line="20" />
+        </exec>
     </target>
 
     <target name="setuplib" depends="setuplib2.7.3" description="Download required BEAST tools." />
