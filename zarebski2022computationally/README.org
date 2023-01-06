@@ -39,6 +39,15 @@
 | \(\omega\)  | Occurrence rate | 0.046 |
 |             | Duration        |    42 |
 
+*** Analysis 1
+
+Assuming birth-death model is correctly specified and only estimating the rates.
+
+*** Analysis 2
+
+Assuming birth-death model is correctly specified and estimating both the rates
+and the prevalence just after the last sample (at time \(-0.01\)).
+
 ** Scenario 3
 
 | Parameter     | Description            |  Value |

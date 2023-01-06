@@ -90,11 +90,16 @@ recon_trees <- "out/s2/remaster-scenario-2.tree" |>
   str_replace("tree STATE_[0-9]+ = ", "") |>
   read.tree(text = _)
 
-remaster_node <- "remaster-scenario-2.xml" |> read_xml()
+remaster_node <- "xml/remaster-scenario-2.xml" |> read_xml()
 sim_duration <- remaster_node |>
   xml_find_first("//trajectory") |>
   xml_attr("maxTime") |>
   as.numeric()
+
+write.table(x = filter(sim_dfs, t == sim_duration),
+            file = "out/s2/final-simulation-state.csv",
+            sep = ",",
+            row.names = FALSE)
 
 for (ix in seq.int(num_samples)) {
   sim_data <- filter(sim_dfs, sample == as.character(ix - 1))
