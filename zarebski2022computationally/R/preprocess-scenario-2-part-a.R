@@ -96,6 +96,11 @@ sim_duration <- remaster_node |>
   xml_attr("maxTime") |>
   as.numeric()
 
+write.table(x = filter(sim_dfs, t == sim_duration),
+            file = "out/s2/final-simulation-state.csv",
+            sep = ",",
+            row.names = FALSE)
+
 for (ix in seq.int(num_samples)) {
   sim_data <- filter(sim_dfs, sample == as.character(ix - 1))
   tmp <- annotated_tree_and_seqs(recon_trees[[ix]], sim_data)

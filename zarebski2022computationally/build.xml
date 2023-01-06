@@ -103,14 +103,21 @@
 
     <target name="scenario-2-mcmc">
         <exec executable="bash">
-            <arg path="scripts/run-mcmc-scenario-2.sh" />
-            <arg line="30" />
+            <arg path="scripts/run-mcmc-scenario-2-1.sh" />
+            <arg line="20" />
+        </exec>
+        <exec executable="bash">
+            <arg path="scripts/run-mcmc-scenario-2-2.sh" />
+            <arg line="20" />
         </exec>
     </target>
 
     <target name="scenario-2-postprocess">
         <exec executable="Rscript">
             <arg path="R/postprocess-scenario-2-part-a.R" />
+        </exec>
+        <exec executable="Rscript">
+            <arg path="R/postprocess-scenario-2-part-b.R" />
         </exec>
     </target>
 
