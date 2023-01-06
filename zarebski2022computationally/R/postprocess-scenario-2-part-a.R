@@ -67,7 +67,7 @@ summary_gg <- function(plot_df, true_value, name) {
 
 ## =============================================================================
 
-remaster_node <- "remaster-scenario-2.xml" |> read_xml()
+remaster_node <- "xml/remaster-scenario-2.xml" |> read_xml()
 num_replicates <- remaster_node |>
   xml_find_first("//run") |>
   xml_attr("nSims") |>

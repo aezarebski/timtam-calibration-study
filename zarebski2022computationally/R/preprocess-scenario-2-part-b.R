@@ -9,7 +9,7 @@ suppressPackageStartupMessages(library(xml2))
 set.seed(1)
 
 make_timtam <- function(recon_tree_file, occurrence_txt_file, fasta_file, output_xml) {
-  timtam <- read_xml("timtam-scenario-2-empty.xml")
+  timtam <- read_xml("xml/timtam-scenario-2-empty.xml")
   data_node <- xml_find_first(timtam, xpath = "//data")
   trait_node <- xml_find_first(timtam, xpath = "//trait[@id=\"dateTrait.t\"]")
   tree_node <- xml_find_first(timtam, xpath = "//init[@id=\"NewickTree.t\"]")
@@ -40,7 +40,7 @@ make_timtam <- function(recon_tree_file, occurrence_txt_file, fasta_file, output
   return(timtam)
 }
 
-remaster_node <- "remaster-scenario-2.xml" |> read_xml()
+remaster_node <- "xml/remaster-scenario-2.xml" |> read_xml()
 num_replicates <- remaster_node |>
   xml_find_first("//run") |>
   xml_attr("nSims") |>

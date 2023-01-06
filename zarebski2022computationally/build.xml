@@ -65,6 +65,11 @@
         </exec>
     </target>
 
+    <target name="clean-scenario-2"
+            description="Clean up all files from Scenario 2">
+        <delete dir="out/s2" />
+    </target>
+
     <target name="scenario-2"
             description="Run the Scenario 2 simulation."
             depends="scenario-2-directories,scenario-2-remaster,scenario-2-preprocess,scenario-2-mcmc,scenario-2-postprocess" />
@@ -80,7 +85,7 @@
             <arg path="lib/beast/bin/beast" />
             <arg line="-seed 1" />
             <arg line="-overwrite" />
-            <arg path="remaster-scenario-2.xml" />
+            <arg path="xml/remaster-scenario-2.xml" />
         </exec>
     </target>
 
@@ -98,8 +103,8 @@
 
     <target name="scenario-2-mcmc">
         <exec executable="bash">
-            <arg path="run-mcmc-scenario-2.sh" />
-            <arg line="20" />
+            <arg path="scripts/run-mcmc-scenario-2.sh" />
+            <arg line="30" />
         </exec>
     </target>
 
