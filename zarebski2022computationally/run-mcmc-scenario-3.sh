@@ -9,7 +9,7 @@
 # $ bash run-mcmc-scenario-3.sh 50
 #
 
-CHUNK_SIZE=4                   # the number of processes in each chunk
+CHUNK_SIZE=10                   # the number of processes in each chunk
 NUM_REPLICATES=${1:-50}         # the total number of processes
 IX=1                            # the number to start on
 LIMIT=$((NUM_REPLICATES+1))
