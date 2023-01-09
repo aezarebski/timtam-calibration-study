@@ -1,12 +1,12 @@
 <beast version='2.0' namespace='beast.base.inference.parameter:beast.base.inference:remaster'>
 
-    <run spec="Simulator" nSims="20">
+    <run spec="Simulator" nSims="100">
 
         <simulate id="tree" spec="SimulatedTree">
             <trajectory id="trajectory"
                         spec="StochasticTrajectory"
                         maxTime="42"
-                        mustHave="Psi>1">
+                        mustHave="Psi>1 &amp;&amp; X>0">
 
                 <population id="X" spec="RealParameter" value="1" />
                 <samplePopulation id="Psi" spec="RealParameter" value="0" />

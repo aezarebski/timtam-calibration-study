@@ -90,7 +90,7 @@ recon_trees <- "out/s3/remaster-scenario-3.tree" |>
   str_replace("tree STATE_[0-9]+ = ", "") |>
   read.tree(text = _)
 
-remaster_node <- "remaster-scenario-3.xml" |> read_xml()
+remaster_node <- "xml/remaster-scenario-3.xml" |> read_xml()
 sim_duration <- remaster_node |>
   xml_find_first("//trajectory") |>
   xml_attr("maxTime") |>
