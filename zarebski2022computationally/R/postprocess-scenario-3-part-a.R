@@ -12,8 +12,8 @@ set.seed(1)
 
 ix <- 1
 
-read_mcmc <- function(ix) {
-  str_interp("out/s3/timtam-scenario-3-sample-$[03d]{ix}.log") |>
+read_mcmc <- function(log_file) {
+  log_file |>
     read.table(comment.char = "#", header = T) |>
     select(-Sample) |> # nolint
     as.mcmc()
@@ -73,7 +73,7 @@ num_replicates <- remaster_node |>
   xml_attr("nSims") |>
   as.integer()
 
-summary_list <- map(seq.int(num_replicates), \(x) make_summary(read_mcmc(x), x))
+summary_list <- map(seq.int(num_replicates), \(ix) make_summary(read_mcmc(str_interp("out/s3/timtam-scenario-3-1-sample-$[03d]{ix}.log")), ix))
 
 comb_est_df <- summary_list |>
   map(\(x) x$summary) |>
@@ -95,7 +95,7 @@ ess_gg <- ggplot() +
   labs(x = NULL, y = "Effective sample size") +
   theme_bw()
 
-ggsave(filename = "out/s3/plots/effective-sample-sizes.png",
+ggsave(filename = "out/s3/plots/effective-sample-sizes-s-3-1.png",
        plot = ess_gg,
        height = 10.5, width = 14.8,
        units = "cm")
@@ -109,7 +109,7 @@ birth_rate_df <- comb_est_df |>
 birth_rate_gg <- summary_gg(birth_rate_df, 0.185, "Birth rate")
 
 ggsave(
-  filename = "out/s3/plots/birth-rate-1-estimates.png",
+  filename = "out/s3/plots/birth-rate-1-estimates-s-3-1.png",
   plot = birth_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"
@@ -122,7 +122,7 @@ birth_rate_df <- comb_est_df |>
 birth_rate_gg <- summary_gg(birth_rate_df, 0.0925, "Birth rate")
 
 ggsave(
-  filename = "out/s3/plots/birth-rate-2-estimates.png",
+  filename = "out/s3/plots/birth-rate-2-estimates-s-3-1.png",
   plot = birth_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"
@@ -137,7 +137,7 @@ sampling_rate_df <- comb_est_df |>
 sampling_rate_gg <- summary_gg(sampling_rate_df, 0.008, "Sampling rate")
 
 ggsave(
-  filename = "out/s3/plots/sampling-rate-estimates.png",
+  filename = "out/s3/plots/sampling-rate-estimates-s-3-1.png",
   plot = sampling_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"
@@ -152,7 +152,7 @@ omega_rate_df <- comb_est_df |>
 omega_rate_gg <- summary_gg(omega_rate_df, 0.046, "Omega rate")
 
 ggsave(
-  filename = "out/s3/plots/omega-rate-estimates.png",
+  filename = "out/s3/plots/omega-rate-estimates-s-3-1.png",
   plot = omega_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"

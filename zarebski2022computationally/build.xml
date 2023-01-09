@@ -153,13 +153,17 @@
             <arg path="R/preprocess-scenario-3-part-b.R" />
         </exec>
         <exec executable="Rscript">
-            <arg path="R/preprocess-scenario-2-part-c.R" />
+            <arg path="R/preprocess-scenario-3-part-c.R" />
         </exec>
     </target>
 
     <target name="scenario-3-mcmc">
         <exec executable="bash">
-            <arg path="scripts/run-mcmc-scenario-3.sh" />
+            <arg path="scripts/run-mcmc-scenario-3-1.sh" />
+            <arg line="100" />
+        </exec>
+        <exec executable="bash">
+            <arg path="scripts/run-mcmc-scenario-3-2.sh" />
             <arg line="100" />
         </exec>
     </target>

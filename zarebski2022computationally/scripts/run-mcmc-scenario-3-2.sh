@@ -23,7 +23,7 @@ do
     while [ $IX -lt $CHUNK_LIMIT ]
     do
 	      PADDED_NUM=$(printf "%03d" $IX) # because we want zero padded numbers
-        ant -DbeastXML=out/s3/timtam-scenario-3-sample-"$PADDED_NUM".xml mcmc & PIDS+=($!)
+        ant -DbeastXML=out/s3/timtam-scenario-3-2-sample-"$PADDED_NUM".xml mcmc & PIDS+=($!)
 	      ((IX++))
     done
     wait "${PIDS[@]}"
