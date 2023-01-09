@@ -44,21 +44,31 @@ if (length(log_files) != num_replicates) {
   stop("Number of log files does not match number of replicates.")
 }
 
+final_prev_df <- read.csv("out/s3/final-simulation-state.csv") |>
+  mutate(replicate = sample + 1) |>
+  select(X, replicate)
+
+in_ci <- function(x, posts) {
+  ci <- quantile(posts, probs = c(0.025, 0.975))
+  ci[1] <= x && x <= ci[2]
+}
+ci_width <- function(posts) {
+  ci <- quantile(posts, probs = c(0.025, 0.975))
+  ci[2] - ci[1]
+}
+bias <- function(x, posts) {
+  median((posts - x) / x)
+}
+error <- function(x, posts) {
+  median(abs((posts - x) / x))
+}
 log_file_summary <- function(log_file, params) {
-  in_ci <- function(x, posts) {
-    ci <- quantile(posts, probs = c(0.025, 0.975))
-    ci[1] <= x && x <= ci[2]
-  }
-  ci_width <- function(posts) {
-    ci <- quantile(posts, probs = c(0.025, 0.975))
-    ci[2] - ci[1]
-  }
-  bias <- function(x, posts) {
-    median((posts - x) / x)
-  }
-  error <- function(x, posts) {
-    median(abs((posts - x) / x))
-  }
+  replicate_num <- log_file |>
+    str_extract("[0-9]{3}") |>
+    as.integer()
+  final_prev <- final_prev_df |>
+    filter(replicate == replicate_num) |>
+    pluck("X")
   with(read_beast2_log(log_file), {
     data.frame(
       m_birth_rate_1 = median(TTBirthRate.1),
@@ -69,10 +79,12 @@ log_file_summary <- function(log_file, params) {
       b_birth_rate_2 = bias(params$br2, TTBirthRate.2),
       b_sampling_rate = bias(params$sr, TTSamplingRate),
       b_occurrence_rate = bias(params$or, TTOmegaRate),
+      b_prev = bias(final_prev, HistorySizes),
       e_birth_rate_1 = error(params$br1, TTBirthRate.1),
       e_birth_rate_2 = error(params$br2, TTBirthRate.2),
       e_sampling_rate = error(params$sr, TTSamplingRate),
       e_occurrence_rate = error(params$or, TTOmegaRate),
+      e_prev = error(final_prev, HistorySizes),
       w_birth_rate_1 = ci_width(TTBirthRate.1),
       w_birth_rate_2 = ci_width(TTBirthRate.2),
       w_sampling_rate = ci_width(TTSamplingRate),
@@ -81,12 +93,13 @@ log_file_summary <- function(log_file, params) {
       in_ci_birth_rate_2 = in_ci(params$br2, TTBirthRate.2),
       in_ci_sampling_rate = in_ci(params$sr, TTSamplingRate),
       in_ci_occurrence_rate = in_ci(params$or, TTOmegaRate),
+      in_ci_prev = in_ci(final_prev, HistorySizes),
       log_file = log_file
     )
   })
 }
 
-params <- list(br1 = 0.185, br2 = 0.0925, sr = 0.008, or = 0.046)
+params <- list(br1 = 0.185, br2 = 0.0925, sr = 0.008, or = 0.046, hs = 0)
 replicate_summaries <- map(log_files, \(lf) log_file_summary(lf, params)) |> bind_rows()
 
 result <- with(replicate_summaries, {
@@ -96,28 +109,34 @@ result <- with(replicate_summaries, {
   data.frame(
     parameter = c(
       "birth rate 1", "birth rate 2",
-      "sampling rate", "occurrence rate"
+      "sampling rate", "occurrence rate",
+      "prevalence"
     ),
     true = as_vector(params),
     median = c(
       median(m_birth_rate_1), median(m_birth_rate_2),
-      median(m_sampling_rate), median(m_occurrence_rate)
+      median(m_sampling_rate), median(m_occurrence_rate),
+      NA
     ),
     error = c(
       median(e_birth_rate_1), median(e_birth_rate_2),
-      median(e_sampling_rate), median(e_occurrence_rate)
+      median(e_sampling_rate), median(e_occurrence_rate),
+      median(e_prev)
     ),
     bias = c(
       median(b_birth_rate_1), median(b_birth_rate_2),
-      median(b_sampling_rate), median(b_occurrence_rate)
+      median(b_sampling_rate), median(b_occurrence_rate),
+      median(b_prev)
     ),
     ci_width = c(
       median(w_birth_rate_1), median(w_birth_rate_2),
-      median(w_sampling_rate), median(w_occurrence_rate)
+      median(w_sampling_rate), median(w_occurrence_rate),
+      NA
     ),
     ci_percent = c(
       percent_true(in_ci_birth_rate_1), percent_true(in_ci_birth_rate_2),
-      percent_true(in_ci_sampling_rate), percent_true(in_ci_occurrence_rate)
+      percent_true(in_ci_sampling_rate), percent_true(in_ci_occurrence_rate),
+      percent_true(in_ci_prev)
     )
   )
 })
@@ -130,17 +149,18 @@ display(result) <- xdisplay(result)
 print(result, include.rownames = FALSE)
 
 ## % latex table generated in R 4.2.1 by xtable 1.8-4 package
-## % Mon Jan  9 13:39:48 2023
+## % Mon Jan  9 14:44:55 2023
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{lrrrrrr}
 ##   \hline
 ## parameter & true & median & error & bias & ci\_width & ci\_percent \\
 ##   \hline
-## birth rate 1 & 0.1850 & 0.1851 & 0.117 & 0.0004 & 0.0945 & 94 \\
-##   birth rate 2 & 0.0925 & 0.0948 & 0.334 & 0.0246 & 0.1273 & 96 \\
-##   sampling rate & 0.0080 & 0.0103 & 0.339 & 0.2891 & 0.0145 & 92 \\
-##   occurrence rate & 0.0460 & 0.0525 & 0.248 & 0.1408 & 0.0557 & 97 \\
+## birth rate 1 & 0.1850 & 0.1851 & 0.117 & 0.000 & 0.0945 & 94 \\
+##   birth rate 2 & 0.0925 & 0.0948 & 0.334 & 0.025 & 0.1273 & 96 \\
+##   sampling rate & 0.0080 & 0.0103 & 0.339 & 0.289 & 0.0145 & 92 \\
+##   occurrence rate & 0.0460 & 0.0525 & 0.248 & 0.141 & 0.0557 & 97 \\
+##   prevalence & 0.0000 &  & 0.345 & -0.046 &  & 98 \\
 ##    \hline
 ## \end{tabular}
 ## \end{table}
@@ -170,4 +190,6 @@ list(
   as.data.frame(calibration_test(91, 100)),
   as.data.frame(calibration_test(99, 100)),
   as.data.frame(calibration_test(100, 100))
-) |> bind_rows() |> print()
+) |>
+  bind_rows() |>
+  print()
