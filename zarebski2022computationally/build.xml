@@ -172,6 +172,9 @@
         <exec executable="Rscript">
             <arg path="R/postprocess-scenario-3-part-a.R" />
         </exec>
+        <exec executable="Rscript">
+            <arg path="R/postprocess-scenario-3-part-b.R" />
+        </exec>
     </target>
 
     <target name="setuplib" depends="setuplib2.7.3" description="Download required BEAST tools." />
