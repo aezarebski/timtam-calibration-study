@@ -144,3 +144,30 @@ print(result, include.rownames = FALSE)
 ##    \hline
 ## \end{tabular}
 ## \end{table}
+
+
+#' Hypothesis test on the binomial probability.
+#'
+#' @param x_obs integer number of successes observed.
+#' @param size integer number of tests carried out.
+#' @param prob probability of success in each test
+#'
+calibration_test <- function(x_obs, size, prob = 0.95) {
+  pmf_vals <- dbinom(x = 0:size, prob = prob, size = size)
+  obs_prob <- dbinom(x = x_obs, prob = prob, size = size)
+  mask <- pmf_vals <= obs_prob
+  p_val <- sum(pmf_vals[mask])
+  list(
+    x = x_obs,
+    n = size,
+    p_val = p_val,
+    reject_null = p_val < 0.05
+  )
+}
+
+list(
+  as.data.frame(calibration_test(90, 100)),
+  as.data.frame(calibration_test(91, 100)),
+  as.data.frame(calibration_test(99, 100)),
+  as.data.frame(calibration_test(100, 100))
+) |> bind_rows() |> print()
