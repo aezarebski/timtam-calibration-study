@@ -73,7 +73,7 @@ num_replicates <- remaster_node |>
   xml_attr("nSims") |>
   as.integer()
 
-summary_list <- map(seq.int(num_replicates), \(ix) make_summary(read_mcmc(str_interp("out/s3/timtam-scenario-3-1-sample-$[03d]{ix}.log")), ix))
+summary_list <- map(seq.int(num_replicates), \(ix) make_summary(read_mcmc(str_interp("out/s3/timtam-scenario-3-2-sample-$[03d]{ix}.log")), ix))
 
 comb_est_df <- summary_list |>
   map(\(x) x$summary) |>
@@ -95,7 +95,7 @@ ess_gg <- ggplot() +
   labs(x = NULL, y = "Effective sample size") +
   theme_bw()
 
-ggsave(filename = "out/s3/plots/effective-sample-sizes-s-3-1.png",
+ggsave(filename = "out/s3/plots/effective-sample-sizes-s-3-2.png",
        plot = ess_gg,
        height = 10.5, width = 14.8,
        units = "cm")
@@ -109,7 +109,7 @@ birth_rate_df <- comb_est_df |>
 birth_rate_gg <- summary_gg(birth_rate_df, 0.185, "Birth rate")
 
 ggsave(
-  filename = "out/s3/plots/birth-rate-1-estimates-s-3-1.png",
+  filename = "out/s3/plots/birth-rate-1-estimates-s-3-2.png",
   plot = birth_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"
@@ -122,7 +122,7 @@ birth_rate_df <- comb_est_df |>
 birth_rate_gg <- summary_gg(birth_rate_df, 0.0925, "Birth rate")
 
 ggsave(
-  filename = "out/s3/plots/birth-rate-2-estimates-s-3-1.png",
+  filename = "out/s3/plots/birth-rate-2-estimates-s-3-2.png",
   plot = birth_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"
@@ -137,7 +137,7 @@ sampling_rate_df <- comb_est_df |>
 sampling_rate_gg <- summary_gg(sampling_rate_df, 0.008, "Sampling rate")
 
 ggsave(
-  filename = "out/s3/plots/sampling-rate-estimates-s-3-1.png",
+  filename = "out/s3/plots/sampling-rate-estimates-s-3-2.png",
   plot = sampling_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"
@@ -152,10 +152,52 @@ omega_rate_df <- comb_est_df |>
 omega_rate_gg <- summary_gg(omega_rate_df, 0.046, "Omega rate")
 
 ggsave(
-  filename = "out/s3/plots/omega-rate-estimates-s-3-1.png",
+  filename = "out/s3/plots/omega-rate-estimates-s-3-2.png",
   plot = omega_rate_gg,
   height = 10.5, width = 14.8,
   units = "cm"
 )
 
 ## =============================================================================
+
+
+final_prevalence_df <-
+  "out/s3/final-simulation-state.csv" |>
+  read.csv() |>
+  select(X, sample) |>
+  mutate(prevalence = X, replicate = sample + 1)
+
+history_sizes_df <- comb_est_df |>
+  filter(variable == "HistorySizes") |>
+  inner_join(final_prevalence_df, by = "replicate") |>
+  mutate(sorted_replicate = order(prevalence))
+
+history_size_gg <-
+  ggplot(data = history_sizes_df) +
+  geom_pointrange(
+    mapping = aes(
+      x = order(sorted_replicate), # nolint
+      y = fns_3, # nolint
+      ymin = fns_1, # nolint
+      ymax = fns_5, # nolint
+      shape = fns_1 < prevalence & prevalence < fns_5
+    )
+  ) +
+  geom_point(
+    mapping = aes(
+      x = order(sorted_replicate),
+      y = prevalence
+    ),
+    colour = "red"
+  ) +
+  scale_y_log10() +
+  labs(x = NULL, y = "Prevalence", shape = "Contains true value") +
+  scale_shape_manual(breaks = c(FALSE, TRUE), values = c(1, 16)) +
+  scale_linetype_manual(breaks = c(FALSE, TRUE), values = c("dashed", "solid")) +
+  theme_bw() +
+  theme(legend.position = "top")
+
+ggsave(filename = "out/s3/plots/history-size-estimates-s-3-2.png",
+       plot = history_size_gg,
+       height = 10.5, width = 14.8,
+       units = "cm")

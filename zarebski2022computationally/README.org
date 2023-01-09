@@ -59,3 +59,12 @@ and the prevalence just after the last sample (at time \(-0.01\)).
 | \(\mu\)       | Death rate             |  0.046 |
 | \(\psi\)      | Sampling rate          |  0.008 |
 | \(\omega\)    | Occurrence rate        |  0.046 |
+
+*** Analysis 1
+
+Assuming birth-death model is correctly specified and only estimating the rates.
+
+*** Analysis 2
+
+Assuming birth-death model is correctly specified and estimating both the rates
+and the prevalence just after the last sample (at time \(-0.01\)).

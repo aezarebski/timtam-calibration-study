@@ -4,7 +4,9 @@
     <description>
 
         0. setuplib
-        1. scenario-1
+        1. clean-scenario-2
+        2. scenario-2
+
     </description>
 
     <path id="classpath">
@@ -104,11 +106,11 @@
     <target name="scenario-2-mcmc">
         <exec executable="bash">
             <arg path="scripts/run-mcmc-scenario-2-1.sh" />
-            <arg line="20" />
+            <arg line="100" />
         </exec>
         <exec executable="bash">
             <arg path="scripts/run-mcmc-scenario-2-2.sh" />
-            <arg line="20" />
+            <arg line="100" />
         </exec>
     </target>
 
@@ -121,7 +123,12 @@
         </exec>
     </target>
 
-    <target name="scenario-3" description="Run the Scenario 3 simulation." depends="scenario-3-directories,scenario-3-remaster,scenario-3-preprocess,scenario-3-mcmc" />
+    <target name="clean-scenario-3"
+            description="Clean up all files from Scenario 3">
+        <delete dir="out/s3" />
+    </target>
+
+    <target name="scenario-3" description="Run the Scenario 3 simulation." depends="scenario-3-directories,scenario-3-remaster,scenario-3-preprocess,scenario-3-mcmc,scenario-3-postprocess" />
 
     <target name="scenario-3-directories">
         <mkdir dir="out" />
@@ -134,7 +141,7 @@
             <arg path="lib/beast/bin/beast" />
             <arg line="-seed 1" />
             <arg line="-overwrite" />
-            <arg path="remaster-scenario-3.xml" />
+            <arg path="xml/remaster-scenario-3.xml" />
         </exec>
     </target>
 
@@ -145,15 +152,25 @@
         <exec executable="Rscript">
             <arg path="R/preprocess-scenario-3-part-b.R" />
         </exec>
-        <!-- <exec executable="Rscript">
-             <arg path="R/preprocess-scenario-2-part-c.R" />
-             </exec> -->
+        <exec executable="Rscript">
+            <arg path="R/preprocess-scenario-3-part-c.R" />
+        </exec>
     </target>
 
     <target name="scenario-3-mcmc">
         <exec executable="bash">
-            <arg path="run-mcmc-scenario-3.sh" />
-            <arg line="30" />
+            <arg path="scripts/run-mcmc-scenario-3-1.sh" />
+            <arg line="100" />
+        </exec>
+        <exec executable="bash">
+            <arg path="scripts/run-mcmc-scenario-3-2.sh" />
+            <arg line="100" />
+        </exec>
+    </target>
+
+    <target name="scenario-3-postprocess">
+        <exec executable="Rscript">
+            <arg path="R/postprocess-scenario-3-part-a.R" />
         </exec>
     </target>
 

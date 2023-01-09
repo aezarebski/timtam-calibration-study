@@ -8,8 +8,8 @@ suppressPackageStartupMessages(library(stringr))
 suppressPackageStartupMessages(library(xml2))
 set.seed(1)
 
-make_timtam <- function(recon_tree_file, occurrence_txt_file, fasta_file, output_xml) {
-  timtam <- read_xml("timtam-scenario-3-empty.xml")
+make_timtam <- function(recon_tree_file, occurrence_txt_file, fasta_file, input_xml) {
+  timtam <- read_xml(input_xml)
   data_node <- xml_find_first(timtam, xpath = "//data")
   trait_node <- xml_find_first(timtam, xpath = "//trait[@id=\"dateTrait.t\"]")
   tree_node <- xml_find_first(timtam, xpath = "//init[@id=\"NewickTree.t\"]")
@@ -40,7 +40,7 @@ make_timtam <- function(recon_tree_file, occurrence_txt_file, fasta_file, output
   return(timtam)
 }
 
-remaster_node <- "remaster-scenario-3.xml" |> read_xml()
+remaster_node <- "xml/remaster-scenario-3.xml" |> read_xml()
 num_replicates <- remaster_node |>
   xml_find_first("//run") |>
   xml_attr("nSims") |>
@@ -52,6 +52,22 @@ for (ix in seq.int(num_replicates)) {
   fasta_file <- str_interp("out/s3/sequences-scenario-3-sample-$[03d]{ix}.fasta")
   output_xml <- str_interp("out/s3/timtam-scenario-3-sample-$[03d]{ix}.xml")
 
-  timtam <- make_timtam(recon_tree_file, occurrence_txt_file, fasta_file, output_xml)
-  write_xml(timtam, output_xml)
+  write_xml(
+    make_timtam(
+      recon_tree_file,
+      occurrence_txt_file,
+      fasta_file,
+      "xml/timtam-scenario-3-1-empty.xml"
+    ),
+    str_interp("out/s3/timtam-scenario-3-1-sample-$[03d]{ix}.xml")
+  )
+  write_xml(
+    make_timtam(
+      recon_tree_file,
+      occurrence_txt_file,
+      fasta_file,
+      "xml/timtam-scenario-3-2-empty.xml"
+    ),
+    str_interp("out/s3/timtam-scenario-3-2-sample-$[03d]{ix}.xml")
+  )
 }
