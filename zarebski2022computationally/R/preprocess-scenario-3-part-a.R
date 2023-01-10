@@ -66,8 +66,27 @@ annotated_tree_and_seqs <- function(recon_tree, sim_data) {
 
 ## =============================================================================
 
+omega_and_nu_strings <- function(sim_data, sim_duration) {
+
+  as_ssv_str <- function(xs) {
+    paste0(as.character(xs), collapse = " ")
+  }
+
+  omega_mask <- c(0, diff(sim_data$Omega)) == 1
+  omega_times <- sim_duration - sim_data[omega_mask, ]$t
+  omega_str <- as_ssv_str(omega_times)
+  nu_tbl <- table(floor(sim_duration - sim_data[omega_mask, ]$t))
+  nu_ints <- as_ssv_str(as.integer(nu_tbl))
+  nu_times <- as_ssv_str(as.integer(names(nu_tbl)) + 0.5)
+  list(omega = omega_str,
+       nu_times = nu_times,
+       nu_counts = nu_ints)
+}
+
+## =============================================================================
 
 sim_log_lines <- tail(readLines("out/s3/remaster-scenario-3.log"), -1)
+
 sim_dfs <- sim_log_lines |>
   map(process_log_line) |>
   bind_rows()
@@ -96,23 +115,26 @@ sim_duration <- remaster_node |>
   xml_attr("maxTime") |>
   as.numeric()
 
-write.table(x = filter(sim_dfs, t == sim_duration),
-            file = "out/s3/final-simulation-state.csv",
-            sep = ",",
-            row.names = FALSE)
+write.table(
+  x = filter(sim_dfs, t == sim_duration),
+  file = "out/s3/final-simulation-state.csv",
+  sep = ",",
+  row.names = FALSE
+)
 
 for (ix in seq.int(num_samples)) {
   sim_data <- filter(sim_dfs, sample == as.character(ix - 1))
   tmp <- annotated_tree_and_seqs(recon_trees[[ix]], sim_data)
+  om_and_nu <- omega_and_nu_strings(sim_data, sim_duration)
 
-  omega_mask <- c(0, diff(sim_data$Omega)) == 1
-  omega_str <- paste0(
-    as.character(sim_duration - sim_data[omega_mask, ]$t),
-    collapse = " "
+  writeLines(
+    text = om_and_nu$omega,
+    con = str_interp("out/s3/occurrence-times-scenario-3-sample-$[03d]{ix}.ssv")
   )
   writeLines(
-    text = omega_str,
-    con = str_interp("out/s3/occurrence-times-scenario-3-sample-$[03d]{ix}.ssv")
+    text = c(om_and_nu$nu_times, om_and_nu$nu_counts),
+    con = str_interp(
+      "out/s3/nu-times-and-counts-scenario-3-sample-$[03d]{ix}.ssv")
   )
 
   write.phyDat(
