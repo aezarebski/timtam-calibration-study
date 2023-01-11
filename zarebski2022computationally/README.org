@@ -68,3 +68,8 @@ Assuming birth-death model is correctly specified and only estimating the rates.
 
 Assuming birth-death model is correctly specified and estimating both the rates
 and the prevalence just after the last sample (at time \(-0.01\)).
+
+*** Analysis 3
+
+Use the canonical parameterisation but aggregate the occurrence data into daily
+counts.
