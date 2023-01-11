@@ -35,7 +35,7 @@
 
     <map name="OneOnX">beast.base.inference.distribution.OneOnX</map>
 
-    <run id="mcmc" spec="MCMC" chainLength="500000">
+    <run id="mcmc" spec="MCMC" chainLength="50000">
         <state id="state" spec="State" storeEvery="5000">
             <tree id="Tree.t" spec="beast.base.evolution.tree.Tree" name="stateNode">
                 <trait id="dateTrait.t" spec="beast.base.evolution.tree.TraitSet" traitname="date" value="">
@@ -49,6 +49,7 @@
             <parameter id="TTBirthRateChangeTimes.t" spec="parameter.RealParameter" name="stateNode">14.0</parameter>
             <parameter id="TTSamplingRate.t" spec="parameter.RealParameter" name="stateNode">0.025</parameter>
             <parameter id="TTNuProb.t" spec="parameter.RealParameter" name="stateNode">0.075</parameter>
+            <parameter id="HistorySizes.t" spec="parameter.IntegerParameter" name="stateNode" lower="0">20</parameter>
         </state>
 
         <init id="NewickTree.t" spec="beast.base.evolution.tree.TreeParser" IsLabelledNewick="true" adjustTipHeights="false" adjustTreeNodeHeights="false" estimate="false" initial="@Tree.t" newick="" taxa="@sequences" />
@@ -62,11 +63,13 @@
                               conditionOnObservation="false"
                               psi="@TTSamplingRate.t"
                               nu="@TTNuProb.t"
-                              tree="@Tree.t">
+                              tree="@Tree.t"
+                              historySizes="@HistorySizes.t">
                     <parameter id="TTRecoveryRate.t" spec="parameter.RealParameter" estimate="false" name="mu">0.046</parameter>
                     <parameter id="TTOriginTime.t" spec="parameter.RealParameter" estimate="false" name="originTime">56.0</parameter>
                     <parameter id="DisasterTimes.t" spec="parameter.RealParameter" estimate="false" name="disasterTimes"></parameter>
                     <disasterSizes id="DisasterSizes.t" spec="parameter.IntegerParameter" estimate="false"></disasterSizes>
+                    <parameter id="HistoryTimes.t" spec="parameter.RealParameter" estimate="false" name="historyTimes">-0.01</parameter>
                 </distribution>
                 <prior id="TTBirthRatePrior.t" name="distribution" x="@TTBirthRate.t">
                     <LogNormal id="LogNormalDistributionModel.0" name="distr">
@@ -93,14 +96,17 @@
         </operator>
 
         <operator id="TTNuProbWalk.t" spec="operator.RealRandomWalkOperator" parameter="@TTNuProb.t" weight="1.0" windowSize="0.01" />
+        <operator id="TTHistorySizesWalk.t:sample-sequences" spec="operator.IntRandomWalkOperator" parameter="@HistorySizes.t" weight="3.0" windowSize="10"/>
 
         <logger id="tracelog" spec="Logger" fileName="out/s3/$(filebase).log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior" />
             <log idref="TTBirthRate.t" />
             <log idref="TTSamplingRate.t" />
             <log idref="TTNuProb.t" />
+            <log idref="HistorySizes.t" />
         </logger>
         <logger id="screenlog" spec="Logger" logEvery="1000">
+            <log idref="TTBirthRate.t" />
             <log idref="posterior" />
         </logger>
         <operatorschedule id="OperatorSchedule" spec="OperatorSchedule" autoOptimize="false" />
