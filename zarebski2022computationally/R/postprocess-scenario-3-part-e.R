@@ -195,20 +195,20 @@ display(result) <- xdisplay(result)
 print(result, include.rownames = FALSE)
 
 ## % latex table generated in R 4.2.1 by xtable 1.8-4 package
-## % Wed Jan 11 15:13:01 2023
+## % Wed Jan 11 15:52:44 2023
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{lrrrrrr}
 ##   \hline
 ## parameter & true & median & error & bias & ci\_width & ci\_percent \\
 ##   \hline
-## birth rate 1 & 0.185 & 0.183 & 0.118 & -0.013 & 0.525 & 94 \\
-##   birth rate 2 & 0.092 & 0.094 & 0.334 & 0.019 & 1.294 & 91 \\
-##   sampling rate & 0.008 & 0.010 & 0.357 & 0.305 & 2.030 & 89 \\
-##   approximate occurrence rate & 0.046 & 0.051 & 0.277 & 0.113 & 1.140 & 95 \\
-##   R effective 1 & 1.850 & 1.674 & 0.199 & -0.095 & 0.622 & 86 \\
-##   R effective 2 & 0.925 & 0.884 & 0.305 & -0.044 & 1.126 & 96 \\
-##   prevalence & 0.000 &  & 0.360 & 0.000 &  & 93 \\
+## birth rate 1 & 0.185 & 0.185 & 0.121 & -0.001 & 0.525 & 95 \\
+##   birth rate 2 & 0.092 & 0.092 & 0.333 & -0.001 & 1.387 & 93 \\
+##   sampling rate & 0.008 & 0.010 & 0.347 & 0.264 & 1.945 & 91 \\
+##   approximate occurrence rate & 0.046 & 0.052 & 0.267 & 0.133 & 1.189 & 97 \\
+##   R effective 1 & 1.850 & 1.676 & 0.191 & -0.094 & 0.657 & 89 \\
+##   R effective 2 & 0.925 & 0.869 & 0.292 & -0.061 & 1.162 & 96 \\
+##   prevalence & 0.000 &  & 0.367 & -0.050 &  & 100 \\
 ##    \hline
 ## \end{tabular}
 ## \end{table}
