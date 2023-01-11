@@ -76,11 +76,23 @@ omega_and_nu_strings <- function(sim_data, sim_duration) {
   omega_times <- sim_duration - sim_data[omega_mask, ]$t
   omega_str <- as_ssv_str(omega_times)
   nu_tbl <- table(floor(sim_duration - sim_data[omega_mask, ]$t))
-  nu_ints <- as_ssv_str(as.integer(nu_tbl))
-  nu_times <- as_ssv_str(as.integer(names(nu_tbl)) + 0.5)
+  nu_ints <- as.integer(nu_tbl)
+  nu_times <- as.integer(names(nu_tbl)) + 0.5
+
+  tmp <-
+    data.frame(
+      nu_times = seq(from = 0, to = sim_duration - 1, by = 1.0) + 0.5,
+      nu_default = 0
+    ) |>
+    left_join(
+      data.frame(nu_times = nu_times, nu_ints = nu_ints),
+      by = "nu_times"
+    ) |>
+    mutate(nu_int_full = ifelse(is.na(nu_ints), nu_default, nu_ints))
+
   list(omega = omega_str,
-       nu_times = nu_times,
-       nu_counts = nu_ints)
+       nu_times = as_ssv_str(tmp$nu_times),
+       nu_counts = as_ssv_str(tmp$nu_int_full))
 }
 
 ## =============================================================================

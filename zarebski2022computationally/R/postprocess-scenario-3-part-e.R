@@ -110,14 +110,14 @@ log_file_summary <- function(log_file, params) {
       b_occurrence_rate = bias(params$or, ApproxOmegaRate),
       b_reff_1 = bias(true_reff_1, TTREff1),
       b_reff_2 = bias(true_reff_2, TTREff2),
-      ## b_prev = bias(final_prev, HistorySizes),
+      b_prev = bias(final_prev, HistorySizes),
       e_birth_rate_1 = error(params$br1, TTBirthRate.1),
       e_birth_rate_2 = error(params$br2, TTBirthRate.2),
       e_sampling_rate = error(params$sr, TTSamplingRate),
       e_occurrence_rate = error(params$or, ApproxOmegaRate),
       e_reff_1 = error(true_reff_1, TTREff1),
       e_reff_2 = error(true_reff_2, TTREff2),
-      ## e_prev = error(final_prev, HistorySizes),
+      e_prev = error(final_prev, HistorySizes),
       w_birth_rate_1 = ci_width(params$br1, TTBirthRate.1),
       w_birth_rate_2 = ci_width(params$br2, TTBirthRate.2),
       w_sampling_rate = ci_width(params$sr, TTSamplingRate),
@@ -130,7 +130,7 @@ log_file_summary <- function(log_file, params) {
       in_ci_occurrence_rate = in_ci(params$or, ApproxOmegaRate),
       in_ci_reff_1 = in_ci(true_reff_1, TTREff1),
       in_ci_reff_2 = in_ci(true_reff_2, TTREff2),
-      ## in_ci_prev = in_ci(final_prev, HistorySizes),
+      in_ci_prev = in_ci(final_prev, HistorySizes),
       log_file = log_file
     )
   })
@@ -147,39 +147,42 @@ result <- with(replicate_summaries, {
     parameter = c(
       "birth rate 1", "birth rate 2",
       "sampling rate", "approximate occurrence rate",
-      "R effective 1", "R effective 2"
-      ## "prevalence"
+      "R effective 1", "R effective 2",
+      "prevalence"
     ),
-    true = with(params, c(br1, br2, sr, or, br1/(dr+sr+or), br2/(dr+sr+or))),
+    true = with(
+      params,
+      c(br1, br2, sr, or, br1/(dr+sr+or), br2/(dr+sr+or), hs)
+    ),
     median = c(
       median(m_birth_rate_1), median(m_birth_rate_2),
       median(m_sampling_rate), median(m_occurrence_rate),
-      median(m_reff_1), median(m_reff_2)
-      ## NA
+      median(m_reff_1), median(m_reff_2),
+      NA
     ),
     error = c(
       median(e_birth_rate_1), median(e_birth_rate_2),
       median(e_sampling_rate), median(e_occurrence_rate),
-      median(e_reff_1), median(e_reff_2)
-      ## median(e_prev)
+      median(e_reff_1), median(e_reff_2),
+      median(e_prev)
     ),
     bias = c(
       median(b_birth_rate_1), median(b_birth_rate_2),
       median(b_sampling_rate), median(b_occurrence_rate),
-      median(b_reff_1), median(b_reff_2)
-      ## median(b_prev)
+      median(b_reff_1), median(b_reff_2),
+      median(b_prev)
     ),
     ci_width = c(
       median(w_birth_rate_1), median(w_birth_rate_2),
       median(w_sampling_rate), median(w_occurrence_rate),
-      median(w_reff_1), median(w_reff_2)
-      ## NA
+      median(w_reff_1), median(w_reff_2),
+      NA
     ),
     ci_percent = c(
       percent_true(in_ci_birth_rate_1), percent_true(in_ci_birth_rate_2),
       percent_true(in_ci_sampling_rate), percent_true(in_ci_occurrence_rate),
-      percent_true(in_ci_reff_1), percent_true(in_ci_reff_2)
-      ## percent_true(in_ci_prev)
+      percent_true(in_ci_reff_1), percent_true(in_ci_reff_2),
+      percent_true(in_ci_prev)
     )
   )
 })
@@ -192,19 +195,20 @@ display(result) <- xdisplay(result)
 print(result, include.rownames = FALSE)
 
 ## % latex table generated in R 4.2.1 by xtable 1.8-4 package
-## % Wed Jan 11 14:09:07 2023
+## % Wed Jan 11 15:13:01 2023
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{lrrrrrr}
 ##   \hline
 ## parameter & true & median & error & bias & ci\_width & ci\_percent \\
 ##   \hline
-## birth rate 1 & 0.185 & 0.176 & 0.130 & -0.050 & 0.549 & 92 \\
-##   birth rate 2 & 0.092 & 0.115 & 0.381 & 0.239 & 1.609 & 90 \\
-##   sampling rate & 0.008 & 0.012 & 0.500 & 0.486 & 2.039 & 85 \\
-##   approximate occurrence rate & 0.046 & 0.087 & 0.900 & 0.900 & 1.901 & 44 \\
-##   R effective 1 & 1.850 & 1.257 & 0.332 & -0.321 & 0.491 & 49 \\
-##   R effective 2 & 0.925 & 0.777 & 0.249 & -0.160 & 0.980 & 98 \\
+## birth rate 1 & 0.185 & 0.183 & 0.118 & -0.013 & 0.525 & 94 \\
+##   birth rate 2 & 0.092 & 0.094 & 0.334 & 0.019 & 1.294 & 91 \\
+##   sampling rate & 0.008 & 0.010 & 0.357 & 0.305 & 2.030 & 89 \\
+##   approximate occurrence rate & 0.046 & 0.051 & 0.277 & 0.113 & 1.140 & 95 \\
+##   R effective 1 & 1.850 & 1.674 & 0.199 & -0.095 & 0.622 & 86 \\
+##   R effective 2 & 0.925 & 0.884 & 0.305 & -0.044 & 1.126 & 96 \\
+##   prevalence & 0.000 &  & 0.360 & 0.000 &  & 93 \\
 ##    \hline
 ## \end{tabular}
 ## \end{table}
