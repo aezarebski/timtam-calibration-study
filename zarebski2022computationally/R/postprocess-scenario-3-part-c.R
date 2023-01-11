@@ -36,6 +36,26 @@ num_replicates <- remaster_node |>
   xml_attr("nSims") |>
   as.integer()
 
+extract_rate <- function(rate_name) {
+  xpath <- stringr::str_interp("//reaction[@id=\"${rate_name}\"]")
+  remaster_node |>
+    xml_find_first(xpath) |>
+    xml_attr("rate") |>
+    str_split(" ") |>
+    as_vector() |>
+    as.numeric()
+}
+
+params <- list(
+  br1 = extract_rate("lambdaReaction")[1],
+  br2 = extract_rate("lambdaReaction")[2],
+  dr = extract_rate("muReaction"),
+  sr = extract_rate("psiReaction"),
+  or = extract_rate("omegaReaction"),
+  hs = 0,
+  ts_interval = 1.0
+)
+
 log_files <-
   list.files("out/s3", pattern = "*.log", full.names = TRUE) |>
   str_subset("3-2")
@@ -52,9 +72,9 @@ in_ci <- function(x, posts) {
   ci <- quantile(posts, probs = c(0.025, 0.975))
   ci[1] <= x && x <= ci[2]
 }
-ci_width <- function(posts) {
+ci_width <- function(x, posts) {
   ci <- quantile(posts, probs = c(0.025, 0.975))
-  ci[2] - ci[1]
+  (ci[2] - ci[1]) / x
 }
 bias <- function(x, posts) {
   median((posts - x) / x)
@@ -85,10 +105,10 @@ log_file_summary <- function(log_file, params) {
       e_sampling_rate = error(params$sr, TTSamplingRate),
       e_occurrence_rate = error(params$or, TTOmegaRate),
       e_prev = error(final_prev, HistorySizes),
-      w_birth_rate_1 = ci_width(TTBirthRate.1),
-      w_birth_rate_2 = ci_width(TTBirthRate.2),
-      w_sampling_rate = ci_width(TTSamplingRate),
-      w_occurrence_rate = ci_width(TTOmegaRate),
+      w_birth_rate_1 = ci_width(params$br1, TTBirthRate.1),
+      w_birth_rate_2 = ci_width(params$br2, TTBirthRate.2),
+      w_sampling_rate = ci_width(params$sr, TTSamplingRate),
+      w_occurrence_rate = ci_width(params$or, TTOmegaRate),
       in_ci_birth_rate_1 = in_ci(params$br1, TTBirthRate.1),
       in_ci_birth_rate_2 = in_ci(params$br2, TTBirthRate.2),
       in_ci_sampling_rate = in_ci(params$sr, TTSamplingRate),
@@ -99,8 +119,8 @@ log_file_summary <- function(log_file, params) {
   })
 }
 
-params <- list(br1 = 0.185, br2 = 0.0925, sr = 0.008, or = 0.046, hs = 0)
-replicate_summaries <- map(log_files, \(lf) log_file_summary(lf, params)) |> bind_rows()
+replicate_summaries <- map(log_files, \(lf) log_file_summary(lf, params)) |>
+  bind_rows()
 
 result <- with(replicate_summaries, {
   percent_true <- function(bs) {
@@ -112,7 +132,7 @@ result <- with(replicate_summaries, {
       "sampling rate", "occurrence rate",
       "prevalence"
     ),
-    true = as_vector(params),
+    true = with(params, c(br1, br2, sr, or, hs)),
     median = c(
       median(m_birth_rate_1), median(m_birth_rate_2),
       median(m_sampling_rate), median(m_occurrence_rate),
@@ -149,17 +169,17 @@ display(result) <- xdisplay(result)
 print(result, include.rownames = FALSE)
 
 ## % latex table generated in R 4.2.1 by xtable 1.8-4 package
-## % Mon Jan  9 14:44:55 2023
+## % Wed Jan 11 14:14:25 2023
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{lrrrrrr}
 ##   \hline
 ## parameter & true & median & error & bias & ci\_width & ci\_percent \\
 ##   \hline
-## birth rate 1 & 0.1850 & 0.1851 & 0.117 & 0.000 & 0.0945 & 94 \\
-##   birth rate 2 & 0.0925 & 0.0948 & 0.334 & 0.025 & 0.1273 & 96 \\
-##   sampling rate & 0.0080 & 0.0103 & 0.339 & 0.289 & 0.0145 & 92 \\
-##   occurrence rate & 0.0460 & 0.0525 & 0.248 & 0.141 & 0.0557 & 97 \\
+## birth rate 1 & 0.1850 & 0.1851 & 0.117 & 0.000 & 0.511 & 94 \\
+##   birth rate 2 & 0.0925 & 0.0948 & 0.334 & 0.025 & 1.376 & 96 \\
+##   sampling rate & 0.0080 & 0.0103 & 0.339 & 0.289 & 1.816 & 92 \\
+##   occurrence rate & 0.0460 & 0.0525 & 0.248 & 0.141 & 1.212 & 97 \\
 ##   prevalence & 0.0000 &  & 0.345 & -0.046 &  & 98 \\
 ##    \hline
 ## \end{tabular}
