@@ -36,6 +36,26 @@ num_replicates <- remaster_node |>
   xml_attr("nSims") |>
   as.integer()
 
+extract_rate <- function(rate_name) {
+  xpath <- stringr::str_interp("//reaction[@id=\"${rate_name}\"]")
+  remaster_node |>
+    xml_find_first(xpath) |>
+    xml_attr("rate") |>
+    str_split(" ") |>
+    as_vector() |>
+    as.numeric()
+}
+
+params <- list(
+  br1 = extract_rate("lambdaReaction")[1],
+  br2 = extract_rate("lambdaReaction")[2],
+  dr = extract_rate("muReaction"),
+  sr = extract_rate("psiReaction"),
+  or = extract_rate("omegaReaction"),
+  hs = 0,
+  ts_interval = 1.0
+)
+
 log_files <-
   list.files("out/s3", pattern = "*.log", full.names = TRUE) |>
   str_subset("3-3")
@@ -52,9 +72,9 @@ in_ci <- function(x, posts) {
   ci <- quantile(posts, probs = c(0.025, 0.975))
   ci[1] <= x && x <= ci[2]
 }
-ci_width <- function(posts) {
+ci_width <- function(x, posts) {
   ci <- quantile(posts, probs = c(0.025, 0.975))
-  ci[2] - ci[1]
+  (ci[2] - ci[1]) / x
 }
 bias <- function(x, posts) {
   median((posts - x) / x)
@@ -98,12 +118,12 @@ log_file_summary <- function(log_file, params) {
       e_reff_1 = error(true_reff_1, TTREff1),
       e_reff_2 = error(true_reff_2, TTREff2),
       ## e_prev = error(final_prev, HistorySizes),
-      w_birth_rate_1 = ci_width(TTBirthRate.1),
-      w_birth_rate_2 = ci_width(TTBirthRate.2),
-      w_sampling_rate = ci_width(TTSamplingRate),
-      w_occurrence_rate = ci_width(ApproxOmegaRate),
-      w_reff_1 = ci_width(TTREff1),
-      w_reff_2 = ci_width(TTREff2),
+      w_birth_rate_1 = ci_width(params$br1, TTBirthRate.1),
+      w_birth_rate_2 = ci_width(params$br2, TTBirthRate.2),
+      w_sampling_rate = ci_width(params$sr, TTSamplingRate),
+      w_occurrence_rate = ci_width(params$or, ApproxOmegaRate),
+      w_reff_1 = ci_width(true_reff_1, TTREff1),
+      w_reff_2 = ci_width(true_reff_2, TTREff2),
       in_ci_birth_rate_1 = in_ci(params$br1, TTBirthRate.1),
       in_ci_birth_rate_2 = in_ci(params$br2, TTBirthRate.2),
       in_ci_sampling_rate = in_ci(params$sr, TTSamplingRate),
@@ -116,15 +136,6 @@ log_file_summary <- function(log_file, params) {
   })
 }
 
-params <- list(
-  br1 = 0.185,
-  br2 = 0.0925,
-  dr = 0.046,
-  sr = 0.008,
-  or = 0.046,
-  hs = 0,
-  ts_interval = 1.0
-)
 replicate_summaries <- map(log_files, \(lf) log_file_summary(lf, params)) |>
   bind_rows()
 
@@ -181,6 +192,22 @@ display(result) <- xdisplay(result)
 print(result, include.rownames = FALSE)
 
 ## % latex table generated in R 4.2.1 by xtable 1.8-4 package
+## % Wed Jan 11 14:09:07 2023
+## \begin{table}[ht]
+## \centering
+## \begin{tabular}{lrrrrrr}
+##   \hline
+## parameter & true & median & error & bias & ci\_width & ci\_percent \\
+##   \hline
+## birth rate 1 & 0.185 & 0.176 & 0.130 & -0.050 & 0.549 & 92 \\
+##   birth rate 2 & 0.092 & 0.115 & 0.381 & 0.239 & 1.609 & 90 \\
+##   sampling rate & 0.008 & 0.012 & 0.500 & 0.486 & 2.039 & 85 \\
+##   approximate occurrence rate & 0.046 & 0.087 & 0.900 & 0.900 & 1.901 & 44 \\
+##   R effective 1 & 1.850 & 1.257 & 0.332 & -0.321 & 0.491 & 49 \\
+##   R effective 2 & 0.925 & 0.777 & 0.249 & -0.160 & 0.980 & 98 \\
+##    \hline
+## \end{tabular}
+## \end{table}
 
 
 #' Hypothesis test on the binomial probability.

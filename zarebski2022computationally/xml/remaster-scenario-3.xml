@@ -13,10 +13,10 @@
                 <population id="Mu" spec="RealParameter" value="0" />
                 <population id="Omega" spec="RealParameter" value="0" />
 
-                <reaction spec="Reaction" rate="0.185 0.0925" changeTimes="42" >X -> 2X</reaction>
-                <reaction spec="Reaction" rate="0.008">X -> Psi</reaction>
-                <reaction spec="Reaction" rate="0.046">X -> Mu</reaction>
-                <reaction spec="Reaction" rate="0.046">X -> Omega</reaction>
+                <reaction id="lambdaReaction" spec="Reaction" rate="0.185 0.0925" changeTimes="42" >X -> 2X</reaction>
+                <reaction id="psiReaction" spec="Reaction" rate="0.008">X -> Psi</reaction>
+                <reaction id="muReaction" spec="Reaction" rate="0.046">X -> Mu</reaction>
+                <reaction id="omegaReaction" spec="Reaction" rate="0.046">X -> Omega</reaction>
 
                 <!-- We can force a single sample at the end of the simulation to simplify the analysis. -->
                 <reaction spec="PunctualReaction" n="1" times="56">X -> Psi</reaction>
