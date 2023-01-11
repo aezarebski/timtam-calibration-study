@@ -159,12 +159,19 @@
 
     <target name="scenario-3-mcmc">
         <exec executable="bash">
-            <arg path="scripts/run-mcmc-scenario-3-1.sh" />
+            <arg path="scripts/run-mcmc-scenario-3.sh" />
             <arg line="100" />
+            <arg line="1" />
         </exec>
         <exec executable="bash">
-            <arg path="scripts/run-mcmc-scenario-3-2.sh" />
+            <arg path="scripts/run-mcmc-scenario-3.sh" />
             <arg line="100" />
+            <arg line="2" />
+        </exec>
+        <exec executable="bash">
+            <arg path="scripts/run-mcmc-scenario-3.sh" />
+            <arg line="100" />
+            <arg line="3" />
         </exec>
     </target>
 
@@ -177,6 +184,9 @@
         </exec>
         <exec executable="Rscript">
             <arg path="R/postprocess-scenario-3-part-c.R" />
+        </exec>
+        <exec executable="Rscript">
+            <arg path="R/postprocess-scenario-3-part-d.R" />
         </exec>
     </target>
 

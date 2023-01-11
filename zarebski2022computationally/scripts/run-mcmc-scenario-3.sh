@@ -3,10 +3,10 @@
 # Usage
 # =====
 #
-# If there are 50 replicates to run, execute this script with the following
-# command:
+# If there are 50 replicates to run for the second analysis, execute this script
+# with the following command:
 #
-# $ bash run-mcmc-scenario-3.sh 50
+# $ bash run-mcmc-scenario-3.sh 50 2
 #
 
 CHUNK_SIZE=10                   # the number of processes in each chunk
@@ -16,6 +16,8 @@ LIMIT=$((NUM_REPLICATES+1))
 
 OUTER_LIMIT="$((LIMIT-CHUNK_SIZE))"
 
+ANALYSIS_NUM=$2
+
 while [ $IX -le $OUTER_LIMIT ]
 do
     PIDS=()
@@ -23,7 +25,7 @@ do
     while [ $IX -lt $CHUNK_LIMIT ]
     do
 	      PADDED_NUM=$(printf "%03d" $IX) # because we want zero padded numbers
-        ant -DbeastXML=out/s3/timtam-scenario-3-2-sample-"$PADDED_NUM".xml mcmc & PIDS+=($!)
+        ant -DbeastXML=out/s3/timtam-scenario-3-"$ANALYSIS_NUM"-sample-"$PADDED_NUM".xml mcmc & PIDS+=($!)
 	      ((IX++))
     done
     wait "${PIDS[@]}"
