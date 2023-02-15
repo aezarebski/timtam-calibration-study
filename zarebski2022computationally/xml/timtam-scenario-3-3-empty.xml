@@ -35,7 +35,7 @@
 
     <map name="OneOnX">beast.base.inference.distribution.OneOnX</map>
 
-    <run id="mcmc" spec="MCMC" chainLength="500000">
+    <run id="mcmc" spec="MCMC" chainLength="$(chainLength=500000)">
         <state id="state" spec="State" storeEvery="5000">
             <tree id="Tree.t" spec="beast.base.evolution.tree.Tree" name="stateNode">
                 <trait id="dateTrait.t" spec="beast.base.evolution.tree.TraitSet" traitname="date" value="">
