@@ -87,10 +87,11 @@ make_timtam_aggregated <- function(recon_tree_file, timeseries_txt_file,
   return(timtam)
 }
 
-remaster_node <- "xml/remaster-scenario-3.xml" |> read_xml()
-num_replicates <- remaster_node |>
-  xml_find_first("//run") |>
-  xml_attr("nSims") |>
+remaster_node <- read_xml("xml/remaster-scenario-3.xml")
+build_node <- read_xml("build.xml")
+num_replicates <- build_node |>
+  xml_find_first(xpath = "//property[@name='numSims']") |>
+  xml_attr("value") |>
   as.integer()
 
 for (ix in seq.int(num_replicates)) {
