@@ -101,3 +101,13 @@ ggsave(
   height = 14.8, width = 21.0,
   units = "cm"
 )
+
+total_confirmed_df <- data_size_df |>
+  group_by(replicate_num) |>
+  summarise(total_confirmed = sum(value)) |>
+  as.data.frame()
+
+write.table(x = total_confirmed_df,
+            file = "out/s3/total-number-confirmed-cases.csv",
+            sep = ",",
+            row.names = FALSE)
