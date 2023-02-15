@@ -11,6 +11,7 @@ suppressPackageStartupMessages(library(coda))
 suppressPackageStartupMessages(library(reshape2))
 set.seed(1)
 
+truth_col_hex <- "#7fc97f"
 ix <- 1
 
 read_mcmc <- function(log_file) {
@@ -62,7 +63,7 @@ summary_gg <- function(plot_df, true_value, name, hline_col="black") {
         shape = fns_1 < true_value & true_value < fns_5
       )
     ) +
-    geom_hline(yintercept = true_value, linetype = "dashed", colour = hline_col) +
+    geom_hline(yintercept = true_value, linetype = "dashed", colour = hline_col, size = 1.0) +
     labs(x = NULL, y = name, shape = "Contains true value") +
     scale_shape_manual(breaks = c(FALSE, TRUE), values = c(1, 16)) +
     scale_linetype_manual(breaks = c(FALSE, TRUE), values = c("dashed", "solid")) +
@@ -193,7 +194,8 @@ history_size_gg <-
       x = order(sorted_replicate),
       y = prevalence
     ),
-    colour = "red"
+    colour = truth_col_hex,
+    size = 2.5
   ) +
   scale_y_log10() +
   labs(x = NULL, y = "Prevalence", shape = "Contains true value") +
@@ -208,7 +210,7 @@ r0_1_df <- comb_est_df |>
   filter(variable == "R0.1")
 r0_1_df$sorted_replicate <- history_sizes_df$sorted_replicate
 
-r0_1_gg <- summary_gg(r0_1_df, 1.85, "Reproduction number 1", hline_col="red") +
+r0_1_gg <- summary_gg(r0_1_df, 1.85, "Reproduction number 1", hline_col=truth_col_hex) +
   theme(legend.position = "NONE")
 
 ## =============================================================================
@@ -218,7 +220,7 @@ r0_2_df <- comb_est_df |>
   mutate(sorted_replicate = order(fns_3))
 r0_2_df$sorted_replicate <- history_sizes_df$sorted_replicate
 
-r0_2_gg <- summary_gg(r0_2_df, 0.925, "Reproduction number 2", hline_col="red") +
+r0_2_gg <- summary_gg(r0_2_df, 0.925, "Reproduction number 2", hline_col=truth_col_hex) +
   theme(legend.position = "NONE")
 
 
