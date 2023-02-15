@@ -31,9 +31,10 @@ read_beast2_log <- function(filename, burn = 0, take_last = NA) {
 }
 
 remaster_node <- "xml/remaster-scenario-3.xml" |> read_xml()
-num_replicates <- remaster_node |>
-  xml_find_first("//run") |>
-  xml_attr("nSims") |>
+build_node <- read_xml("build.xml")
+num_replicates <- build_node |>
+  xml_find_first(xpath = "//property[@name='numSims']") |>
+  xml_attr("value") |>
   as.integer()
 
 extract_rate <- function(rate_name) {

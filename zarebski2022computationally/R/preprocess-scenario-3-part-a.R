@@ -108,6 +108,19 @@ num_samples <- sim_dfs |>
   unique() |>
   length()
 
+with(
+  list(build_node = read_xml("build.xml")),
+  {
+    num_sims <- build_node |>
+      xml_find_first(xpath = "//property[@name='numSims']") |>
+      xml_attr("value") |>
+      as.integer()
+    if (num_sims != num_samples) {
+      stop("The number of simulations found in the log file does not match the number requested in build.xml") # nolint
+    }
+  }
+)
+
 write.table(
   x = sim_dfs,
   file = "out/s3/trajectories-scenario-3.csv",

@@ -67,10 +67,11 @@ summary_gg <- function(plot_df, true_value, name) {
 
 ## =============================================================================
 
-remaster_node <- "xml/remaster-scenario-3.xml" |> read_xml()
-num_replicates <- remaster_node |>
-  xml_find_first("//run") |>
-  xml_attr("nSims") |>
+remaster_node <- read_xml("xml/remaster-scenario-3.xml")
+build_node <- read_xml("build.xml")
+num_replicates <- build_node |>
+  xml_find_first(xpath = "//property[@name='numSims']") |>
+  xml_attr("value") |>
   as.integer()
 
 summary_list <- map(seq.int(num_replicates), \(ix) make_summary(read_mcmc(str_interp("out/s3/timtam-scenario-3-1-sample-$[03d]{ix}.log")), ix))

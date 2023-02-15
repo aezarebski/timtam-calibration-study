@@ -18,6 +18,8 @@ OUTER_LIMIT="$((LIMIT-CHUNK_SIZE))"
 
 ANALYSIS_NUM=$2
 
+CHAIN_LEN=$3
+
 while [ $IX -le $OUTER_LIMIT ]
 do
     PIDS=()
@@ -25,7 +27,7 @@ do
     while [ $IX -lt $CHUNK_LIMIT ]
     do
 	      PADDED_NUM=$(printf "%03d" $IX) # because we want zero padded numbers
-        ant -DbeastXML=out/s3/timtam-scenario-3-"$ANALYSIS_NUM"-sample-"$PADDED_NUM".xml mcmc & PIDS+=($!)
+        ant -DchainLength=$CHAIN_LEN -DbeastXML=out/s3/timtam-scenario-3-"$ANALYSIS_NUM"-sample-"$PADDED_NUM".xml mcmc & PIDS+=($!)
 	      ((IX++))
     done
     wait "${PIDS[@]}"

@@ -80,11 +80,12 @@ data_size_2_gg <-
     data = data_size_df,
     mapping = aes(
       x = value,
-      y = ..density..,
+      y = after_stat(density),
       fill = variable,
       colour = variable
     ),
-    alpha = 0.2
+    alpha = 0.2,
+    bins = 30
   ) +
   geom_vline(
     data = tmp_1,
@@ -94,7 +95,19 @@ data_size_2_gg <-
   facet_wrap(~variable) +
     theme_bw()
 
-ggsave(filename = "out/s3/plots/dataset-size-2.png",
-       plot = data_size_2_gg,
-       height = 14.8, width = 21.0,
-       units = "cm")
+ggsave(
+  filename = "out/s3/plots/dataset-size-2.png",
+  plot = data_size_2_gg,
+  height = 14.8, width = 21.0,
+  units = "cm"
+)
+
+total_confirmed_df <- data_size_df |>
+  group_by(replicate_num) |>
+  summarise(total_confirmed = sum(value)) |>
+  as.data.frame()
+
+write.table(x = total_confirmed_df,
+            file = "out/s3/total-number-confirmed-cases.csv",
+            sep = ",",
+            row.names = FALSE)

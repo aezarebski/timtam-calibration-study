@@ -1,20 +1,41 @@
+* Running calibration study
 
-#+begin_src bibtex
-@article{zarebski2022computationally,
-  doi =          {10.1371/journal.pcbi.1009805},
-  author =       {Zarebski, Alexander Eugene AND du Plessis, Louis AND Parag,
-                  Kris Varun AND Pybus, Oliver George},
-  journal =      {PLOS Computational Biology},
-  publisher =    {Public Library of Science},
-  title =        {{A} computationally tractable birth-death model that combines
-                  phylogenetic and epidemiological data},
-  year =         2022,
-  month =        02,
-  volume =       18,
-  pages =        {1--22},
-  number =       2
-}
+** Getting help
+
+The computations are coordinated with Ant. To get a list of the various targets
+it knows how to build run the following:
+
+#+begin_src sh
+  ant -p
 #+end_src
+
+** Setting up BEAST2
+
+#+begin_src sh
+  ant setuplib
+#+end_src
+
+Note that this will only set up the relevant BEAST tools. You will still need to
+install the TimTam package via BEAUti.
+
+** Running study
+
+#+begin_src sh
+  ant scenario-3
+#+end_src
+
+The =scenario-3= target carries out the whole computation. This is just a
+wrapper around the sub-targets:
+
+- =scenario-3-remaster= :: Runs the =remaster= simulation.
+- =scenario-3-preprocess= :: Simulates the genetic data and constructs the BEAST
+  XML for the MCMC.
+- =scenario-3-mcmc= :: Runs the MCMC replicates in parallel across several
+  batches.
+- =scenario-3-postprocess= :: Post-processing of posterior samples and figure
+  generation.
+
+The output should appear in the =out/s3= directory.
 
 * Simulation study
 
