@@ -9,6 +9,9 @@
 
     </description>
 
+    <!-- The numSims variable will be used to specify the number of replicates to use -->
+    <property name="numSims" value="20" />
+
     <path id="classpath">
         <fileset dir="lib" includes="**/*.jar" />
     </path>
@@ -141,6 +144,7 @@
             <arg path="lib/beast/bin/beast" />
             <arg line="-seed 1" />
             <arg line="-overwrite" />
+            <arg line="-D 'numSims=${numSims}'" />
             <arg path="xml/remaster-scenario-3.xml" />
         </exec>
     </target>
