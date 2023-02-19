@@ -191,7 +191,7 @@ display(result) <- xdisplay(result)
 print(result, include.rownames = FALSE)
 
 ## % latex table generated in R 4.2.1 by xtable 1.8-4 package
-## % Wed Jan 11 15:53:08 2023
+## % Sun Feb 19 23:32:39 2023
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{lrrrrrr}
