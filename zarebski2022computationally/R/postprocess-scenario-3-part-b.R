@@ -14,7 +14,16 @@ set.seed(1)
 truth_col_hex <- "#7fc97f"
 ix <- 1
 
+remaster_xml <- "xml/remaster-scenario-3.xml"
+if (!file.exists(remaster_xml)) {
+  stop("File does not exist: ", remaster_xml)
+}
+
 read_mcmc <- function(log_file) {
+  ## this should throw a helpful error if the file doesn't exist
+  if (!file.exists(log_file)) {
+    stop("File does not exist: ", log_file)
+  }
   log_file |>
     read.table(comment.char = "#", header = T) |>
     select(-Sample) |> # nolint
@@ -73,7 +82,7 @@ summary_gg <- function(plot_df, true_value, name, hline_col="black") {
 
 ## =============================================================================
 
-remaster_node <- "xml/remaster-scenario-3.xml" |> read_xml()
+remaster_node <- remaster_xml |> read_xml()
 build_node <- read_xml("build.xml")
 num_replicates <- build_node |>
   xml_find_first(xpath = "//property[@name='numSims']") |>
