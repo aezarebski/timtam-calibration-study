@@ -1,3 +1,30 @@
+* Manuscript figures
+
+#+caption:  Figures and files
+| Results figure       | R script that generated it               |
+|----------------------+------------------------------------------|
+| [[fig:true-model]]       | [[file:./R/postprocess-scenario-3-part-b.R]] |
+| [[fig:aggregated-model]] | [[file:./R/postprocess-scenario-3-part-f.R]] |
+| [[fig:sim-correlation]]  | [[file:./R/postprocess-scenario-3-part-g.R]] |
+
+#+caption: The estimates using occurrence data as a point-process.
+#+name: fig:true-model
+#+attr_org: :width 500px
+#+attr_html: :width 400px
+[[./out/s3/plots/combined-r0-prevalence-estimates-s-3-2.png]]
+
+#+caption: The estimates when the occurrences are aggregated into a time series.
+#+name: fig:aggregated-model
+#+attr_org: :width 500px
+#+attr_html: :width 400px
+[[./out/s3/plots/combined-r0-prevalence-estimates-s-3-3.png]]
+
+#+caption: The final size (prevalence) in the simulation and the amount of data.
+#+name: fig:sim-correlation
+#+attr_org: :width 500px
+#+attr_html: :width 400px
+[[./out/s3/plots/prevalence-data-set-size-plot.png]]
+
 * Running calibration study
 
 ** Getting help
