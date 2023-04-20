@@ -9,15 +9,16 @@
 
     </description>
 
-    <!--
-The numSims and the chainLen variables will be used to specify the number of
-replicates to use and the chain length in the MCMC. At the moment there are only
-a couple of valid options as indicated in the commented code.
-    -->
-    <property name="numSims" value="20" />
-    <!-- <property name="numSims" value="100" /> -->
-    <property name="chainLen" value="100000" />
-    <!-- <property name="chainLen" value="10000000" /> -->
+    <!-- The numSims and the chainLen variables will be used to
+         specify the number of replicates to use and the chain length
+         in the MCMC. At the moment there are only a couple of valid
+         options as indicated in the commented code. -->
+
+    <!-- <property name="numSims" value="20" /> -->
+    <!-- <property name="chainLen" value="100000" /> -->
+    <property name="numSims" value="100" />
+    <property name="chainLen" value="10000000" />
+
     <condition property="isSmall" >
         <and>
             <equals arg1="${chainLen}" arg2="100000" />
@@ -180,6 +181,8 @@ a couple of valid options as indicated in the commented code.
         </exec>
     </target>
 
+    <!-- The correct size simulation will run based on the variables
+         that have been defined above. -->
     <target name="scenario-3-mcmc" depends="scenario-3-mcmc-big,scenario-3-mcmc-small"/>
 
     <target if="isBig" name="scenario-3-mcmc-big">
