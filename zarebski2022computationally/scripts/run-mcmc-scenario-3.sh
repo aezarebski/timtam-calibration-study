@@ -3,13 +3,15 @@
 # Usage
 # =====
 #
-# If there are 50 replicates to run for the second analysis, execute this script
-# with the following command:
+# If there are 50 replicates to run for the second analysis, execute
+# this script with the following command:
 #
 # $ bash run-mcmc-scenario-3.sh 50 2
 #
 
-CHUNK_SIZE=10                   # the number of processes in each chunk
+# The `CHUNK_SIZE' is the variable you should edit based on your
+# machine.
+CHUNK_SIZE=10                   # the number of processes per chunk
 NUM_REPLICATES=${1:-50}         # the total number of processes
 IX=1                            # the number to start on
 LIMIT=$((NUM_REPLICATES+1))

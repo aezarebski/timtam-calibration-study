@@ -188,27 +188,9 @@ result <- xtable(result)
 align(result) <- xalign(result)
 digits(result) <- xdigits(result, zap = 3)
 display(result) <- xdisplay(result)
-print(result, include.rownames = FALSE)
-
-## % latex table generated in R 4.2.1 by xtable 1.8-4 package
-## % Sun Feb 19 23:32:39 2023
-## \begin{table}[ht]
-## \centering
-## \begin{tabular}{lrrrrrr}
-##   \hline
-## parameter & true & median & error & bias & ci\_width & ci\_percent \\
-##   \hline
-## birth rate 1 & 0.185 & 0.185 & 0.117 & 0.000 & 0.511 & 94 \\
-##   birth rate 2 & 0.092 & 0.095 & 0.334 & 0.025 & 1.376 & 96 \\
-##   sampling rate & 0.008 & 0.010 & 0.339 & 0.289 & 1.816 & 92 \\
-##   occurrence rate & 0.046 & 0.052 & 0.248 & 0.141 & 1.212 & 97 \\
-##   R effective 1 & 1.850 & 1.681 & 0.179 & -0.091 & 0.664 & 92 \\
-##   R effective 2 & 0.925 & 0.886 & 0.289 & -0.043 & 1.118 & 97 \\
-##   prevalence & 0.000 &  & 0.345 & -0.046 &  & 98 \\
-##    \hline
-## \end{tabular}
-## \end{table}
-
+print(result,
+      include.rownames = FALSE,
+      file = "out/s3/summary-scenario-3-2.tex")
 
 #' Hypothesis test on the binomial probability.
 #'

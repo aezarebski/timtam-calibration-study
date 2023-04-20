@@ -11,10 +11,22 @@ suppressPackageStartupMessages(library(coda))
 suppressPackageStartupMessages(library(reshape2))
 set.seed(1)
 
-truth_col_hex <- "#7fc97f"
+## library(cowplot)
+## library(RColorBrewer)
+## palette <- brewer.pal(5, "Dark2")[1:3]
+highlight_col_hex <- "#1B9E77"
 ix <- 1
 
+remaster_xml <- "xml/remaster-scenario-3.xml"
+if (!file.exists(remaster_xml)) {
+  stop("File does not exist: ", remaster_xml)
+}
+
 read_mcmc <- function(log_file) {
+  ## this should throw a helpful error if the file doesn't exist
+  if (!file.exists(log_file)) {
+    stop("File does not exist: ", log_file)
+  }
   log_file |>
     read.table(comment.char = "#", header = T) |>
     select(-Sample) |> # nolint
@@ -63,7 +75,7 @@ summary_gg <- function(plot_df, true_value, name, hline_col="black") {
         shape = fns_1 < true_value & true_value < fns_5
       )
     ) +
-    geom_hline(yintercept = true_value, linetype = "dashed", colour = hline_col, size = 1.0) +
+    geom_hline(yintercept = true_value, linetype = "dashed", colour = hline_col, linewidth = 1.0) +
     labs(x = NULL, y = name, shape = "Contains true value") +
     scale_shape_manual(breaks = c(FALSE, TRUE), values = c(1, 16)) +
     scale_linetype_manual(breaks = c(FALSE, TRUE), values = c("dashed", "solid")) +
@@ -73,7 +85,7 @@ summary_gg <- function(plot_df, true_value, name, hline_col="black") {
 
 ## =============================================================================
 
-remaster_node <- "xml/remaster-scenario-3.xml" |> read_xml()
+remaster_node <- remaster_xml |> read_xml()
 build_node <- read_xml("build.xml")
 num_replicates <- build_node |>
   xml_find_first(xpath = "//property[@name='numSims']") |>
@@ -176,7 +188,13 @@ final_prevalence_df <-
 history_sizes_df <- comb_est_df |>
   filter(variable == "HistorySizes") |>
   inner_join(final_prevalence_df, by = "replicate") |>
-  mutate(sorted_replicate = order(prevalence))
+  mutate(sorted_replicate = order(prevalence)) |>
+  mutate(contains_truth = fns_1 < prevalence & prevalence < fns_5)
+
+dummy_data <- data.frame(
+  x = NaN, y = NaN,
+  contains_truth = c(FALSE, TRUE)
+)
 
 history_size_gg <-
   ggplot(data = history_sizes_df) +
@@ -186,20 +204,32 @@ history_size_gg <-
       y = fns_3, # nolint
       ymin = fns_1, # nolint
       ymax = fns_5, # nolint
-      shape = fns_1 < prevalence & prevalence < fns_5
+      shape = contains_truth,
+      colour = "estimate"
     )
   ) +
   geom_point(
     mapping = aes(
       x = order(sorted_replicate),
-      y = prevalence
+      y = prevalence,
+      colour = "truth"
     ),
-    colour = truth_col_hex,
     size = 2.5
+  ) +
+  geom_point(
+    data = dummy_data,
+    mapping = aes(x = x, y = y, shape = contains_truth),
+    inherit.aes = FALSE,
+    na.rm = TRUE
   ) +
   scale_y_log10() +
   labs(x = NULL, y = "Prevalence", shape = "Contains true value") +
-  scale_shape_manual(breaks = c(FALSE, TRUE), values = c(1, 16)) +
+  scale_colour_manual("Type",
+    breaks = c("estimate", "truth"), values = c("black", highlight_col_hex)) +
+  scale_shape_manual(breaks = c(FALSE, TRUE),
+                     values = c(1, 16),
+                     labels = c("No", "Yes"),
+                     drop = FALSE) +
   scale_linetype_manual(breaks = c(FALSE, TRUE), values = c("dashed", "solid")) +
   theme_bw() +
   theme(legend.position = "top")
@@ -210,7 +240,7 @@ r0_1_df <- comb_est_df |>
   filter(variable == "R0.1")
 r0_1_df$sorted_replicate <- history_sizes_df$sorted_replicate
 
-r0_1_gg <- summary_gg(r0_1_df, 1.85, "Reproduction number 1", hline_col=truth_col_hex) +
+r0_1_gg <- summary_gg(r0_1_df, 1.85, "Reproduction number 1", hline_col=highlight_col_hex) +
   theme(legend.position = "NONE")
 
 ## =============================================================================
@@ -220,7 +250,7 @@ r0_2_df <- comb_est_df |>
   mutate(sorted_replicate = order(fns_3))
 r0_2_df$sorted_replicate <- history_sizes_df$sorted_replicate
 
-r0_2_gg <- summary_gg(r0_2_df, 0.925, "Reproduction number 2", hline_col=truth_col_hex) +
+r0_2_gg <- summary_gg(r0_2_df, 0.925, "Reproduction number 2", hline_col=highlight_col_hex) +
   theme(legend.position = "NONE")
 
 
