@@ -27,6 +27,7 @@
 #+attr_html: :width 400px
 [[./out/s3/plots/prevalence-data-set-size-plot.png]]
 
+#+caption: This is an example of the results from running scenario 3.2
 #+name: src:latex-tbl-1
 #+begin_src latex
   % latex table generated in R 4.2.3 by xtable 1.8-4 package
@@ -49,6 +50,7 @@
   \end{table}
 #+end_src
 
+#+caption: This is an example of the results from running scenario 3.3
 #+name: src:latex-tbl-2
 #+begin_src latex
   % latex table generated in R 4.2.3 by xtable 1.8-4 package
