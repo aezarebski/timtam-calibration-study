@@ -4,8 +4,8 @@
     <description>
 
         0. setuplib
-        1. clean-scenario-2
-        2. scenario-2
+        1. clean-scenario-3
+        2. scenario-3
 
     </description>
 
@@ -14,20 +14,20 @@
          in the MCMC. At the moment there are only a couple of valid
          options as indicated in the commented code. -->
 
-    <!-- <property name="numSims" value="20" /> -->
+    <!-- <property name="numSims" value="10" /> -->
     <!-- <property name="chainLen" value="100000" /> -->
     <property name="numSims" value="100" />
-    <property name="chainLen" value="10000000" />
+    <property name="chainLen" value="1000000" />
 
     <condition property="isSmall" >
         <and>
             <equals arg1="${chainLen}" arg2="100000" />
-            <equals arg1="${numSims}" arg2="20" />
+            <equals arg1="${numSims}" arg2="10" />
         </and>
     </condition>
     <condition property="isBig" >
         <and>
-            <equals arg1="${chainLen}" arg2="10000000" />
+            <equals arg1="${chainLen}" arg2="1000000" />
             <equals arg1="${numSims}" arg2="100" />
         </and>
     </condition>
@@ -49,10 +49,12 @@
     <target name="mcmc2.7.3">
         <echo>Running the MCMC sampler...</echo>
         <exec executable="sh">
-            <arg path="lib/beast/bin/beast" />
-            <arg line="-seed 1" />
-            <arg line="-overwrite" />
-            <arg path="${beastXML}" />
+          <arg path="lib/beast/bin/beast" />
+	  <arg line="-statefile ${stateFile}" />
+          <arg line="-seed 1" />
+          <arg line="-overwrite" />
+	  <arg line="-D 'chainLength=${chainLength}'" />
+          <arg path="${beastXML}" />
         </exec>
     </target>
 
@@ -185,25 +187,28 @@
          that have been defined above. -->
     <target name="scenario-3-mcmc" depends="scenario-3-mcmc-big,scenario-3-mcmc-small"/>
 
+    <!-- Note that the second argument to the run-mcmc-scenario-3.sh
+         is the sub-scenario number. Only 2 and 3 are considered in
+         the paper. -->
     <target if="isBig" name="scenario-3-mcmc-big">
         <echo>Running the *big* MCMC</echo>
         <echo>  Replicate count: ${numSims}</echo>
         <echo>  Chain length: ${chainLen}</echo>
         <exec executable="bash">
             <arg path="scripts/run-mcmc-scenario-3.sh" />
-            <arg line="100" />
+            <arg line="${numSims}" />
             <arg line="1" />
             <arg line="${chainLen}" />
         </exec>
         <exec executable="bash">
             <arg path="scripts/run-mcmc-scenario-3.sh" />
-            <arg line="100" />
+            <arg line="${numSims}" />
             <arg line="2" />
             <arg line="${chainLen}" />
         </exec>
         <exec executable="bash">
             <arg path="scripts/run-mcmc-scenario-3.sh" />
-            <arg line="100" />
+            <arg line="${numSims}" />
             <arg line="3" />
             <arg line="${chainLen}" />
         </exec>
@@ -215,19 +220,19 @@
         <echo>  Chain length: ${chainLen}</echo>
         <exec executable="bash">
             <arg path="scripts/run-mcmc-scenario-3.sh" />
-            <arg line="20" />
+            <arg line="${numSims}" />
             <arg line="1" />
             <arg line="${chainLen}" />
         </exec>
         <exec executable="bash">
             <arg path="scripts/run-mcmc-scenario-3.sh" />
-            <arg line="20" />
+            <arg line="${numSims}" />
             <arg line="2" />
             <arg line="${chainLen}" />
         </exec>
         <exec executable="bash">
             <arg path="scripts/run-mcmc-scenario-3.sh" />
-            <arg line="20" />
+            <arg line="${numSims}" />
             <arg line="3" />
             <arg line="${chainLen}" />
         </exec>
