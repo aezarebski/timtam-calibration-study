@@ -1,4 +1,0 @@
-#!/usr/bin/env Rscript
-
-targets::tar_make(comb_gg_b)
-# targets::tar_make_clustermq(workers = 2) # nolint

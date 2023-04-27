@@ -1,12 +1,105 @@
-#+title: Calibration study
+#+title: Calibration simulation study
 
-This project carries out a calibration study on the =timtam= package for BEAST2.
-Look at the code in =demo-b.R= for an example of how to use the code in this
-project.
+This repository provides code to run a simulation study to test out
+the performance of the [[https://aezarebski.github.io/timtam/][TimTam]] approximation, described in [[https://doi.org/10.1371/journal.pcbi.1009805][Zarebski /et al/ (2022)]]
 
-- Configuration A :: An example with constant rates making use of unscheduled
-  sequence data and a time series of unsequenced data.
-- Configuration B :: Is a smaller example based on *Configuration A* designed
-  for testing purposes of the pipeline.
-- Configuration C :: An example only using sequenced data for comparison with
-  BDSKY.
+* Simulation study
+
+** Scenario 3
+
+| Parameter     | Description            |  Value |
+|---------------+------------------------+--------|
+|               | Duration               |     56 |
+| \(\lambda_1\) | Birth rate 1           |  0.185 |
+| \(\lambda_2\) | Birth rate 2           | 0.0925 |
+|               | Birth rate change time |     42 |
+| \(\mu\)       | Death rate             |  0.046 |
+| \(\psi\)      | Sampling rate          |  0.008 |
+| \(\omega\)    | Occurrence rate        |  0.046 |
+
+*** Analysis 1
+
+Assuming birth-death model is correctly specified and only estimating
+the rates.
+
+*** Analysis 2
+
+Assuming birth-death model is correctly specified and estimating both
+the rates and the prevalence just after the last sample (at time
+\(-0.01\)).
+
+*** Analysis 3
+
+Use the canonical parameterisation and estimate the prevalence just
+after the last sample (at time \(-0.01\)), but aggregate the
+occurrence data into daily counts.
+
+* Results
+
+#+caption:  Figures and files
+| Result                                 | R script that generated it               |
+|----------------------------------------+------------------------------------------|
+| [[fig:true-model]]                         | [[file:./R/postprocess-scenario-3-part-b.R]] |
+| [[fig:aggregated-model]]                   | [[file:./R/postprocess-scenario-3-part-f.R]] |
+| [[fig:sim-correlation]]                    | [[file:./R/postprocess-scenario-3-part-g.R]] |
+| [[file:./out/s3/summary-scenario-3-2.tex]] | [[file:./R/postprocess-scenario-3-part-c.R]] |
+| [[file:./out/s3/summary-scenario-3-3.tex]] | [[file:./R/postprocess-scenario-3-part-e.R]] |
+
+#+caption: The estimates using occurrence data as a point-process.
+#+name: fig:true-model
+#+attr_org: :width 500px
+#+attr_html: :width 400px
+[[./out/s3/plots/combined-r0-prevalence-estimates-s-3-2.png]]
+
+#+caption: The estimates when the occurrences are aggregated into a time series.
+#+name: fig:aggregated-model
+#+attr_org: :width 500px
+#+attr_html: :width 400px
+[[./out/s3/plots/combined-r0-prevalence-estimates-s-3-3.png]]
+
+#+caption: The final size (prevalence) in the simulation and the amount of data.
+#+name: fig:sim-correlation
+#+attr_org: :width 500px
+#+attr_html: :width 400px
+[[./out/s3/plots/prevalence-data-set-size-plot.png]]
+
+* Running calibration study
+
+This assumes that you have [[https://ant.apache.org/][Apache Ant]], [[https://cran.r-project.org/][R]] and [[https://www.java.com/en/][Java]] installed.
+
+** Getting help
+
+The computations are coordinated with Ant. To get a list of the
+various targets it knows how to build run the following:
+
+#+begin_src sh
+  ant -p
+#+end_src
+
+** Setting up BEAST2
+
+#+begin_src sh
+  ant setuplib
+#+end_src
+
+Note that this will only set up the relevant BEAST tools. You will
+still need to install the TimTam package via BEAUti.
+
+** Running study
+
+#+begin_src sh
+  ant scenario-3
+#+end_src
+
+The =scenario-3= target carries out the whole computation. This is
+just a wrapper around the sub-targets:
+
+- =scenario-3-remaster= :: Runs the =remaster= simulation.
+- =scenario-3-preprocess= :: Simulates the genetic data and constructs
+  the BEAST XML for the MCMC.
+- =scenario-3-mcmc= :: Runs the MCMC replicates in parallel across
+  several batches.
+- =scenario-3-postprocess= :: Post-processing of posterior samples and
+  figure generation.
+
+The output should appear in the =out/s3= directory.
