@@ -114,6 +114,11 @@ ess_gg <- ggplot() +
   labs(x = NULL, y = "Effective sample size") +
   theme_bw()
 
+write.table(x = comb_effsize_df,
+            file = "out/s3/plots/effective-sample-sizes-s-3-2.csv",
+            sep = ",",
+            row.names = FALSE)
+
 ggsave(filename = "out/s3/plots/effective-sample-sizes-s-3-2.png",
        plot = ess_gg,
        height = 10.5, width = 14.8,
