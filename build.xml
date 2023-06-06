@@ -24,13 +24,13 @@
 
     <!-- Run the small simulation
 	 ======================== -->
-    <property name="numSims" value="10" />
-    <property name="chainLen" value="100000" />
+    <!-- <property name="numSims" value="10" /> -->
+    <!-- <property name="chainLen" value="100000" /> -->
 
     <!-- Run the BIG simulation
 	 ====================== -->
-    <!-- <property name="numSims" value="100" /> -->
-    <!-- <property name="chainLen" value="1000000" /> -->
+    <property name="numSims" value="100" />
+    <property name="chainLen" value="1000000" />
 
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     -->
