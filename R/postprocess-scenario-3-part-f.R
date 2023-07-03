@@ -246,11 +246,21 @@ history_size_gg <-
     breaks = c("estimate", "truth"), values = c("black", highlight_col_hex)) +
   scale_shape_manual(breaks = c(FALSE, TRUE),
                      values = c(1, 16),
-                     labels = c("No", "Yes"),
+                     labels = c("no", "yes"),
                      drop = FALSE) +
   scale_linetype_manual(breaks = c(FALSE, TRUE), values = c("dashed", "solid")) +
   theme_bw() +
-  theme(legend.position = "top")
+  theme(legend.position = "top",
+        legend.justification = c(-1.5, 0),
+        legend.title = element_text(
+          hjust = 0.5,
+          margin = margin(r = 3, l = 6, unit = "mm")
+        ),
+        legend.spacing.x = unit(1, "mm"),
+        ## legend.background = element_rect(colour = "green"),
+        ## legend.box.background = element_rect(colour = "red"),
+        legend.box.spacing = unit(0, "mm"),
+        axis.ticks.x = element_blank())
 
 ## =============================================================================
 
@@ -259,7 +269,8 @@ r0_1_df <- comb_est_df |>
 r0_1_df$sorted_replicate <- history_sizes_df$sorted_replicate
 
 r0_1_gg <- summary_gg(r0_1_df, 1.85, "Reproduction number 1", hline_col=highlight_col_hex) +
-  theme(legend.position = "NONE")
+  theme(legend.position = "NONE",
+        axis.ticks.x = element_blank())
 
 ## =============================================================================
 
