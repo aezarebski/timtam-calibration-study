@@ -85,6 +85,7 @@
 
     <target name="scenario-3-directories">
         <mkdir dir="out" />
+        <mkdir dir="out/tmp" />	<!-- so BEAST2 can make temp files. -->
         <mkdir dir="out/s3" />
         <mkdir dir="out/s3/plots" />
     </target>
