@@ -16,35 +16,10 @@ ix <- 1
 ## The `helper-functions.R` file provides the following functions:
 ##
 ## - `read_mcmc`: Read an MCMC log file into a `coda` object.
+## - `make_summary`: Summarise an MCMC object with effective size
 ##
 source("R/helper-functions.R")
 ## ===================================================================
-
-make_summary <- function(mcmc_obj, ix) {
-  summary_df <- summary(mcmc_obj)$quantiles
-  tmp <- rownames(summary_df)
-  summary_df <- summary_df |>
-    as.data.frame() |>
-    mutate(variable = tmp, replicate = ix) |>
-    rename(
-      fns_1 = "2.5%",
-      fns_2 = "25%",
-      fns_3 = "50%",
-      fns_4 = "75%",
-      fns_5 = "97.5%",
-    )
-
-  eff_size_df <- mcmc_obj |>
-    effectiveSize() |>
-    t() |>
-    as.data.frame() |>
-    mutate(replicate = ix)
-
-  return(list(
-    summary = summary_df,
-    effective_sizes = eff_size_df
-  ))
-}
 
 summary_gg <- function(plot_df, true_value, name) {
   if (is.null(true_value)) {
