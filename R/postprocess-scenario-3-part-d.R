@@ -12,12 +12,13 @@ set.seed(1)
 
 ix <- 1
 
-read_mcmc <- function(log_file) {
-  log_file |>
-    read.table(comment.char = "#", header = T) |>
-    select(-Sample) |> # nolint
-    as.mcmc()
-}
+## ===================================================================
+## The `helper-functions.R` file provides the following functions:
+##
+## - `read_mcmc`: Read an MCMC log file into a `coda` object.
+##
+source("R/helper-functions.R")
+## ===================================================================
 
 make_summary <- function(mcmc_obj, ix) {
   summary_df <- summary(mcmc_obj)$quantiles
