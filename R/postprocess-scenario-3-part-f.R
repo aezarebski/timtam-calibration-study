@@ -24,7 +24,7 @@ if (!file.exists(remaster_xml)) {
 
 TIMESERIES_INTERVAL <- 1.0
 
-read_mcmc <- function(log_file) {
+read_mcmc_modified <- function(log_file) {
   ## this should throw a helpful error if the file doesn't exist
   if (!file.exists(log_file)) {
     stop("File does not exist: ", log_file)
@@ -110,7 +110,7 @@ num_replicates <- build_node |>
   xml_attr("value") |>
   as.integer()
 
-summary_list <- map(seq.int(num_replicates), \(ix) make_summary(read_mcmc(str_interp("out/s3/timtam-scenario-3-3-sample-$[03d]{ix}.log")), ix))
+summary_list <- map(seq.int(num_replicates), \(ix) make_summary(read_mcmc_modified(str_interp("out/s3/timtam-scenario-3-3-sample-$[03d]{ix}.log")), ix))
 
 comb_est_df <- summary_list |>
   map(\(x) x$summary) |>
