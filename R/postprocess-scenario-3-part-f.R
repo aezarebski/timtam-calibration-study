@@ -40,11 +40,13 @@ read_mcmc_modified <- function(log_file) {
     as.mcmc()
 }
 
-## ===================================================================
+## ================================================================
 ## The `helper-functions.R` file provides the following functions:
 ##
 ## - `read_mcmc`: Read an MCMC log file into a `coda` object.
 ## - `make_summary`: Summarise an MCMC object with effective size
+## - `in_ci`: Check if a value is within the 95% credible interval
+## - `ci_width`: Calculate the width of the 95% credible interval
 ##
 source("R/helper-functions.R")
 ## ===================================================================
