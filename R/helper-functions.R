@@ -52,18 +52,30 @@ make_summary <- function(mcmc_obj, ix) {
   if (!is(mcmc_obj, "mcmc")) {
     stop("Input is not an MCMC object")
   }
-  summary_df <- summary(mcmc_obj)$quantiles
-  tmp <- rownames(summary_df)
-  summary_df <- summary_df |>
-    as.data.frame() |>
-    mutate(variable = tmp, replicate = ix) |>
-    rename(
-      fns_1 = "2.5%",
-      fns_2 = "25%",
-      fns_3 = "50%",
-      fns_4 = "75%",
-      fns_5 = "97.5%",
-    )
+  ## summary_df <- summary(mcmc_obj)$quantiles
+  ## tmp <- rownames(summary_df)
+  ## summary_df <- summary_df |>
+  ##   as.data.frame() |>
+  ##   mutate(variable = tmp, replicate = ix) |>
+  ##   rename(
+  ##     fns_1 = "2.5%",
+  ##     fns_2 = "25%",
+  ##     fns_3 = "50%",
+  ##     fns_4 = "75%",
+  ##     fns_5 = "97.5%",
+  ##   )
+  cri_95 <- HPDinterval(mcmc_obj, prob = 0.95)
+  cri_50 <- HPDinterval(mcmc_obj, prob = 0.5)
+  cri_median <- as.numeric(apply(X=mcmc_obj, FUN=median, MARGIN=2))
+  summary_df <- data.frame(
+    fns_1 = cri_95[,"lower"],
+    fns_2 = cri_50[,"lower"],
+    fns_3 = cri_median,
+    fns_4 = cri_50[,"upper"],
+    fns_5 = cri_95[,"upper"],
+    variable = colnames(mcmc_obj),
+    replicate = ix
+  )
 
   eff_size_df <- mcmc_obj |>
     effectiveSize() |>
@@ -88,8 +100,10 @@ make_summary <- function(mcmc_obj, ix) {
 #' @return Logical
 #'
 in_ci <- function(x, posts) {
-  ci <- quantile(posts, probs = c(0.025, 0.975))
-  ci[1] <= x && x <= ci[2]
+  ## ci <- quantile(posts, probs = c(0.025, 0.975))
+  ## ci[1] <= x && x <= ci[2]
+  tmp <- bayestestR::hdi(posts, ci = 0.95)
+  tmp$CI_low <= x && x <= tmp$CI_high
 }
 
 
@@ -103,6 +117,8 @@ in_ci <- function(x, posts) {
 #' @return Width of credible interval
 #'
 ci_width <- function(x, posts) {
-  ci <- quantile(posts, probs = c(0.025, 0.975))
-  (ci[2] - ci[1]) / x
+  ## ci <- quantile(posts, probs = c(0.025, 0.975))
+  ## (ci[2] - ci[1]) / x
+  tmp <- bayestestR::hdi(posts, ci = 0.95)
+  (tmp$CI_high - tmp$CI_low) / x
 }
