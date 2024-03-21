@@ -1,3 +1,20 @@
+## This R script provides some helpful functions which are used across
+## other scripts. However, substantial care must be taken when
+## sourcing this file as it introduces multiple functions so you need
+## to make sure it will not overwrite any existing functions in your
+## environment. For this reason it is a good idea to source it at the
+## start of your script and include the following comments to make it
+## clear what is happening:
+##
+## ## ================================================================
+## ## The `helper-functions.R` file provides the following functions:
+## ##
+## ## - `read_mcmc`: Read an MCMC log file into a `coda` object.
+## ## - `make_summary`: Summarise an MCMC object with effective size
+## ##
+## source("R/helper-functions.R")
+## ## ================================================================
+##
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(coda))
 
