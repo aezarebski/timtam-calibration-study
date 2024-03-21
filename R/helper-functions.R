@@ -11,6 +11,8 @@
 ## ##
 ## ## - `read_mcmc`: Read an MCMC log file into a `coda` object.
 ## ## - `make_summary`: Summarise an MCMC object with effective size
+## ## - `in_ci`: Check if a value is within the 95% credible interval
+## ## - `ci_width`: Calculate the width of the 95% credible interval
 ## ##
 ## source("R/helper-functions.R")
 ## ## ================================================================
@@ -73,4 +75,34 @@ make_summary <- function(mcmc_obj, ix) {
     summary = summary_df,
     effective_sizes = eff_size_df
   )
+}
+
+
+#' Check if credible interval contains true value
+#'
+#' Check if true value is within the 95% credible interval of MCMC
+#' samples
+#'
+#' @param x True value
+#' @param posts MCMC samples
+#' @return Logical
+#'
+in_ci <- function(x, posts) {
+  ci <- quantile(posts, probs = c(0.025, 0.975))
+  ci[1] <= x && x <= ci[2]
+}
+
+
+#' Calculate width of 95% credible interval
+#'
+#' Calculate the width of the 95% credible interval of MCMC samples
+#' normalised by the true value
+#'
+#' @param x True value
+#' @param posts MCMC samples
+#' @return Width of credible interval
+#'
+ci_width <- function(x, posts) {
+  ci <- quantile(posts, probs = c(0.025, 0.975))
+  (ci[2] - ci[1]) / x
 }

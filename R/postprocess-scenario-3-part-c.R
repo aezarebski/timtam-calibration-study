@@ -11,6 +11,17 @@ suppressPackageStartupMessages(library(reshape2))
 library(xtable)
 set.seed(1)
 
+## ================================================================
+## The `helper-functions.R` file provides the following functions:
+##
+## - `read_mcmc`: Read an MCMC log file into a `coda` object.
+## - `make_summary`: Summarise an MCMC object with effective size
+## - `in_ci`: Check if a value is within the 95% credible interval
+## - `ci_width`: Calculate the width of the 95% credible interval
+##
+source("R/helper-functions.R")
+## ================================================================
+
 #' Read a BEAST2 log file into a data frame.
 #'
 #' @param filename is the path to the log file.
@@ -69,14 +80,6 @@ final_prev_df <- read.csv("out/s3/final-simulation-state.csv") |>
   mutate(replicate = sample + 1) |>
   select(X, replicate)
 
-in_ci <- function(x, posts) {
-  ci <- quantile(posts, probs = c(0.025, 0.975))
-  ci[1] <= x && x <= ci[2]
-}
-ci_width <- function(x, posts) {
-  ci <- quantile(posts, probs = c(0.025, 0.975))
-  (ci[2] - ci[1]) / x
-}
 bias <- function(x, posts) {
   median((posts - x) / x)
 }
