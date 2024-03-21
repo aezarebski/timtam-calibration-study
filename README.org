@@ -54,6 +54,11 @@ occurrence data into daily counts.
 | [[file:./out/s3/summary-scenario-3-2.tex]] | [[file:./R/postprocess-scenario-3-part-c.R]] |
 | [[file:./out/s3/summary-scenario-3-3.tex]] | [[file:./R/postprocess-scenario-3-part-e.R]] |
 
+The intervals calculated in the two summary tables are the /highest
+posterior density/ (HPD) intervals. An earlier version of the code
+used the equal tails interval; changing from equal tails to HPD made
+only a small change to the sizes of the intervals.
+
 #+caption: The estimates using occurrence data as a point-process.
 #+name: fig:true-model
 #+attr_org: :width 500px
