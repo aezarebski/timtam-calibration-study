@@ -124,6 +124,11 @@ If you want to debug this at all, it is probably a good idea to try
 and run these sub-targets in order. The output should appear in the
 =out/s3= directory.
 
+If you want to remove all the results from previous computation, use
+=ant clean-scenario-3=.
+
+*** Debugging with a smaller example
+
 There is some configuration in the [[file:./build.xml][ant build script]] that you can
 comment in and out to toggle between a large and a small simulation.
 Running the small simulation is useful when trying to debug this
