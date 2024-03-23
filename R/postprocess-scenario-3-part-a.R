@@ -12,38 +12,16 @@ set.seed(1)
 
 ix <- 1
 
-read_mcmc <- function(log_file) {
-  log_file |>
-    read.table(comment.char = "#", header = T) |>
-    select(-Sample) |> # nolint
-    as.mcmc()
-}
-
-make_summary <- function(mcmc_obj, ix) {
-  summary_df <- summary(mcmc_obj)$quantiles
-  tmp <- rownames(summary_df)
-  summary_df <- summary_df |>
-    as.data.frame() |>
-    mutate(variable = tmp, replicate = ix) |>
-    rename(
-      fns_1 = "2.5%",
-      fns_2 = "25%",
-      fns_3 = "50%",
-      fns_4 = "75%",
-      fns_5 = "97.5%",
-    )
-
-  eff_size_df <- mcmc_obj |>
-    effectiveSize() |>
-    t() |>
-    as.data.frame() |>
-    mutate(replicate = ix)
-
-  return(list(
-    summary = summary_df,
-    effective_sizes = eff_size_df
-  ))
-}
+## ================================================================
+## The `helper-functions.R` file provides the following functions:
+##
+## - `read_mcmc`: Read an MCMC log file into a `coda` object.
+## - `make_summary`: Summarise an MCMC object with effective size
+## - `in_ci`: Check if a value is within the 95% credible interval
+## - `ci_width`: Calculate the width of the 95% credible interval
+##
+source("R/helper-functions.R")
+## ===================================================================
 
 summary_gg <- function(plot_df, true_value, name) {
   ggplot() +

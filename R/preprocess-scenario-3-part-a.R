@@ -5,6 +5,7 @@ suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(purrr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(stringr))
+library(tidyr)
 suppressPackageStartupMessages(library(xml2))
 set.seed(1)
 
@@ -97,11 +98,35 @@ omega_and_nu_strings <- function(sim_data, sim_duration) {
 
 ## =============================================================================
 
-sim_log_lines <- tail(readLines("out/s3/remaster-scenario-3.log"), -1)
+remaster_log_file <- "out/s3/remaster-scenario-3.log"
+if (!file.exists(remaster_log_file)) {
+  stop("The expected remaster log file does not exist")
+}
 
-sim_dfs <- sim_log_lines |>
-  map(process_log_line) |>
-  bind_rows()
+## NOTE that there have been some changes to the output from remaster,
+## so the following will try to parse it in one of two ways, hopefully
+## one of them will work.
+sim_dfs <- tryCatch(
+  expr = {
+    tail(readLines(remaster_log_file), -1) |>
+      map(process_log_line) |>
+      bind_rows()},
+  error = function(e) {
+    warning("It looks like you are using a newer version of remaster. Parsing for remaster.v2.5.1")
+    read.table(
+      file = remaster_log_file,
+      header = TRUE,
+      sep = "\t",
+      stringsAsFactors = FALSE
+    ) |>
+      select(-index) |>
+      rename(sample = Sample) |>
+      pivot_wider(
+        names_from = population,
+        values_from = value,
+        id_cols = c(sample, t)) |>
+      as.data.frame()
+  })
 
 num_samples <- sim_dfs |>
   pluck("sample") |>
@@ -117,6 +142,8 @@ with(
       as.integer()
     if (num_sims != num_samples) {
       stop("The number of simulations found in the log file does not match the number requested in build.xml") # nolint
+    } else {
+      message("The number of simulations found in the log file matches the number requested in build.xml") # nolint
     }
   }
 )

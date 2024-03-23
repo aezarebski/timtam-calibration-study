@@ -1,11 +1,17 @@
 #+title: Calibration simulation study
 
 This repository provides code to run a simulation study to test out
-the performance of the [[https://aezarebski.github.io/timtam/][TimTam]] approximation, described in [[https://doi.org/10.1371/journal.pcbi.1009805][Zarebski /et al/ (2022)]]
+the performance of the [[https://aezarebski.github.io/timtam/][TimTam]] approximation, described in [[https://doi.org/10.1371/journal.pcbi.1009805][Zarebski /et al/ (2022)]].
+This document has the following sections:
+
+- [[#sec:sim-study][Simulation study]] describes the parameters used in the simulation
+- [[#sec:results][Results]] presents the main figures produced
+- [[#sec:running][Running]] describes how to run the code in this repository
 
 * Simulation study
-
-** Scenario 3
+:properties:
+:custom_id: sec:sim-study
+:end:
 
 | Parameter     | Description            |  Value |
 |---------------+------------------------+--------|
@@ -35,6 +41,9 @@ after the last sample (at time \(-0.01\)), but aggregate the
 occurrence data into daily counts.
 
 * Results
+:properties:
+:custom_id: sec:results
+:end:
 
 #+caption:  Figures and files
 | Result                                 | R script that generated it               |
@@ -44,6 +53,11 @@ occurrence data into daily counts.
 | [[fig:sim-correlation]]                    | [[file:./R/postprocess-scenario-3-part-g.R]] |
 | [[file:./out/s3/summary-scenario-3-2.tex]] | [[file:./R/postprocess-scenario-3-part-c.R]] |
 | [[file:./out/s3/summary-scenario-3-3.tex]] | [[file:./R/postprocess-scenario-3-part-e.R]] |
+
+The intervals calculated in the two summary tables are the /highest
+posterior density/ (HPD) intervals. An earlier version of the code
+used the equal tails interval; changing from equal tails to HPD made
+only a small change to the sizes of the intervals.
 
 #+caption: The estimates using occurrence data as a point-process.
 #+name: fig:true-model
@@ -64,13 +78,17 @@ occurrence data into daily counts.
 [[./out/s3/plots/prevalence-data-set-size-plot.png]]
 
 * Running calibration study
+:properties:
+:custom_id: sec:running
+:end:
 
 This assumes that you have [[https://ant.apache.org/][Apache Ant]], [[https://cran.r-project.org/][R]] and [[https://www.java.com/en/][Java]] installed.
 
 ** Getting help
 
 The computations are coordinated with Ant. To get a list of the
-various targets it knows how to build run the following:
+various /targets/ of the pipeline it knows how to build, run the
+following command:
 
 #+begin_src sh
   ant -p
@@ -85,14 +103,14 @@ various targets it knows how to build run the following:
 Note that this will only set up the relevant BEAST tools. You will
 still need to install the TimTam package via BEAUti.
 
-** Running study
+** Running (and debugging) the study
 
 #+begin_src sh
   ant scenario-3
 #+end_src
 
 The =scenario-3= target carries out the whole computation. This is
-just a wrapper around the sub-targets:
+just a wrapper around the following sub-targets:
 
 - =scenario-3-remaster= :: Runs the =remaster= simulation.
 - =scenario-3-preprocess= :: Simulates the genetic data and constructs
@@ -102,4 +120,16 @@ just a wrapper around the sub-targets:
 - =scenario-3-postprocess= :: Post-processing of posterior samples and
   figure generation.
 
-The output should appear in the =out/s3= directory.
+If you want to debug this at all, it is probably a good idea to try
+and run these sub-targets in order. The output should appear in the
+=out/s3= directory.
+
+If you want to remove all the results from previous computation, use
+=ant clean-scenario-3=.
+
+*** Debugging with a smaller example
+
+There is some configuration in the [[file:./build.xml][ant build script]] that you can
+comment in and out to toggle between a large and a small simulation.
+Running the small simulation is useful when trying to debug this
+pipeline.

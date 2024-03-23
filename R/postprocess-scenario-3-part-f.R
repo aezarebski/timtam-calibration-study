@@ -24,7 +24,7 @@ if (!file.exists(remaster_xml)) {
 
 TIMESERIES_INTERVAL <- 1.0
 
-read_mcmc <- function(log_file) {
+read_mcmc_modified <- function(log_file) {
   ## this should throw a helpful error if the file doesn't exist
   if (!file.exists(log_file)) {
     stop("File does not exist: ", log_file)
@@ -40,31 +40,16 @@ read_mcmc <- function(log_file) {
     as.mcmc()
 }
 
-make_summary <- function(mcmc_obj, ix) {
-  summary_df <- summary(mcmc_obj)$quantiles
-  tmp <- rownames(summary_df)
-  summary_df <- summary_df |>
-    as.data.frame() |>
-    mutate(variable = tmp, replicate = ix) |>
-    rename(
-      fns_1 = "2.5%",
-      fns_2 = "25%",
-      fns_3 = "50%",
-      fns_4 = "75%",
-      fns_5 = "97.5%",
-    )
-
-  eff_size_df <- mcmc_obj |>
-    effectiveSize() |>
-    t() |>
-    as.data.frame() |>
-    mutate(replicate = ix)
-
-  return(list(
-    summary = summary_df,
-    effective_sizes = eff_size_df
-  ))
-}
+## ================================================================
+## The `helper-functions.R` file provides the following functions:
+##
+## - `read_mcmc`: Read an MCMC log file into a `coda` object.
+## - `make_summary`: Summarise an MCMC object with effective size
+## - `in_ci`: Check if a value is within the 95% credible interval
+## - `ci_width`: Calculate the width of the 95% credible interval
+##
+source("R/helper-functions.R")
+## ===================================================================
 
 summary_gg <- function(plot_df, true_value, name, hline_col="black") {
   if (is.null(true_value)) {
@@ -110,7 +95,7 @@ num_replicates <- build_node |>
   xml_attr("value") |>
   as.integer()
 
-summary_list <- map(seq.int(num_replicates), \(ix) make_summary(read_mcmc(str_interp("out/s3/timtam-scenario-3-3-sample-$[03d]{ix}.log")), ix))
+summary_list <- map(seq.int(num_replicates), \(ix) make_summary(read_mcmc_modified(str_interp("out/s3/timtam-scenario-3-3-sample-$[03d]{ix}.log")), ix))
 
 comb_est_df <- summary_list |>
   map(\(x) x$summary) |>
