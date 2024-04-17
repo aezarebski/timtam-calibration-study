@@ -254,9 +254,10 @@ r0_2_df <- comb_est_df |>
   mutate(sorted_replicate = order(fns_3))
 r0_2_df$sorted_replicate <- history_sizes_df$sorted_replicate
 
-r0_2_gg <- summary_gg(r0_2_df, 0.925, "Reproduction number 2", hline_col=highlight_col_hex) +
-  theme(legend.position = "NONE")
-
+r0_2_gg <- summary_gg(r0_2_df, 0.925, "Reproduction number 2",
+                      hline_col=highlight_col_hex) +
+  theme(legend.position = "NONE") +
+  labs(x = "Simulation replicate (see legend for ordering)")
 
 ## =============================================================================
 
