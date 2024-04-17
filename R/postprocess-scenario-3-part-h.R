@@ -1,5 +1,18 @@
 library(ggplot2)
 
+## ================================================================
+## The `helper-functions.R` file provides the following functions:
+##
+## - `read_mcmc`: Read an MCMC log file into a `coda` object.
+## - `make_summary`: Summarise an MCMC object with effective size
+## - `in_ci`: Check if a value is within the 95% credible interval
+## - `ci_width`: Calculate the width of the 95% credible interval
+## - `my_ggsave`: Save a ggplot as PNG and SVG in one call
+##
+source("R/helper-functions.R")
+## ================================================================
+
+
 ## The remaster package comes with some helpful tools for working with
 ## the log-files that it outputs.
 source("~/.beast/2.7/remaster/scripts/trajTools.R")
@@ -24,10 +37,10 @@ sim_gg <-
   ) +
   theme_bw()
 
-ggsave(filename = "out/s3/plots/remaster-trajectories-scenario-3.png",
-       plot = sim_gg,
-       height = 10.5, width = 14.8,
-       ## A5 height = 14.8, width = 21.0,
-       ## A6 height = 10.5, width = 14.8,
-       ## A7 height = 7.4, width = 10.5,
-       units = "cm")
+my_ggsave(filename = "out/s3/plots/remaster-trajectories-scenario-3.png",
+          plot = sim_gg,
+          height = 10.5, width = 14.8,
+          ## A5 height = 14.8, width = 21.0,
+          ## A6 height = 10.5, width = 14.8,
+          ## A7 height = 7.4, width = 10.5,
+          units = "cm")

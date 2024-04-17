@@ -118,7 +118,8 @@ just a wrapper around the following sub-targets:
 - =scenario-3-mcmc= :: Runs the MCMC replicates in parallel across
   several batches.
 - =scenario-3-postprocess= :: Post-processing of posterior samples and
-  figure generation.
+  figure generation. /This is probably the one you want to run most of
+  the time./
 
 If you want to debug this at all, it is probably a good idea to try
 and run these sub-targets in order. The output should appear in the
