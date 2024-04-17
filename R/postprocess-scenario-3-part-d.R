@@ -19,9 +19,10 @@ ix <- 1
 ## - `make_summary`: Summarise an MCMC object with effective size
 ## - `in_ci`: Check if a value is within the 95% credible interval
 ## - `ci_width`: Calculate the width of the 95% credible interval
+## - `my_ggsave`: Save a ggplot as PNG and SVG in one call
 ##
 source("R/helper-functions.R")
-## ===================================================================
+## ================================================================
 
 summary_gg <- function(plot_df, true_value, name) {
   if (is.null(true_value)) {
@@ -102,7 +103,7 @@ write.table(x = comb_effsize_df,
             sep = ",",
             row.names = FALSE)
 
-ggsave(filename = "out/s3/plots/effective-sample-sizes-s-3-3.png",
+my_ggsave(filename = "out/s3/plots/effective-sample-sizes-s-3-3.png",
        plot = ess_gg,
        height = 10.5, width = 14.8,
        units = "cm")
@@ -115,7 +116,7 @@ birth_rate_df <- comb_est_df |>
 
 birth_rate_gg <- summary_gg(birth_rate_df, 0.185, "Birth rate")
 
-ggsave(
+my_ggsave(
   filename = "out/s3/plots/birth-rate-1-estimates-s-3-3.png",
   plot = birth_rate_gg,
   height = 10.5, width = 14.8,
@@ -128,7 +129,7 @@ birth_rate_df <- comb_est_df |>
 
 birth_rate_gg <- summary_gg(birth_rate_df, 0.0925, "Birth rate")
 
-ggsave(
+my_ggsave(
   filename = "out/s3/plots/birth-rate-2-estimates-s-3-3.png",
   plot = birth_rate_gg,
   height = 10.5, width = 14.8,
@@ -143,7 +144,7 @@ sampling_rate_df <- comb_est_df |>
 
 sampling_rate_gg <- summary_gg(sampling_rate_df, 0.008, "Sampling rate")
 
-ggsave(
+my_ggsave(
   filename = "out/s3/plots/sampling-rate-estimates-s-3-3.png",
   plot = sampling_rate_gg,
   height = 10.5, width = 14.8,
@@ -158,7 +159,7 @@ nu_prob_df <- comb_est_df |>
 
 nu_prob_gg <- summary_gg(nu_prob_df, NULL, "Nu probability")
 
-ggsave(
+my_ggsave(
   filename = "out/s3/plots/nu-prob-estimates-s-3-3.png",
   plot = nu_prob_gg,
   height = 10.5, width = 14.8,
