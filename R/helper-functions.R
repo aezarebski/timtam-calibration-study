@@ -13,12 +13,14 @@
 ## ## - `make_summary`: Summarise an MCMC object with effective size
 ## ## - `in_ci`: Check if a value is within the 95% credible interval
 ## ## - `ci_width`: Calculate the width of the 95% credible interval
+## ## - `my_ggsave`: Save a ggplot as PNG and SVG in one call
 ## ##
 ## source("R/helper-functions.R")
 ## ## ================================================================
 ##
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(coda))
+suppressPackageStartupMessages(library(ggplot2))
 
 
 #' Read MCMC log file
@@ -121,4 +123,24 @@ ci_width <- function(x, posts) {
   ## (ci[2] - ci[1]) / x
   tmp <- bayestestR::hdi(posts, ci = 0.95)
   (tmp$CI_high - tmp$CI_low) / x
+}
+
+
+#' Save a plot as both a PNG and an SVG file.
+#'
+#' This function saves a plot as both a PNG and an SVG file. The
+#' filename should end with `.png` and the plot will be saved as a PNG
+#' file with the same name. The SVG file will have the same name but
+#' with `.svg` instead of `.png`.
+#'
+#' @param filename The name of the file to save the plot to.
+#' @param plot The plot to save.
+#' @param ... Additional arguments to pass to `ggsave`.
+#'
+my_ggsave <- function(filename, plot, ...) {
+  ggplot2::ggsave(filename = filename, plot = plot, ...)
+  if (str_detect(filename, ".png$")) {
+    svg_filename <- str_replace(filename, ".png$", ".svg")
+   ggplot2::ggsave(filename = svg_filename, plot = plot, ...)
+  }
 }
