@@ -156,7 +156,7 @@ result <- with(replicate_summaries, {
     ),
     true = with(
       params,
-      c(br1, br2, sr, or, br1/(dr+sr+or), br2/(dr+sr+or), hs)
+      c(br1, br2, sr, or, br1 / (dr + sr + or), br2 / (dr + sr + or), hs)
     ),
     median = c(
       median(m_birth_rate_1), median(m_birth_rate_2),
@@ -197,8 +197,9 @@ align(result) <- xalign(result)
 digits(result) <- xdigits(result, zap = 3)
 display(result) <- xdisplay(result)
 print(result,
-      include.rownames = FALSE,
-      file = "out/s3/summary-scenario-3-3.tex")
+  include.rownames = FALSE,
+  file = "out/s3/summary-scenario-3-3.tex"
+)
 
 #' Hypothesis test on the binomial probability.
 #'

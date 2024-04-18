@@ -24,23 +24,31 @@ x2 <- x1 |>
   select(t, value, sample)
 
 sim_gg <-
-  ggplot(data = x2,
-         mapping = aes(x = t, y = value)) +
-  geom_step(mapping = aes(group = sample),
-            alpha = 0.6) +
-  geom_smooth(method = "gam", se = FALSE,
-              size = 3,
-              colour = "red") +
+  ggplot(
+    data = x2,
+    mapping = aes(x = t, y = value)
+  ) +
+  geom_step(
+    mapping = aes(group = sample),
+    alpha = 0.6
+  ) +
+  geom_smooth(
+    method = "gam", se = FALSE,
+    size = 3,
+    colour = "red"
+  ) +
   labs(
     x = "Day",
     y = "Prevalence"
   ) +
   theme_bw()
 
-my_ggsave(filename = "out/s3/plots/remaster-trajectories-scenario-3.png",
-          plot = sim_gg,
-          height = 10.5, width = 14.8,
-          ## A5 height = 14.8, width = 21.0,
-          ## A6 height = 10.5, width = 14.8,
-          ## A7 height = 7.4, width = 10.5,
-          units = "cm")
+my_ggsave(
+  filename = "out/s3/plots/remaster-trajectories-scenario-3.png",
+  plot = sim_gg,
+  height = 10.5, width = 14.8,
+  ## A5 height = 14.8, width = 21.0,
+  ## A6 height = 10.5, width = 14.8,
+  ## A7 height = 7.4, width = 10.5,
+  units = "cm"
+)

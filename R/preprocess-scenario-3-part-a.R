@@ -68,7 +68,6 @@ annotated_tree_and_seqs <- function(recon_tree, sim_data) {
 ## =============================================================================
 
 omega_and_nu_strings <- function(sim_data, sim_duration) {
-
   as_ssv_str <- function(xs) {
     paste0(as.character(xs), collapse = " ")
   }
@@ -91,9 +90,11 @@ omega_and_nu_strings <- function(sim_data, sim_duration) {
     ) |>
     mutate(nu_int_full = ifelse(is.na(nu_ints), nu_default, nu_ints))
 
-  list(omega = omega_str,
-       nu_times = as_ssv_str(tmp$nu_times),
-       nu_counts = as_ssv_str(tmp$nu_int_full))
+  list(
+    omega = omega_str,
+    nu_times = as_ssv_str(tmp$nu_times),
+    nu_counts = as_ssv_str(tmp$nu_int_full)
+  )
 }
 
 ## =============================================================================
@@ -110,7 +111,8 @@ sim_dfs <- tryCatch(
   expr = {
     tail(readLines(remaster_log_file), -1) |>
       map(process_log_line) |>
-      bind_rows()},
+      bind_rows()
+  },
   error = function(e) {
     warning("It looks like you are using a newer version of remaster. Parsing for remaster.v2.5.1")
     read.table(
@@ -124,9 +126,11 @@ sim_dfs <- tryCatch(
       pivot_wider(
         names_from = population,
         values_from = value,
-        id_cols = c(sample, t)) |>
+        id_cols = c(sample, t)
+      ) |>
       as.data.frame()
-  })
+  }
+)
 
 num_samples <- sim_dfs |>
   pluck("sample") |>
@@ -186,7 +190,8 @@ for (ix in seq.int(num_samples)) {
   writeLines(
     text = c(om_and_nu$nu_times, om_and_nu$nu_counts),
     con = str_interp(
-      "out/s3/nu-times-and-counts-scenario-3-sample-$[03d]{ix}.ssv")
+      "out/s3/nu-times-and-counts-scenario-3-sample-$[03d]{ix}.ssv"
+    )
   )
 
   write.phyDat(

@@ -23,7 +23,9 @@ prev_vs_num_gg <- ggplot() +
   ) +
   theme_bw()
 
-ggsave(filename = "out/s3/plots/prevalence-data-set-size-plot.png",
-       plot = prev_vs_num_gg,
-       height = 10.5, width = 10.5,
-       units = "cm")
+ggsave(
+  filename = "out/s3/plots/prevalence-data-set-size-plot.png",
+  plot = prev_vs_num_gg,
+  height = 10.5, width = 10.5,
+  units = "cm"
+)

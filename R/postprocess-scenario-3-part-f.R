@@ -52,7 +52,7 @@ read_mcmc_modified <- function(log_file) {
 source("R/helper-functions.R")
 ## ================================================================
 
-summary_gg <- function(plot_df, true_value, name, hline_col="black") {
+summary_gg <- function(plot_df, true_value, name, hline_col = "black") {
   if (is.null(true_value)) {
     gg <- ggplot() +
       geom_pointrange(
@@ -118,10 +118,12 @@ ess_gg <- ggplot() +
   labs(x = NULL, y = "Effective sample size") +
   theme_bw()
 
-my_ggsave(filename = "out/s3/plots/effective-sample-sizes-s-3-3.png",
-       plot = ess_gg,
-       height = 10.5, width = 14.8,
-       units = "cm")
+my_ggsave(
+  filename = "out/s3/plots/effective-sample-sizes-s-3-3.png",
+  plot = ess_gg,
+  height = 10.5, width = 14.8,
+  units = "cm"
+)
 
 ## =============================================================================
 
@@ -229,24 +231,29 @@ history_size_gg <-
   scale_y_log10() +
   labs(x = NULL, y = "Prevalence", shape = "Contains true value") +
   scale_colour_manual("Type",
-    breaks = c("estimate", "truth"), values = c("black", highlight_col_hex)) +
-  scale_shape_manual(breaks = c(FALSE, TRUE),
-                     values = c(1, 16),
-                     labels = c("no", "yes"),
-                     drop = FALSE) +
+    breaks = c("estimate", "truth"), values = c("black", highlight_col_hex)
+  ) +
+  scale_shape_manual(
+    breaks = c(FALSE, TRUE),
+    values = c(1, 16),
+    labels = c("no", "yes"),
+    drop = FALSE
+  ) +
   scale_linetype_manual(breaks = c(FALSE, TRUE), values = c("dashed", "solid")) +
   theme_bw() +
-  theme(legend.position = "top",
-        legend.justification = c(-1.5, 0),
-        legend.title = element_text(
-          hjust = 0.5,
-          margin = margin(r = 3, l = 6, unit = "mm")
-        ),
-        legend.spacing.x = unit(1, "mm"),
-        ## legend.background = element_rect(colour = "green"),
-        ## legend.box.background = element_rect(colour = "red"),
-        legend.box.spacing = unit(0, "mm"),
-        axis.ticks.x = element_blank())
+  theme(
+    legend.position = "top",
+    legend.justification = c(-1.5, 0),
+    legend.title = element_text(
+      hjust = 0.5,
+      margin = margin(r = 3, l = 6, unit = "mm")
+    ),
+    legend.spacing.x = unit(1, "mm"),
+    ## legend.background = element_rect(colour = "green"),
+    ## legend.box.background = element_rect(colour = "red"),
+    legend.box.spacing = unit(0, "mm"),
+    axis.ticks.x = element_blank()
+  )
 
 ## =============================================================================
 
@@ -254,9 +261,11 @@ r0_1_df <- comb_est_df |>
   filter(variable == "R0.1")
 r0_1_df$sorted_replicate <- history_sizes_df$sorted_replicate
 
-r0_1_gg <- summary_gg(r0_1_df, 1.85, "Reproduction number 1", hline_col=highlight_col_hex) +
-  theme(legend.position = "NONE",
-        axis.ticks.x = element_blank())
+r0_1_gg <- summary_gg(r0_1_df, 1.85, "Reproduction number 1", hline_col = highlight_col_hex) +
+  theme(
+    legend.position = "NONE",
+    axis.ticks.x = element_blank()
+  )
 
 ## =============================================================================
 
@@ -266,7 +275,8 @@ r0_2_df <- comb_est_df |>
 r0_2_df$sorted_replicate <- history_sizes_df$sorted_replicate
 
 r0_2_gg <- summary_gg(r0_2_df, 0.925, "Reproduction number 2",
-                      hline_col=highlight_col_hex) +
+  hline_col = highlight_col_hex
+) +
   theme(legend.position = "NONE") +
   labs(x = "Simulation replicate (see legend for ordering)")
 
