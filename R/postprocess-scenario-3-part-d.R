@@ -72,10 +72,11 @@ summary_list <-
   map(
     seq.int(num_replicates),
     \(ix) make_summary(
-            read_mcmc(
-              str_interp("out/s3/timtam-scenario-3-3-sample-$[03d]{ix}.log")
-            ),
-            ix)
+      read_mcmc(
+        str_interp("out/s3/timtam-scenario-3-3-sample-$[03d]{ix}.log")
+      ),
+      ix
+    )
   )
 
 comb_est_df <- summary_list |>
@@ -98,15 +99,19 @@ ess_gg <- ggplot() +
   labs(x = NULL, y = "Effective sample size") +
   theme_bw()
 
-write.table(x = comb_effsize_df,
-            file = "out/s3/plots/effective-sample-sizes-s-3-3.csv",
-            sep = ",",
-            row.names = FALSE)
+write.table(
+  x = comb_effsize_df,
+  file = "out/s3/plots/effective-sample-sizes-s-3-3.csv",
+  sep = ",",
+  row.names = FALSE
+)
 
-my_ggsave(filename = "out/s3/plots/effective-sample-sizes-s-3-3.png",
-       plot = ess_gg,
-       height = 10.5, width = 14.8,
-       units = "cm")
+my_ggsave(
+  filename = "out/s3/plots/effective-sample-sizes-s-3-3.png",
+  plot = ess_gg,
+  height = 10.5, width = 14.8,
+  units = "cm"
+)
 
 ## =============================================================================
 

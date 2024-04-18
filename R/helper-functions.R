@@ -68,13 +68,13 @@ make_summary <- function(mcmc_obj, ix) {
   ##   )
   cri_95 <- HPDinterval(mcmc_obj, prob = 0.95)
   cri_50 <- HPDinterval(mcmc_obj, prob = 0.5)
-  cri_median <- as.numeric(apply(X=mcmc_obj, FUN=median, MARGIN=2))
+  cri_median <- as.numeric(apply(X = mcmc_obj, FUN = median, MARGIN = 2))
   summary_df <- data.frame(
-    fns_1 = cri_95[,"lower"],
-    fns_2 = cri_50[,"lower"],
+    fns_1 = cri_95[, "lower"],
+    fns_2 = cri_50[, "lower"],
     fns_3 = cri_median,
-    fns_4 = cri_50[,"upper"],
-    fns_5 = cri_95[,"upper"],
+    fns_4 = cri_50[, "upper"],
+    fns_5 = cri_95[, "upper"],
     variable = colnames(mcmc_obj),
     replicate = ix
   )
@@ -141,6 +141,6 @@ my_ggsave <- function(filename, plot, ...) {
   ggplot2::ggsave(filename = filename, plot = plot, ...)
   if (str_detect(filename, ".png$")) {
     svg_filename <- str_replace(filename, ".png$", ".svg")
-   ggplot2::ggsave(filename = svg_filename, plot = plot, ...)
+    ggplot2::ggsave(filename = svg_filename, plot = plot, ...)
   }
 }

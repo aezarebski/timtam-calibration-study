@@ -75,10 +75,12 @@ ess_gg <- ggplot() +
   labs(x = NULL, y = "Effective sample size") +
   theme_bw()
 
-my_ggsave(filename = "out/s3/plots/effective-sample-sizes-s-3-1.png",
-       plot = ess_gg,
-       height = 10.5, width = 14.8,
-       units = "cm")
+my_ggsave(
+  filename = "out/s3/plots/effective-sample-sizes-s-3-1.png",
+  plot = ess_gg,
+  height = 10.5, width = 14.8,
+  units = "cm"
+)
 
 ## =============================================================================
 

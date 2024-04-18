@@ -64,15 +64,20 @@ data_size_1_gg <-
   ) +
   geom_hline(
     data = tmp_1,
-    mapping = aes(yintercept = mean,
-                  colour = variable),
-    linetype = "dashed") +
+    mapping = aes(
+      yintercept = mean,
+      colour = variable
+    ),
+    linetype = "dashed"
+  ) +
   theme_bw()
 
-ggsave(filename = "out/s3/plots/dataset-size-1.png",
-       plot = data_size_1_gg,
-       height = 10.5, width = 14.8,
-       units = "cm")
+ggsave(
+  filename = "out/s3/plots/dataset-size-1.png",
+  plot = data_size_1_gg,
+  height = 10.5, width = 14.8,
+  units = "cm"
+)
 
 data_size_2_gg <-
   ggplot() +
@@ -89,11 +94,14 @@ data_size_2_gg <-
   ) +
   geom_vline(
     data = tmp_1,
-    mapping = aes(xintercept = mean,
-                  colour = variable),
-    linetype = "dashed") +
+    mapping = aes(
+      xintercept = mean,
+      colour = variable
+    ),
+    linetype = "dashed"
+  ) +
   facet_wrap(~variable) +
-    theme_bw()
+  theme_bw()
 
 ggsave(
   filename = "out/s3/plots/dataset-size-2.png",
@@ -107,7 +115,9 @@ total_confirmed_df <- data_size_df |>
   summarise(total_confirmed = sum(value)) |>
   as.data.frame()
 
-write.table(x = total_confirmed_df,
-            file = "out/s3/total-number-confirmed-cases.csv",
-            sep = ",",
-            row.names = FALSE)
+write.table(
+  x = total_confirmed_df,
+  file = "out/s3/total-number-confirmed-cases.csv",
+  sep = ",",
+  row.names = FALSE
+)
