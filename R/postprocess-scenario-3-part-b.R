@@ -85,6 +85,12 @@ comb_est_df <- summary_list |>
   map(\(x) x$summary) |>
   bind_rows()
 
+## Write the combined estimates to a CSV file because it is useful for
+## subsequent analysis.
+write.csv(comb_est_df,
+          "out/s3/summary-combined-estimates-s-3-2.csv",
+          row.names = FALSE)
+
 comb_effsize_df <- summary_list |>
   map(\(x) x$effective_sizes) |>
   bind_rows() |>
