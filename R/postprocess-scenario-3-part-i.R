@@ -50,7 +50,7 @@ plot_df <- bind_rows(est_3_2_df, est_3_3_df)
 
 
 facet_labels <- c("bias" = "Bias",
-                  "ci_width" = "Width of 95% CI")
+                  "ci_width" = "Width of 95% HPD interval")
 
 
 est_vs_size_gg <-
