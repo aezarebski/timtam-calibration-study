@@ -111,4 +111,13 @@ if (DRY_RUN) {
          plot = est_vs_size_gg,
          width = fig_width,
          height = fig_height)
+  ggsave("out/s3/plots/summary-est-vs-size-linear.png",
+         plot = est_vs_size_gg + scale_x_continuous(),
+         width = fig_width,
+         height = fig_height,
+         dpi = 300)
+  ggsave("out/s3/plots/summary-est-vs-size-linear.svg",
+         plot = est_vs_size_gg + scale_x_continuous(),
+         width = fig_width,
+         height = fig_height)
 }
