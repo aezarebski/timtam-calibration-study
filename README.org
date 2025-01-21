@@ -53,6 +53,7 @@ occurrence data into daily counts.
 | [[fig:sim-correlation]]                    | [[file:./R/postprocess-scenario-3-part-g.R]] |
 | [[file:./out/s3/summary-scenario-3-2.tex]] | [[file:./R/postprocess-scenario-3-part-c.R]] |
 | [[file:./out/s3/summary-scenario-3-3.tex]] | [[file:./R/postprocess-scenario-3-part-e.R]] |
+| [[fig:sim-asymptotics]]                    | [[file:./R/postprocess-scenario-3-part-i.R]] |
 
 The intervals calculated in the two summary tables are the /highest
 posterior density/ (HPD) intervals. An earlier version of the code
@@ -76,6 +77,12 @@ only a small change to the sizes of the intervals.
 #+attr_org: :width 500px
 #+attr_html: :width 400px
 [[./out/s3/plots/prevalence-data-set-size-plot.png]]
+
+#+caption: A visualisation of the relationship between error and uncertainty, and the size of the dataset used to generate the estimate.
+#+name: fig:sim-asymptotics
+#+attr_org: :width 500px
+#+attr_html: :width 400px
+[[./out/s3/plots/summary-est-vs-size.png]]
 
 * Running calibration study
 :properties:
